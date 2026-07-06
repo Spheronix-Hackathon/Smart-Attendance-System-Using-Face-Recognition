@@ -5,22 +5,26 @@
 
 FROM python:3.11.11-slim
 
+# -----------------------------------------------------------------------------
+# Environment
+# -----------------------------------------------------------------------------
+
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PIP_NO_CACHE_DIR=1
+ENV PORT=10000
 
 WORKDIR /app
 
 # -----------------------------------------------------------------------------
-# Install Linux system dependencies
+# Linux dependencies
 # -----------------------------------------------------------------------------
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    pkg-config \
     git \
-    curl \
+    cmake \
+    build-essential \
+    pkg-config \
     libopenblas-dev \
     liblapack-dev \
     libx11-dev \
@@ -34,16 +38,16 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------------------------------------------------------
-# Copy requirements first (Docker cache)
-# -----------------------------------------------------------------------------
-
-COPY backend/requirements.txt .
-
-# -----------------------------------------------------------------------------
 # Upgrade pip
 # -----------------------------------------------------------------------------
 
 RUN python -m pip install --upgrade pip setuptools wheel
+
+# -----------------------------------------------------------------------------
+# Copy requirements first
+# -----------------------------------------------------------------------------
+
+COPY backend/requirements.txt .
 
 # -----------------------------------------------------------------------------
 # Install dlib binary FIRST
@@ -52,26 +56,26 @@ RUN python -m pip install --upgrade pip setuptools wheel
 RUN pip install dlib-bin==19.24.6
 
 # -----------------------------------------------------------------------------
-# Install face recognition models
+# Install official face recognition models
 # -----------------------------------------------------------------------------
 
-RUN pip install face_recognition_models==0.3.0
+RUN pip install --no-cache-dir \
+    git+https://github.com/ageitgey/face_recognition_models.git
 
 # -----------------------------------------------------------------------------
-# Install face-recognition WITHOUT dependencies
-# (prevents pip from compiling dlib)
+# Install face_recognition WITHOUT dependencies
 # -----------------------------------------------------------------------------
 
 RUN pip install --no-deps face-recognition==1.3.0
 
 # -----------------------------------------------------------------------------
-# Remove already installed packages from requirements
+# Remove packages already installed
 # -----------------------------------------------------------------------------
 
 RUN grep -vE "^(dlib-bin|face-recognition|face_recognition_models)" requirements.txt > requirements-render.txt
 
 # -----------------------------------------------------------------------------
-# Install remaining requirements
+# Install remaining packages
 # -----------------------------------------------------------------------------
 
 RUN pip install -r requirements-render.txt
@@ -80,17 +84,25 @@ RUN pip install -r requirements-render.txt
 # Copy application
 # -----------------------------------------------------------------------------
 
-COPY backend ./backend
-COPY frontend ./frontend
+COPY backend /app/backend
+COPY frontend /app/frontend
 
 WORKDIR /app/backend
 
+# -----------------------------------------------------------------------------
+# Render Port
+# -----------------------------------------------------------------------------
+
 EXPOSE 10000
 
-ENV PORT=10000
-
 # -----------------------------------------------------------------------------
-# Start FastAPI
+# Health Check
 # -----------------------------------------------------------------------------
 
-CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "300"]
+HEALTHCHECK CMD curl --fail http://localhost:10000/health || exit 1
+
+# -----------------------------------------------------------------------------
+# Start Server
+# -----------------------------------------------------------------------------
+
+CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "300", "--graceful-timeout", "120"]
