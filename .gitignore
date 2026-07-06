@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.pdb
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Local venv used in this project
+/gupta/
+
+# Environment files — NEVER commit real secrets
+/backend/.env
+
+# Databases (SQLite dev artifacts — MongoDB is used in production)
+*.db
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Distribution / build
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+
+# Node (if any frontend tooling added later)
+node_modules/

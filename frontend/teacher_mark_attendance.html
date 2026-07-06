@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Scanner - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-page overflow-hidden">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li class="active"><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark
+                            Attendance</a></li>
+                    <li><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View
+                            Attendance</a></li>
+                    <li><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text" style="font-size: 1.8rem;">Mark Student Attendance</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Use facial recognition to verify and record
+                        student attendance</p>
+                </div>
+                <div class="header-actions">
+                    <div
+                        style="background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-building-columns" style="color: var(--secondary);"></i>
+                        <span id="teacherDept"
+                            style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">DEPT: ---</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-stack">
+                <div class="dashboard-grid">
+                    <!-- Left: Scanner Engine -->
+                    <div class="widget-card split-75"
+                        style="padding: 48px; border: 1px solid rgba(0, 209, 199, 0.15); background: radial-gradient(circle at top right, rgba(0, 209, 199, 0.05) 0%, transparent 70%);">
+                        <div class="space-between" style="margin-bottom: 32px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <h3
+                                    style="font-size: 0.9rem; font-weight: 900; letter-spacing: 4px; color: var(--accent); text-transform: uppercase;">
+                                    BIOMETRIC_DIAGNOSTIC_ENGINE</h3>
+                                <p
+                                    style="font-size: 0.65rem; color: var(--text-dim); font-weight: 700; letter-spacing: 1px;">
+                                    STATUS: <span id="scannerStatusText">INITIALIZING_STANDBY...</span></p>
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; gap: 12px; padding: 8px 20px; background: rgba(0,0,0,0.3); border-radius: 40px; border: 1px solid var(--glass-border);">
+                                <span class="scanner-status-dot" id="scannerStatusDot"></span>
+                                <span
+                                    style="font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px; color: #fff;">SESSION_ACTIVE</span>
+                            </div>
+                        </div>
+
+                        <div class="camera-container"
+                            style="background: #000; border: 1px solid var(--glass-border); position: relative; aspect-ratio: 16/9; overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.5);">
+                            <!-- HUD OVERLAY -->
+                            <div class="scanline-hud"></div>
+                            <div class="reticle"></div>
+
+                            <div id="cameraPlaceholder" style="text-align: center; z-index: 5;">
+                                <div
+                                    style="width: 80px; height: 80px; background: rgba(0,209,199,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; border: 1px solid rgba(0,209,199,0.1);">
+                                    <i class="fa-solid fa-satellite-dish"
+                                        style="font-size: 2rem; color: var(--accent); opacity: 0.5;"></i>
+                                </div>
+                                <h4
+                                    style="font-family: var(--font-data); color: #fff; font-size: 0.8rem; letter-spacing: 4px; font-weight: 900;">
+                                    AWAITING_VIDEO_FEED</h4>
+                                <p
+                                    style="color: var(--text-dim); font-size: 0.6rem; margin-top: 12px; letter-spacing: 1px;">
+                                    ENCRYPTED BIOMETRIC PIPELINE ACTIVE</p>
+                            </div>
+
+                            <video id="video" autoplay playsinline muted
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;"></video>
+                        </div>
+
+                        <div class="camera-controls">
+                            <button id="startBtn" class="btn-premium"
+                                style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; font-size: 0.75rem; padding: 20px;">
+                                <i class="fa-solid fa-video" style="margin-right: 12px; color: var(--accent);"></i>
+                                ACTIVATE_CAMERA
+                            </button>
+                            <button id="captureBtn" class="btn-premium"
+                                style="background: var(--accent); color: #000; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; font-size: 0.75rem; padding: 20px; box-shadow: 0 0 30px rgba(0, 209, 199, 0.3);">
+                                <i class="fa-solid fa-fingerprint" style="margin-right: 12px;"></i> RUN_DIAGNOSTIC_SCAN
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Tools -->
+                    <div class="split-25" style="display: flex; flex-direction: column; gap: 32px;">
+                        <!-- Recently Marked -->
+                        <div class="widget-card" style="flex: 1; border-left: 4px solid var(--accent);">
+                            <div class="space-between" style="margin-bottom: 24px;">
+                                <h3 style="font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; color: #fff;">
+                                    SCAN_LOGS</h3>
+                                <span class="marked-badge" id="scanCounter">COUNT: 0</span>
+                            </div>
+                            <div id="scanLogContainer"
+                                style="flex: 1; min-height: 140px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; background: rgba(0,0,0,0.2); padding: 20px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto;">
+                                <p id="initialLogMsg"
+                                    style="font-size: 0.65rem; color: var(--text-dim); text-align: center; margin-top: 40px; font-weight: 800; opacity: 0.4; letter-spacing: 2px;">
+                                    AWAITING_IDENTIFICATION...</p>
+                            </div>
+                        </div>
+
+                        <!-- Manual Marking -->
+                        <div class="widget-card" style="border-left: 4px solid var(--secondary);">
+                            <h3
+                                style="font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 24px; color: #fff;">
+                                MANUAL_OVERRIDE</h3>
+
+                            <div class="form-group" style="margin-bottom: 24px;">
+                                <label
+                                    style="font-size: 0.6rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: block;">TARGET_STUDENT_ID</label>
+                                <select id="m_studentSelect"
+                                    style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 0.75rem;">
+                                    <option value="">-- SELECT IDENTITY --</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 32px;">
+                                <label
+                                    style="font-size: 0.6rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: block;">ATTENDANCE_METRIC</label>
+                                <div class="status-segmented">
+                                    <button class="status-btn active" data-status="present">PRESENT</button>
+                                    <button class="status-btn" data-status="late">LATE</button>
+                                    <button class="status-btn" data-status="absent">ABSENT</button>
+                                </div>
+                            </div>
+
+                            <button id="manualMarkBtn" class="btn-premium"
+                                style="width: 100%; padding: 16px; font-weight: 900; font-size: 0.75rem; letter-spacing: 2px; background: rgba(111, 69, 255, 0.1); border: 1px solid var(--secondary); color: var(--secondary);">
+                                CONFIRM_MANUAL_ENTRY <i class="fa-solid fa-fingerprint" style="margin-left: 10px;"></i>
+                            </button>
+                            <p id="m_statusMsg"
+                                style="margin-top: 16px; font-size: 0.65rem; font-weight: 900; text-align: center; color: var(--accent);">
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Bottom: Full Registry (Hidden/Optional if not in image, but good for UX) -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teacher.js"></script>
+</body>
+
+</html>

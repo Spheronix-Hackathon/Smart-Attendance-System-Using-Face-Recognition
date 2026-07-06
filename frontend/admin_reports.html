@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Reports - SmartFace ADMIN</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>ADMIN</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="admin_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="admin_users.html"><i class="fa-solid fa-users-gear"></i> Users</a></li>
+                    <li class="active"><a href="admin_reports.html"><i class="fa-solid fa-file-invoice"></i> Reports</a></li>
+                    <li><a href="admin_security.html"><i class="fa-solid fa-shield-halved"></i> Security</a></li>
+                    <li><a href="admin_settings.html"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                    <li><a href="admin_profile.html"><i class="fa-solid fa-user-shield"></i> Profile</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">System Reports</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Detailed attendance history and system analytics</p>
+                </div>
+                <div class="header-actions">
+                    <button onclick="downloadSystemReport('excel')" class="btn-secondary" style="padding: 12px 24px; border-radius: 12px; font-weight: 800; letter-spacing: 1px; font-size: 0.75rem; background: rgba(34,197,94,0.1); border: 1px solid #22c55e; color: #22c55e;">
+                        <i class="fa-solid fa-file-excel" style="margin-right: 10px;"></i> EXPORT_AS_EXCEL
+                    </button>
+                    <button onclick="downloadSystemReport('pdf')" class="btn-premium" style="padding: 12px 24px; border-radius: 12px; font-weight: 900; letter-spacing: 1px; font-size: 0.75rem; background: var(--primary); color: #fff; margin-left: 16px;">
+                        <i class="fa-solid fa-file-pdf" style="margin-right: 10px;"></i> GENERATE_PDF_REPORT
+                    </button>
+                </div>
+            </header>
+
+            <div class="page-stack admin-page-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 32px 40px 40px;">
+                <!-- Attendance Metrics Pulse -->
+                <div class="admin-kpi-grid">
+                    <div class="widget-card" style="padding: 24px; border-left: 4px solid var(--accent); position: relative;">
+                        <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">PRESENT_STUDENTS_TODAY</p>
+                        <h2 id="presentToday" style="font-size: 2.8rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                        <div style="position: absolute; top: 24px; right: 24px; opacity: 0.2; font-size: 1.5rem; color: var(--accent);"><i class="fa-solid fa-user-check"></i></div>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; border-left: 4px solid #ff5a6f; position: relative;">
+                        <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">ABSENT_STUDENTS_TODAY</p>
+                        <h2 id="absentToday" style="font-size: 2.8rem; font-weight: 900; color: #ff5a6f; font-family: var(--font-data); line-height: 1;">0</h2>
+                        <div style="position: absolute; top: 24px; right: 24px; opacity: 0.2; font-size: 1.5rem; color: #ff5a6f;"><i class="fa-solid fa-user-xmark"></i></div>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; border-left: 4px solid var(--primary); position: relative;">
+                        <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">TOTAL_REGISTERED_MEMBERS</p>
+                        <h2 id="totalMembers" style="font-size: 2.8rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                        <div style="position: absolute; top: 24px; right: 24px; opacity: 0.2; font-size: 1.5rem; color: var(--primary);"><i class="fa-solid fa-users"></i></div>
+                    </div>
+                </div>
+                <!-- Section 1: System-Wide Retention Mastery -->
+                <div class="widget-card" style="padding: 0; min-height: 480px; display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid rgba(0, 209, 199, 0.1);">
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                        <h3 style="font-size: 0.9rem; letter-spacing: 3px; font-weight: 900; color: var(--accent); text-transform: uppercase;">ATTENDANCE_TRENDS</h3>
+                        <div class="badge" style="background: rgba(0,209,199,0.1); color: var(--accent); border: 1px solid rgba(0,209,199,0.2); font-size: 0.6rem; letter-spacing: 1px;">SYSTEM_OPERATIONAL</div>
+                    </div>
+                    <div style="flex: 1; padding: 40px; position: relative; min-height: 400px; display: flex; align-items: center; justify-content: center;">
+                         <canvas id="attendanceChart" style="max-height: 400px;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Section 2: Split Diagnostic Matrix -->
+                <div class="admin-split-grid">
+                    <div class="widget-card" style="padding: 0; min-height: 400px; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <h3 style="font-size: 0.85rem; letter-spacing: 2px; font-weight: 900; color: #fff; text-transform: uppercase;">FACULTY_ATTENDANCE_OVERVIEW</h3>
+                            <i class="fa-solid fa-shield-halved" style="color: var(--primary); opacity: 0.6;"></i>
+                        </div>
+                        <div id="facultyOverviewList" style="padding: 32px; flex: 1; display: flex; flex-direction: column; gap: 18px;">
+                            <div style="text-align: center; color: var(--text-dim); letter-spacing: 2px; padding: 24px 0; font-size: 0.75rem; font-weight: 700;">LOADING_FACULTY_DATA...</div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" style="padding: 0; min-height: 400px; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <h3 style="font-size: 0.85rem; letter-spacing: 2px; font-weight: 900; color: #fff; text-transform: uppercase;">ACTIVE_MONITORING_LOCATIONS</h3>
+                            <i class="fa-solid fa-satellite-dish" style="color: var(--accent); opacity: 0.6;"></i>
+                        </div>
+                        <div id="locationOverviewList" style="padding: 32px; flex: 1; display: flex; flex-direction: column; gap: 18px;">
+                            <div style="text-align: center; color: var(--text-dim); letter-spacing: 2px; padding: 24px 0; font-size: 0.75rem; font-weight: 700;">LOADING_LOCATION_DATA...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Aggregate Archives (Full Width) -->
+                <div class="widget-card" style="padding: 0; min-height: 500px; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); position: relative;">
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                        <h3 style="font-size: 1.1rem; letter-spacing: 3px; color: #fff; font-weight: 900; text-transform: uppercase;">MONTHLY_ATTENDANCE_SUMMARY</h3>
+                        <div style="display: flex; gap: 16px;">
+                            <select id="departmentFilter" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.75rem; min-width: 220px;"></select>
+                            <input id="monthFilter" type="month" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 10px 16px; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.75rem;">
+                        </div>
+                    </div>
+                    <div style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); display: grid; gap: 20px;">
+                        <div class="space-between" style="gap: 20px; flex-wrap: wrap;">
+                            <div style="display: grid; gap: 8px;">
+                                <h3 style="font-size: 1rem; letter-spacing: 2px; color: var(--accent); font-weight: 900; text-transform: uppercase;">REPORT_EXPORT_STUDIO</h3>
+                                <p style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.6;">Choose a department above, confirm the date range, then export the report as PDF or Excel.</p>
+                            </div>
+                            <span id="adminReportRangePreview" class="badge badge-active" style="padding: 8px 14px; border-radius: 999px; font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase;">RANGE: --</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                            <div class="widget-card" style="padding: 20px; border-left: 4px solid var(--accent); background: rgba(255,255,255,0.02);">
+                                <p style="font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">REPORT_SCOPE</p>
+                                <select id="adminReportScope" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px;">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                <div id="adminReportScopeHint" style="margin-top: 14px; font-size: 0.74rem; color: var(--text-muted); line-height: 1.6;">Department selection stays on the filter above.</div>
+                            </div>
+
+                            <div class="widget-card" style="padding: 20px; border-left: 4px solid var(--primary); background: rgba(255,255,255,0.02);">
+                                <p style="font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">RANGE_INPUTS</p>
+                                <div id="adminReportRangeFields" style="display: grid; gap: 14px;">
+                                    <div data-admin-scope-group="daily weekly" style="display: grid; gap: 8px;">
+                                        <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Reference Date</label>
+                                        <input id="adminReportDate" type="date" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                    </div>
+                                    <div data-admin-scope-group="monthly" style="display: grid; gap: 8px;">
+                                        <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Report Month</label>
+                                        <input id="adminReportMonth" type="month" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                    </div>
+                                    <div data-admin-scope-group="yearly" style="display: grid; gap: 8px;">
+                                        <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Report Year</label>
+                                        <input id="adminReportYear" type="number" min="2020" max="2100" step="1" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                    </div>
+                                    <div data-admin-scope-group="custom" style="display: grid; gap: 12px;">
+                                        <div style="display: grid; gap: 8px;">
+                                            <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">From Date</label>
+                                            <input id="adminReportFrom" type="date" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                        </div>
+                                        <div style="display: grid; gap: 8px;">
+                                            <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">To Date</label>
+                                            <input id="adminReportTo" type="date" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="widget-card" style="padding: 20px; border-left: 4px solid #ff5a6f; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; justify-content: space-between; gap: 18px;">
+                                <div>
+                                    <p style="font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">EXPORT_OUTPUT</p>
+                                    <div id="adminReportRangeSummary" style="font-size: 0.9rem; font-weight: 800; color: #fff; line-height: 1.7;">Choose a department and scope to preview the range.</div>
+                                    <p style="margin-top: 12px; font-size: 0.76rem; color: var(--text-muted); line-height: 1.7;">The exported file includes the teacher who marked each attendance row. Completed unmarked days count as absent; pending days stay excluded until the day closes.</p>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                                    <button id="adminReportExcelBtn" type="button" class="btn-secondary" style="padding: 12px 20px; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; border: 1px solid #22c55e; color: #22c55e; background: rgba(34,197,94,0.1);">
+                                        <i class="fa-solid fa-file-excel" style="margin-right: 10px;"></i> EXCEL
+                                    </button>
+                                    <button id="adminReportPdfBtn" type="button" class="btn-premium" style="padding: 12px 20px; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; background: rgba(239,68,68,0.12); border: 1px solid #ef4444; color: #ef4444;">
+                                        <i class="fa-solid fa-file-pdf" style="margin-right: 10px;"></i> PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container" style="flex: 1; padding: 0;">
+                        <table id="reportsTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: rgba(255,255,255,0.02);">
+                                <tr>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Student Name / ID</th>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Classes Attended</th>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Attendance Rate</th>
+                                    <th style="padding: 24px 32px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                                <tr><td colspan="4" style="padding: 100px; text-align: center; color: var(--text-dim); letter-spacing: 3px; opacity: 0.6; font-size: 0.9rem; font-weight: 900;">LOADING_REPORT_DATA...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/api.js"></script>
+    <script>
+        let attendanceChart = null;
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function getSelectedMonth() {
+            const monthInput = document.getElementById('monthFilter');
+            return monthInput && monthInput.value ? monthInput.value : new Date().toISOString().slice(0, 7);
+        }
+
+        function getSelectedDepartment() {
+            const departmentSelect = document.getElementById('departmentFilter');
+            const value = departmentSelect && departmentSelect.value ? departmentSelect.value : 'ALL_DEPARTMENTS';
+            return value === 'ALL_DEPARTMENTS' ? '' : value;
+        }
+
+        function populateDepartmentFilter(users) {
+            const select = document.getElementById('departmentFilter');
+            if (!select) return;
+
+            const currentValue = select.value || 'ALL_DEPARTMENTS';
+            const departments = [...new Set(users.map(user => (user.department || '').trim()).filter(Boolean))].sort((left, right) => left.localeCompare(right));
+
+            select.innerHTML = '';
+            const allOption = document.createElement('option');
+            allOption.value = 'ALL_DEPARTMENTS';
+            allOption.textContent = 'ALL_DEPARTMENTS';
+            select.appendChild(allOption);
+
+            departments.forEach(department => {
+                const option = document.createElement('option');
+                option.value = department;
+                option.textContent = department;
+                select.appendChild(option);
+            });
+
+            select.value = departments.includes(currentValue) || currentValue === 'ALL_DEPARTMENTS' ? currentValue : 'ALL_DEPARTMENTS';
+        }
+
+        function renderFacultyOverview(rows) {
+            const container = document.getElementById('facultyOverviewList');
+            if (!container) return;
+
+            if (!rows.length) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-dim); letter-spacing: 2px; padding: 24px 0; font-size: 0.75rem; font-weight: 700;">NO_FACULTY_ACTIVITY_FOUND</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            rows.forEach(row => {
+                const percentage = Math.max(0, Math.min(100, Number(row.attendance_percentage || 0)));
+                const statusColor = row.status === 'INACTIVE' ? '#ffb454' : 'var(--accent)';
+                const item = document.createElement('div');
+                item.style.cssText = 'padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.03); display: grid; gap: 10px;';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 18px;">
+                        <div style="display: grid; gap: 4px; min-width: 0;">
+                            <span style="font-size: 0.95rem; font-weight: 700; color: #fff; word-break: break-word;">${escapeHtml(row.full_name || 'UNNAMED_FACULTY')}</span>
+                            <span style="font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">DEPT: ${escapeHtml(row.department || 'UNASSIGNED')}</span>
+                        </div>
+                        <span style="font-weight: 900; color: ${statusColor}; font-family: var(--font-data); font-size: 1.4rem; line-height: 1;">${percentage.toFixed(1)}%</span>
+                    </div>
+                    <div style="height: 8px; background: rgba(255,255,255,0.05); border-radius: 999px; overflow: hidden;">
+                        <div style="height: 100%; width: ${percentage}%; background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%); border-radius: inherit;"></div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.68rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">
+                        <span>${escapeHtml(row.classes_attended)} days covered</span>
+                        <span>${escapeHtml(row.total_classes)} total days</span>
+                        <span style="color: ${statusColor};">${escapeHtml(row.status || 'ACTIVE')}</span>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderLocationOverview(rows) {
+            const container = document.getElementById('locationOverviewList');
+            if (!container) return;
+
+            if (!rows.length) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-dim); letter-spacing: 2px; padding: 24px 0; font-size: 0.75rem; font-weight: 700;">NO_LOCATION_DATA_FOUND</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            rows.forEach(location => {
+                const isActive = String(location.status || '').toUpperCase() === 'ACTIVE';
+                const item = document.createElement('div');
+                item.style.cssText = 'display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.03);';
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 16px; min-width: 0;">
+                        <div style="width: 8px; height: 8px; background: ${isActive ? 'var(--accent)' : '#ffb454'}; border-radius: 50%; box-shadow: 0 0 10px ${isActive ? 'var(--accent)' : '#ffb454'};"></div>
+                        <div style="display: grid; gap: 4px; min-width: 0;">
+                            <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">${escapeHtml(location.name || 'UNKNOWN_LOCATION')}</span>
+                            <span style="font-size: 0.65rem; color: var(--text-dim); font-weight: 700; letter-spacing: 1px;">${escapeHtml(location.lat)} , ${escapeHtml(location.lon)}</span>
+                        </div>
+                    </div>
+                    <span class="badge" style="background: ${isActive ? 'rgba(0,209,199,0.1)' : 'rgba(255,180,84,0.1)'}; color: ${isActive ? 'var(--accent)' : '#ffb454'}; border: 1px solid ${isActive ? 'rgba(0,209,199,0.2)' : 'rgba(255,180,84,0.2)'}; font-size: 0.6rem; letter-spacing: 1px; font-weight: 900;">${escapeHtml(location.status || 'UNKNOWN')}</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderMonthlySummary(rows) {
+            const tbody = document.getElementById('reportsTableBody');
+            if (!tbody) return;
+
+            if (!rows.length) {
+                tbody.innerHTML = '<tr><td colspan="4" style="padding: 100px; text-align: center; color: var(--text-dim); letter-spacing: 3px; opacity: 0.6; font-size: 0.9rem; font-weight: 900;">NO_STUDENT_DATA_FOUND</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            rows.forEach(row => {
+                const attendance = Number(row.attendance_percentage || 0).toFixed(1);
+                const isPending = String(row.status || '').toUpperCase() === 'PENDING';
+                const isStrong = Number(row.attendance_percentage || 0) >= 90;
+                const isWatch = Number(row.attendance_percentage || 0) >= 75 && Number(row.attendance_percentage || 0) < 90;
+                const badgeColor = isPending ? 'var(--text-dim)' : isStrong ? 'var(--accent)' : isWatch ? '#ffb454' : '#ff5a6f';
+                const badgeBg = isPending ? 'rgba(255,255,255,0.05)' : isStrong ? 'rgba(0,209,199,0.1)' : isWatch ? 'rgba(255,180,84,0.1)' : 'rgba(255,90,111,0.1)';
+                const badgeBorder = isPending ? 'rgba(255,255,255,0.12)' : isStrong ? 'rgba(0,209,199,0.2)' : isWatch ? 'rgba(255,180,84,0.2)' : 'rgba(255,90,111,0.2)';
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                tr.innerHTML = `
+                    <td style="padding: 24px 32px;">
+                        <div style="font-weight: 800; color: #fff;">${escapeHtml(row.full_name || 'STUDENT_NODE')}</div>
+                        <div style="font-size: 0.65rem; color: var(--text-dim);">${escapeHtml(row.roll_number || row.id)}</div>
+                    </td>
+                    <td style="padding: 24px 32px; font-family: var(--font-data); color: #fff;">${escapeHtml(row.classes_attended)} / ${escapeHtml(row.total_classes)}</td>
+                    <td style="padding: 24px 32px; font-weight: 900; color: ${badgeColor}; font-family: var(--font-data);">${attendance}%</td>
+                    <td style="padding: 24px 32px; text-align: right;"><span class="badge" style="background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder}; font-size: 0.6rem; letter-spacing: 1px; font-weight: 900;">${escapeHtml(row.status || 'MONITORED')}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderAttendanceChart(labels, counts) {
+            const canvas = document.getElementById('attendanceChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            if (attendanceChart) attendanceChart.destroy();
+
+            attendanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.map(label => label.split('-').slice(1).join('/')),
+                    datasets: [{
+                        label: 'Present Students',
+                        data: counts,
+                        borderColor: '#00d1c7',
+                        backgroundColor: 'rgba(0, 209, 199, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#00d1c7',
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: 'rgba(255, 255, 255, 0.5)', font: { family: 'JetBrains Mono' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: 'rgba(255, 255, 255, 0.5)', font: { family: 'JetBrains Mono' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function downloadSystemReport(format) {
+            try {
+                const timestamp = new Date().toISOString().split('T')[0];
+                const filename = `system_attendance_${timestamp}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+                await Api.downloadFile(`/admin/attendance/export?format=${format}`, filename);
+            } catch (err) {
+                alert('Export failed: ' + err.message);
+            }
+        }
+
+        function pad(value) {
+            return String(value).padStart(2, '0');
+        }
+
+        function formatLocalDate(date) {
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+        }
+
+        function formatLocalMonth(date) {
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+        }
+
+        function parseDateInput(value) {
+            if (!value) return null;
+            const [year, month, day] = value.split('-').map(Number);
+            if (!year || !month || !day) return null;
+            return new Date(year, month - 1, day);
+        }
+
+        function startOfMonth(monthValue) {
+            const [year, month] = monthValue.split('-').map(Number);
+            return new Date(year, month - 1, 1);
+        }
+
+        function endOfMonth(monthValue) {
+            const [year, month] = monthValue.split('-').map(Number);
+            return new Date(year, month, 0);
+        }
+
+        function startOfYear(yearValue) {
+            return new Date(Number(yearValue), 0, 1);
+        }
+
+        function endOfYear(yearValue) {
+            return new Date(Number(yearValue), 11, 31);
+        }
+
+        function addDays(date, days) {
+            const clone = new Date(date);
+            clone.setDate(clone.getDate() + days);
+            return clone;
+        }
+
+        function setAdminReportScopeDescription(scope) {
+            const hint = document.getElementById('adminReportScopeHint');
+            if (!hint) return;
+
+            const copy = {
+                daily: 'Use the selected date to export a single day.',
+                weekly: 'Use the selected date to export the 7-day window ending that day.',
+                monthly: 'Use the selected month to export the full calendar month.',
+                yearly: 'Use the selected year to export the full calendar year.',
+                custom: 'Choose any start and end dates for a custom export.',
+            };
+
+            hint.textContent = copy[scope] || copy.custom;
+        }
+
+        function setAdminVisibleRangeFields(scope) {
+            document.querySelectorAll('[data-admin-scope-group]').forEach((block) => {
+                const groups = (block.getAttribute('data-admin-scope-group') || '').split(' ');
+                block.style.display = groups.includes(scope) ? 'grid' : 'none';
+            });
+        }
+
+        function refreshAdminReportRangePreview() {
+            const scope = document.getElementById('adminReportScope')?.value || 'daily';
+            const preview = document.getElementById('adminReportRangePreview');
+            const summary = document.getElementById('adminReportRangeSummary');
+            if (!preview || !summary) return null;
+
+            const department = getSelectedDepartment();
+            const today = new Date();
+            const todayValue = formatLocalDate(today);
+
+            let fromDate = todayValue;
+            let toDate = todayValue;
+            let label = `${todayValue} to ${todayValue}`;
+
+            if (scope === 'weekly') {
+                const anchor = parseDateInput(document.getElementById('adminReportDate')?.value || todayValue) || today;
+                fromDate = formatLocalDate(addDays(anchor, -6));
+                toDate = formatLocalDate(anchor);
+                label = `${fromDate} to ${toDate}`;
+            } else if (scope === 'monthly') {
+                const monthValue = document.getElementById('adminReportMonth')?.value || formatLocalMonth(today);
+                fromDate = formatLocalDate(startOfMonth(monthValue));
+                toDate = formatLocalDate(endOfMonth(monthValue));
+                label = `${monthValue} (${fromDate} to ${toDate})`;
+            } else if (scope === 'yearly') {
+                const yearValue = document.getElementById('adminReportYear')?.value || String(today.getFullYear());
+                fromDate = formatLocalDate(startOfYear(yearValue));
+                toDate = formatLocalDate(endOfYear(yearValue));
+                label = `${yearValue} (${fromDate} to ${toDate})`;
+            } else if (scope === 'custom') {
+                fromDate = document.getElementById('adminReportFrom')?.value || todayValue;
+                toDate = document.getElementById('adminReportTo')?.value || todayValue;
+                label = `${fromDate} to ${toDate}`;
+            }
+
+            const departmentLabel = department && department !== 'ALL_DEPARTMENTS' ? department : 'Choose a department above';
+            preview.textContent = `RANGE: ${label}`;
+            summary.textContent = `${departmentLabel} | ${scope.toUpperCase()} report will export ${label}.`;
+
+            return { scope, fromDate, toDate, department };
+        }
+
+        function validateAdminRange(range) {
+            if (!range) return false;
+            if (!range.department || range.department === 'ALL_DEPARTMENTS' || range.department === 'ALL') return false;
+            if (!range.fromDate || !range.toDate) return false;
+            return range.fromDate <= range.toDate;
+        }
+
+        function buildAdminReportFilename(format, scope, fromDate, toDate, department) {
+            const deptSlug = department.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || 'department';
+            return `${deptSlug}_${scope}_${fromDate}_to_${toDate}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+        }
+
+        async function exportAdminReport(format) {
+            const range = refreshAdminReportRangePreview();
+            if (!validateAdminRange(range)) {
+                alert('Please choose a department and a valid report range first.');
+                return;
+            }
+
+            const params = new URLSearchParams({
+                format,
+                scope: range.scope,
+                department: range.department,
+                from_date: range.fromDate,
+                to_date: range.toDate,
+            });
+            const filename = buildAdminReportFilename(format, range.scope, range.fromDate, range.toDate, range.department);
+
+            try {
+                await Api.downloadFile(`/admin/reports/export?${params.toString()}`, filename);
+            } catch (error) {
+                alert(error.message || 'Failed to export report.');
+            }
+        }
+
+        async function loadReports() {
+            try {
+                const selectedMonth = getSelectedMonth();
+                const selectedDepartment = getSelectedDepartment();
+                const summaryPath = `/admin/reports/monthly-summary?month=${encodeURIComponent(selectedMonth)}${selectedDepartment ? `&department=${encodeURIComponent(selectedDepartment)}` : ''}`;
+
+                const [statsRes, weeklyRes, usersRes, facultyRes, locationRes, summaryRes] = await Promise.allSettled([
+                    Api.apiFetch('/admin/stats'),
+                    Api.apiFetch('/admin/reports/weekly?days=7'),
+                    Api.apiFetch('/admin/users'),
+                    Api.apiFetch('/admin/reports/faculty?days=30'),
+                    Api.apiFetch('/admin/locations'),
+                    Api.apiFetch(summaryPath),
+                ]);
+
+                if (statsRes.status === 'fulfilled' && statsRes.value.resp.ok) {
+                    document.getElementById('presentToday').textContent = statsRes.value.data.present_today;
+                    document.getElementById('absentToday').textContent = statsRes.value.data.absent_today;
+                    document.getElementById('totalMembers').textContent = statsRes.value.data.total_students;
+                }
+
+                if (weeklyRes.status === 'fulfilled' && weeklyRes.value.resp.ok) {
+                    renderAttendanceChart(weeklyRes.value.data.labels || [], weeklyRes.value.data.counts || []);
+                }
+
+                if (usersRes.status === 'fulfilled' && usersRes.value.resp.ok) {
+                    populateDepartmentFilter(Array.isArray(usersRes.value.data) ? usersRes.value.data : []);
+                }
+
+                if (facultyRes.status === 'fulfilled' && facultyRes.value.resp.ok) {
+                    renderFacultyOverview(Array.isArray(facultyRes.value.data) ? facultyRes.value.data : []);
+                } else {
+                    renderFacultyOverview([]);
+                }
+
+                if (locationRes.status === 'fulfilled' && locationRes.value.resp.ok) {
+                    renderLocationOverview(Array.isArray(locationRes.value.data) ? locationRes.value.data : []);
+                } else {
+                    renderLocationOverview([]);
+                }
+
+                if (summaryRes.status === 'fulfilled' && summaryRes.value.resp.ok) {
+                    renderMonthlySummary(Array.isArray(summaryRes.value.data) ? summaryRes.value.data : []);
+                } else {
+                    renderMonthlySummary([]);
+                }
+
+                refreshAdminReportRangePreview();
+            } catch (e) {
+                console.error("Report Loading Failure", e);
+            }
+        }
+
+        document.getElementById('departmentFilter').onchange = loadReports;
+        document.getElementById('monthFilter').onchange = loadReports;
+        document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem('token'); window.location.href = 'login.html'; };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!(await Api.requireAdmin())) return;
+            const monthInput = document.getElementById('monthFilter');
+            if (monthInput && !monthInput.value) {
+                monthInput.value = new Date().toISOString().slice(0, 7);
+            }
+
+            const today = formatLocalDate(new Date());
+            const currentMonth = formatLocalMonth(new Date());
+            const currentYear = String(new Date().getFullYear());
+
+            const adminReportDate = document.getElementById('adminReportDate');
+            const adminReportMonth = document.getElementById('adminReportMonth');
+            const adminReportYear = document.getElementById('adminReportYear');
+            const adminReportFrom = document.getElementById('adminReportFrom');
+            const adminReportTo = document.getElementById('adminReportTo');
+            const adminReportScope = document.getElementById('adminReportScope');
+
+            if (adminReportDate && !adminReportDate.value) adminReportDate.value = today;
+            if (adminReportMonth && !adminReportMonth.value) adminReportMonth.value = currentMonth;
+            if (adminReportYear && !adminReportYear.value) adminReportYear.value = currentYear;
+            if (adminReportFrom && !adminReportFrom.value) adminReportFrom.value = today;
+            if (adminReportTo && !adminReportTo.value) adminReportTo.value = today;
+
+            if (adminReportScope) {
+                adminReportScope.value = 'daily';
+                setAdminReportScopeDescription('daily');
+                setAdminVisibleRangeFields('daily');
+                adminReportScope.addEventListener('change', (event) => {
+                    const scope = event.target.value;
+                    setAdminReportScopeDescription(scope);
+                    setAdminVisibleRangeFields(scope);
+                    refreshAdminReportRangePreview();
+                });
+            }
+
+            adminReportDate?.addEventListener('change', refreshAdminReportRangePreview);
+            adminReportMonth?.addEventListener('change', refreshAdminReportRangePreview);
+            adminReportYear?.addEventListener('input', refreshAdminReportRangePreview);
+            adminReportFrom?.addEventListener('change', refreshAdminReportRangePreview);
+            adminReportTo?.addEventListener('change', refreshAdminReportRangePreview);
+            document.getElementById('departmentFilter')?.addEventListener('change', refreshAdminReportRangePreview);
+            document.getElementById('adminReportExcelBtn')?.addEventListener('click', () => exportAdminReport('excel'));
+            document.getElementById('adminReportPdfBtn')?.addEventListener('click', () => exportAdminReport('pdf'));
+
+            await loadReports();
+            setInterval(loadReports, 30000);
+        });
+    </script>
+</body>
+</html>

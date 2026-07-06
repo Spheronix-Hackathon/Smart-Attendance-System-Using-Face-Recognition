@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records - SmartFace TEACHER</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark Attendance</a></li>
+                    <li><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li class="active"><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View Attendance</a></li>
+                    <li><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Attendance History</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Historical and real-time student attendance records</p>
+                </div>
+                <div class="header-actions" style="display: flex; align-items: center; gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-building-columns" style="color: var(--secondary);"></i>
+                        <span id="teacherDept" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">DEPT: ---</span>
+                    </div>
+                   <button id="syncBtn" class="btn-premium" style="font-size: 0.75rem; padding: 12px 24px; border-radius: 12px; font-weight: 900; background: rgba(0,209,199,0.1); border: 1px solid var(--accent); color: var(--accent); letter-spacing: 1px; box-shadow: 0 0 20px rgba(0, 209, 199, 0.1);">
+                        <i class="fa-solid fa-satellite-dish" style="margin-right: 12px;"></i> REFRESH_RECORDS_SYNC
+                   </button>
+                   <div style="display: flex; gap: 10px;">
+                        <button onclick="downloadReport('excel')" class="report-btn" style="background: rgba(34,197,94,0.1); border: 1px solid #22c55e; color: #22c55e; padding: 12px 20px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-file-excel"></i> EXCEL
+                        </button>
+                        <button onclick="downloadReport('pdf')" class="report-btn" style="background: rgba(239,68,68,0.1); border: 1px solid #ef4444; color: #ef4444; padding: 12px 20px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </button>
+                   </div>
+                </div>
+            </header>
+
+            <div class="page-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 40px;">
+                <!-- Session Metrics Row -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+                    <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid var(--accent);">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">TOTAL_SESSIONS_TODAY</p>
+                        <h2 id="sessionCount" style="font-size: 2.4rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                    </div>
+                     <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid var(--primary);">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">SYSTEM_ACCURACY</p>
+                        <h2 style="font-size: 2.4rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">99.9%</h2>
+                    </div>
+                     <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid #ff5a6f;">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">SYSTEM_ANOMALIES</p>
+                        <h2 style="font-size: 2.4rem; font-weight: 900; color: #ff5a6f; font-family: var(--font-data); line-height: 1;">0</h2>
+                    </div>
+                </div>
+
+                <!-- Main Archive Feed -->
+                <div class="widget-card" style="padding: 0; min-height: 500px; display: flex; flex-direction: column; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="scanline-hud"></div>
+                    
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                        <h3 style="font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">ATTENDANCE_TIMELINE</h3>
+                        <div class="badge" style="background: rgba(43,111,255,0.1); border: 1px solid var(--primary); color: var(--primary); font-size: 0.65rem; font-weight: 800; padding: 6px 16px; border-radius: 40px; letter-spacing: 1px;">RECORDS_CONNECTED</div>
+                    </div>
+                    
+                    <div class="table-container" style="flex: 1; padding: 0;">
+                        <table id="historyTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: rgba(255,255,255,0.02);">
+                                <tr>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Roll_Number</th>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Student_Name</th>
+                                    <th style="padding: 24px 32px; text-align: center; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Attendance_Status</th>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Method</th>
+                                    <th style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Marked_By</th>
+                                    <th style="padding: 24px 32px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="6" style="padding: 100px; text-align: center; color: var(--text-dim); letter-spacing: 4px; opacity: 0.5; font-size: 0.8rem; font-weight: 900;">LOADING_ATTENDANCE_HISTORY...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teacher.js"></script>
+    <script>
+        const API_BASE = window.location.origin;
+
+        async function apiFetch(path) {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = 'login.html'; return null; }
+            const resp = await fetch(`${API_BASE}${path}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return await resp.json();
+        }
+
+        function renderAttendance(records) {
+            const tbody = document.querySelector('#historyTable tbody');
+            document.getElementById('sessionCount').textContent = records.length;
+            tbody.innerHTML = '';
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 100px; color: var(--text-dim); font-weight: 900; letter-spacing: 2px;">NO_RECORDS_FOUND_TODAY</td></tr>';
+                return;
+            }
+
+            records.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                tr.style.transition = '0.3s';
+                const normalizedStatus = String(r.status || 'Pending').toLowerCase();
+                const isPositive = normalizedStatus === 'present' || normalizedStatus === 'late';
+                const isAbsent = normalizedStatus === 'absent';
+                const isPending = normalizedStatus === 'pending' || normalizedStatus === 'not marked';
+                const methodLabel = r.method === 'face'
+                    ? 'BIOMETRIC_VERIFIED'
+                    : r.method === 'manual'
+                        ? 'MANUAL_ENTRY'
+                        : (isAbsent ? 'SYSTEM_ABSENT' : 'SYSTEM_PENDING');
+                tr.innerHTML = `
+                    <td style="padding: 24px 32px; font-family: var(--font-data); font-weight: 800; color: #fff; font-size: 0.9rem;">${r.roll_number || '---'}</td>
+                    <td style="padding: 24px 32px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">${(r.full_name || r.email || 'UNKNOWN').toUpperCase()}</span>
+                            <span style="font-size: 0.62rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">${(r.department || 'Department').toUpperCase()}</span>
+                        </div>
+                    </td>
+                    <td style="padding: 24px 32px; text-align: center;">
+                        <span style="font-weight: 900; font-size: 0.65rem; color: ${isPositive ? 'var(--accent)' : isAbsent ? '#ff5a6f' : '#f59e0b'}; background: ${isPositive ? 'rgba(0,209,199,0.1)' : isAbsent ? 'rgba(255,90,111,0.1)' : 'rgba(245, 158, 11, 0.1)'}; padding: 6px 14px; border-radius: 40px; border: 1px solid ${isPositive ? 'rgba(0,209,199,0.2)' : isAbsent ? 'rgba(255,90,111,0.2)' : 'rgba(245, 158, 11, 0.2)'};">
+                            ${(isPending ? 'Pending' : (r.status || 'Not Marked')).toUpperCase()}
+                        </span>
+                    </td>
+                    <td style="padding: 24px 32px; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">${methodLabel}</td>
+                    <td style="padding: 24px 32px; font-size: 0.72rem; color: var(--text-main); font-weight: 800; letter-spacing: 0.5px;">${r.marked_by_name || '--'}</td>
+                    <td style="padding: 24px 32px; text-align: right; font-family: var(--font-data); font-size: 0.85rem; color: var(--text-dim); font-weight: 700;">${r.check_in || '--:--'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function downloadReport(format) {
+            try {
+                const timestamp = new Date().toISOString().split('T')[0];
+                const filename = `attendance_report_${timestamp}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+                await Api.downloadFile(`/teacher/attendance/export?format=${format}`, filename);
+            } catch (error) {
+                console.error('Download error:', error);
+                alert(error.message || 'An error occurred while downloading the report');
+            }
+        }
+
+        async function init() {
+            const user = await ensureTeacher();
+            if (!user) return;
+            const deptEl = document.getElementById('teacherDept');
+            if (deptEl) deptEl.textContent = `DEPT: ${user.department || 'UNASSIGNED'}`;
+
+            const records = await apiFetch('/teacher/attendance/today');
+            if (Array.isArray(records)) {
+                renderAttendance(records);
+            }
+        }
+
+        document.getElementById('syncBtn').addEventListener('click', init);
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

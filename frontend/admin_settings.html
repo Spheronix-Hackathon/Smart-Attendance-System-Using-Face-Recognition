@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>ADMIN</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="admin_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="admin_users.html"><i class="fa-solid fa-users-gear"></i> Users</a></li>
+                    <li><a href="admin_reports.html"><i class="fa-solid fa-file-invoice"></i> Reports</a></li>
+                    <li><a href="admin_security.html"><i class="fa-solid fa-shield-halved"></i> Security</a></li>
+                    <li class="active"><a href="admin_settings.html"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                    <li><a href="admin_profile.html"><i class="fa-solid fa-user-shield"></i> Profile</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">System Settings</h1>
+                    <p style="color: var(--text-dim); font-size: 0.95rem;">Core system configuration and security settings</p>
+                </div>
+                <div class="header-actions">
+                    <button id="saveGlobalSettings" class="btn-premium" style="padding: 12px 24px; font-weight: 700;">SAVE SETTINGS <i class="fa-solid fa-microchip"></i></button>
+                </div>
+            </header>
+
+            <div class="page-stack admin-page-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 32px 40px 40px;">
+                <div class="admin-settings-grid">
+                    <!-- Quadrant 1: Biometric Core Configuration -->
+                    <div class="widget-card" style="display: flex; flex-direction: column; padding: 28px; overflow-y: auto; position: relative;">
+                        <h3 style="font-size: 1rem; margin-bottom: 28px; letter-spacing: 2px; font-weight: 800; color: var(--accent);"><i class="fa-solid fa-microchip" style="margin-right: 12px;"></i> BIOMETRIC_CONFIGURATION</h3>
+                        <div style="display: flex; flex-direction: column; gap: 24px;">
+                            <div class="input-block">
+                                <label style="font-size: 0.7rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px;">Recognition Threshold</label>
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <input type="range" min="0.1" max="0.9" step="0.05" id="faceTolerance" value="0.5" 
+                                        style="flex: 1; height: 4px; background: rgba(0,209,199,0.1); border-radius: 4px; appearance: none; -webkit-appearance: none; cursor: pointer;">
+                                    <span id="toleranceVal" style="width: 40px; text-align: right; color: var(--accent); font-weight: 800; font-family: var(--font-data); font-size: 1rem;">0.5</span>
+                                </div>
+                                <div class="space-between" style="font-size: 0.65rem; color: rgba(255,255,255,0.25); margin-top: 8px;">
+                                    <span>LOW_PRECISION (0.1)</span>
+                                    <span>HIGH_PRECISION (0.9)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-block">
+                                <label style="font-size: 0.7rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px;">Liveness Detection Protocol</label>
+                                <div style="position: relative; max-width: 280px;">
+                                    <select id="livenessEngine" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer; appearance: none;">
+                                        <option value="neural">Neural Depth Mapping (V3)</option>
+                                        <option value="legacy">Legacy Texture Analysis</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); pointer-events: none;"></i>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 14px; padding-top: 8px;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked id="realtimeEnabled">
+                                    <span class="slider"></span>
+                                </label>
+                                <span style="font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.5px;">Biometric Sync Enabled</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quadrant 2: Geofencing Architecture -->
+                    <div class="widget-card" style="display: flex; flex-direction: column; padding: 28px; overflow-y: auto; position: relative;">
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(var(--glass-border) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.05; pointer-events: none;"></div>
+                        <h3 style="font-size: 1rem; margin-bottom: 28px; letter-spacing: 2px; font-weight: 800; color: var(--primary);"><i class="fa-solid fa-earth-asia" style="margin-right: 12px;"></i> GEOFENCING_SETTINGS</h3>
+                        <div style="display: flex; flex-direction: column; gap: 24px;">
+                            <div style="display: flex; gap: 20px;">
+                                <div style="flex: 1;">
+                                    <label style="font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px; font-weight: 800;">Campus Latitude</label>
+                                    <input type="text" id="campusLat" value="28.6139" style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 4px; color: #fff; font-family: var(--font-data); font-weight: 800; font-size: 0.9rem;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label style="font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px; font-weight: 800;">Campus Longitude</label>
+                                    <input type="text" id="campusLon" value="77.2090" style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 4px; color: #fff; font-family: var(--font-data); font-weight: 800; font-size: 0.9rem;">
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                                <button type="button" id="useBrowserLocationBtn" class="btn-secondary" style="padding: 12px 18px; font-size: 0.72rem; font-weight: 900; letter-spacing: 1.5px;">
+                                    USE CURRENT LOCATION <i class="fa-solid fa-location-crosshairs"></i>
+                                </button>
+                                <span id="geoFillStatus" style="font-size: 0.72rem; color: var(--text-dim); font-weight: 700; letter-spacing: 0.6px;">
+                                    Fill the fields from the admin browser position, then save settings.
+                                </span>
+                            </div>
+                            <div style="max-width: 200px;">
+                                <label style="font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px; font-weight: 800;">Activation Radius (KM)</label>
+                                <input type="number" id="maxRadius" value="3.0" step="0.1" style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 4px; color: #fff; font-family: var(--font-data); font-weight: 800; font-size: 0.9rem;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 14px; padding-top: 8px;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="geofencingEnabled">
+                                    <span class="slider"></span>
+                                </label>
+                                <span style="font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.5px;">Enforce Physical Presence</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quadrant 3: Security & Notification Protocols -->
+                    <div class="widget-card" style="display: flex; flex-direction: column; padding: 28px; overflow-y: auto; position: relative;">
+                         <h3 style="font-size: 1rem; margin-bottom: 28px; letter-spacing: 2px; font-weight: 800; color: #fff;"><i class="fa-solid fa-shield-virus" style="margin-right: 12px; color: var(--accent);"></i> SECURITY_PROTOCOLS</h3>
+                        <div style="display: flex; flex-direction: column; gap: 24px;">
+                            <div style="display: flex; gap: 24px;">
+                                <div style="flex: 1;">
+                                    <label style="font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px; font-weight: 800;">SMTP Routing Host</label>
+                                    <input type="text" id="smtpHost" value="smtp.gmail.com" style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 4px; color: #fff; font-family: var(--font-data); font-weight: 800; font-size: 0.9rem;">
+                                </div>
+                                <div style="width: 140px;">
+                                    <label style="font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; display: block; letter-spacing: 1px; font-weight: 800;">Alert Time</label>
+                                    <input type="time" id="absentTime" value="17:00" style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 4px; color: #fff; font-family: var(--font-data); font-weight: 800; font-size: 0.9rem;">
+                                </div>
+                            </div>
+                            
+                            <div class="admin-mini-grid" style="gap: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                                <div style="display: flex; align-items: center; gap: 14px;">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="mfaEnabled">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.7);">MFA Protocol</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 14px;">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="lockoutEnabled">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.7);">Brute Lockout</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quadrant 4: Security Audit Registry -->
+                    <div class="widget-card" style="display: flex; flex-direction: column; padding: 28px; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 16px;">
+                            <h3 style="font-size: 1.1rem; letter-spacing: 1px; color: var(--text-main); font-weight: 900;">SECURITY AUDIT</h3>
+                            <div style="background: rgba(0,209,199,0.05); color: var(--accent); font-size: 0.6rem; font-weight: 900; border-radius: 4px; padding: 4px 10px; border: 1px solid rgba(0,209,199,0.15); letter-spacing: 0.5px;">SYSTEM_SECURE</div>
+                        </div>
+                        <div class="table-container" style="flex: 1; min-height: 0; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2);">
+                            <table id="auditTable" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                                <thead style="background: rgba(255,255,255,0.03);">
+                                    <tr>
+                                        <th style="padding: 14px 12px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; font-size: 0.6rem; width: 25%; text-align: left;">User ID</th>
+                                        <th style="padding: 14px 12px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; font-size: 0.6rem; width: 50%; text-align: center;">IP Address</th>
+                                        <th style="padding: 14px 12px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; font-size: 0.6rem; width: 25%; text-align: right;">Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="3" style="text-align: center; color: var(--text-dim); padding: 50px; letter-spacing: 2px; font-size: 0.65rem; font-weight: 700; opacity: 0.5;">LOADING AUDIT LOGS...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        async function loadConfig() {
+            const { resp, data } = await Api.apiFetch('/admin/config');
+            if (resp.ok) {
+                document.getElementById('faceTolerance').value = data.face_tolerance;
+                document.getElementById('toleranceVal').textContent = data.face_tolerance;
+                document.getElementById('campusLat').value = data.campus_lat;
+                document.getElementById('campusLon').value = data.campus_lon;
+                document.getElementById('maxRadius').value = data.max_distance_km;
+                const hh = String(data.absent_notice_hour || 17).padStart(2, '0');
+                const mm = String(data.absent_notice_minute || 0).padStart(2, '0');
+                document.getElementById('absentTime').value = `${hh}:${mm}`;
+                
+                document.getElementById('mfaEnabled').checked = data.mfa_enabled;
+                document.getElementById('geofencingEnabled').checked = data.geofencing_enabled;
+                document.getElementById('lockoutEnabled').checked = data.lockout_enabled;
+            }
+        }
+
+        async function loadAuditLogs() {
+            const { resp, data } = await Api.apiFetch('/admin/security-logs?limit=10');
+            if (resp.ok) {
+                const tbody = document.querySelector('#auditTable tbody');
+                tbody.innerHTML = '';
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-dim);">NO_AUDIT_DATA</td></tr>';
+                    return;
+                }
+                data.forEach(log => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="padding: 14px 12px; font-family: var(--font-data); font-size: 0.65rem; color: #fff;">#${log.target_user_id || 'SYS'}</td>
+                        <td style="padding: 14px 12px; font-family: var(--font-data); font-size: 0.65rem; color: var(--accent); text-align: center;">${log.event_type}</td>
+                        <td style="padding: 14px 12px; font-family: var(--font-data); font-size: 0.6rem; color: rgba(255,255,255,0.3); text-align: right;">${log.created_at.split('T')[0]}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        document.getElementById('saveGlobalSettings').onclick = async () => {
+            const password = prompt("Administrative Password Required to Modify Global Infrastructure:");
+            if (!password) return;
+
+            const timeStr = document.getElementById('absentTime').value;
+            const [hh, mm] = timeStr.split(':').map(Number);
+
+            const payload = {
+                admin_password: password,
+                face_tolerance: parseFloat(document.getElementById('faceTolerance').value),
+                campus_lat: parseFloat(document.getElementById('campusLat').value),
+                campus_lon: parseFloat(document.getElementById('campusLon').value),
+                max_distance_km: parseFloat(document.getElementById('maxRadius').value),
+                absent_notice_hour: hh,
+                absent_notice_minute: mm,
+                mfa_enabled: document.getElementById('mfaEnabled').checked,
+                geofencing_enabled: document.getElementById('geofencingEnabled').checked,
+                lockout_enabled: document.getElementById('lockoutEnabled').checked
+            };
+
+            const { resp, data } = await Api.apiFetch('/admin/config', {
+                method: 'PATCH',
+                body: payload
+            });
+
+            if (resp.ok) {
+                alert(data.message);
+                loadAuditLogs();
+            } else {
+                alert(data.detail || "Configuration update rejected by server.");
+            }
+        };
+
+        document.getElementById('faceTolerance').addEventListener('input', (e) => {
+            document.getElementById('toleranceVal').textContent = e.target.value;
+        });
+
+        document.getElementById('useBrowserLocationBtn').addEventListener('click', async () => {
+            const status = document.getElementById('geoFillStatus');
+            const latInput = document.getElementById('campusLat');
+            const lonInput = document.getElementById('campusLon');
+
+            if (!navigator.geolocation) {
+                if (status) status.textContent = 'Geolocation is not supported in this browser.';
+                alert('Geolocation is not supported in this browser.');
+                return;
+            }
+
+            if (status) status.textContent = 'Requesting current location...';
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude.toFixed(6);
+                    const longitude = position.coords.longitude.toFixed(6);
+                    latInput.value = latitude;
+                    lonInput.value = longitude;
+                    if (status) status.textContent = `Captured ${latitude}, ${longitude}. Save settings to apply these coordinates.`;
+                },
+                (error) => {
+                    const message = error?.message || 'Unable to read current location.';
+                    if (status) status.textContent = message;
+                    alert(message);
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!(await Api.requireAdmin())) return;
+            loadConfig();
+            loadAuditLogs();
+        });
+    </script>
+</body>
+</html>

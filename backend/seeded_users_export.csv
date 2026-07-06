@@ -1,0 +1,181 @@
+id,full_name,email,roll_number,department,role,password
+97,Kavya Jain,student.aids001@smartface.com,STU-AIDS-001,AI & Data Science,student,123456
+98,Aarav Nair,student.aids002@smartface.com,STU-AIDS-002,AI & Data Science,student,123456
+99,Myra Reddy,student.aids003@smartface.com,STU-AIDS-003,AI & Data Science,student,123456
+100,Priya Patel,student.aids004@smartface.com,STU-AIDS-004,AI & Data Science,student,123456
+101,Vihaan Singh,student.aids005@smartface.com,STU-AIDS-005,AI & Data Science,student,123456
+102,Riya Gupta,student.aids006@smartface.com,STU-AIDS-006,AI & Data Science,student,123456
+103,Sneha Verma,student.aids007@smartface.com,STU-AIDS-007,AI & Data Science,student,123456
+104,Diya Sharma,student.aids008@smartface.com,STU-AIDS-008,AI & Data Science,student,123456
+105,Rahul Mehta,student.aids009@smartface.com,STU-AIDS-009,AI & Data Science,student,123456
+106,Aditya Das,student.aids010@smartface.com,STU-AIDS-010,AI & Data Science,student,123456
+107,Saanvi Kumar,student.aids011@smartface.com,STU-AIDS-011,AI & Data Science,student,123456
+108,Arjun Iyer,student.aids012@smartface.com,STU-AIDS-012,AI & Data Science,student,123456
+172,Kavya Jain,student.agri001@smartface.com,STU-AGRI-001,Agriculture,student,123456
+173,Aarav Nair,student.agri002@smartface.com,STU-AGRI-002,Agriculture,student,123456
+174,Myra Reddy,student.agri003@smartface.com,STU-AGRI-003,Agriculture,student,123456
+175,Priya Patel,student.agri004@smartface.com,STU-AGRI-004,Agriculture,student,123456
+176,Vihaan Singh,student.agri005@smartface.com,STU-AGRI-005,Agriculture,student,123456
+177,Riya Gupta,student.agri006@smartface.com,STU-AGRI-006,Agriculture,student,123456
+178,Sneha Verma,student.agri007@smartface.com,STU-AGRI-007,Agriculture,student,123456
+179,Diya Sharma,student.agri008@smartface.com,STU-AGRI-008,Agriculture,student,123456
+180,Rahul Mehta,student.agri009@smartface.com,STU-AGRI-009,Agriculture,student,123456
+181,Aditya Das,student.agri010@smartface.com,STU-AGRI-010,Agriculture,student,123456
+182,Saanvi Kumar,student.agri011@smartface.com,STU-AGRI-011,Agriculture,student,123456
+183,Arjun Iyer,student.agri012@smartface.com,STU-AGRI-012,Agriculture,student,123456
+112,Riya Reddy,student.mba001@smartface.com,STU-MBA-001,Business Administration,student,123456
+113,Sneha Patel,student.mba002@smartface.com,STU-MBA-002,Business Administration,student,123456
+114,Diya Singh,student.mba003@smartface.com,STU-MBA-003,Business Administration,student,123456
+115,Rahul Gupta,student.mba004@smartface.com,STU-MBA-004,Business Administration,student,123456
+116,Aditya Verma,student.mba005@smartface.com,STU-MBA-005,Business Administration,student,123456
+117,Saanvi Sharma,student.mba006@smartface.com,STU-MBA-006,Business Administration,student,123456
+118,Arjun Mehta,student.mba007@smartface.com,STU-MBA-007,Business Administration,student,123456
+119,Aanya Das,student.mba008@smartface.com,STU-MBA-008,Business Administration,student,123456
+120,Nisha Kumar,student.mba009@smartface.com,STU-MBA-009,Business Administration,student,123456
+121,Vivaan Iyer,student.mba010@smartface.com,STU-MBA-010,Business Administration,student,123456
+122,Anaya Jain,student.mba011@smartface.com,STU-MBA-011,Business Administration,student,123456
+123,Kiran Nair,student.mba012@smartface.com,STU-MBA-012,Business Administration,student,123456
+82,Saanvi Singh,student.ce001@smartface.com,STU-CE-001,Civil Engineering,student,123456
+83,Arjun Gupta,student.ce002@smartface.com,STU-CE-002,Civil Engineering,student,123456
+84,Aanya Verma,student.ce003@smartface.com,STU-CE-003,Civil Engineering,student,123456
+85,Nisha Sharma,student.ce004@smartface.com,STU-CE-004,Civil Engineering,student,123456
+86,Vivaan Mehta,student.ce005@smartface.com,STU-CE-005,Civil Engineering,student,123456
+87,Anaya Das,student.ce006@smartface.com,STU-CE-006,Civil Engineering,student,123456
+88,Kiran Kumar,student.ce007@smartface.com,STU-CE-007,Civil Engineering,student,123456
+89,Ishaan Iyer,student.ce008@smartface.com,STU-CE-008,Civil Engineering,student,123456
+90,Kavya Jain,student.ce009@smartface.com,STU-CE-009,Civil Engineering,student,123456
+91,Aarav Nair,student.ce010@smartface.com,STU-CE-010,Civil Engineering,student,123456
+92,Myra Reddy,student.ce011@smartface.com,STU-CE-011,Civil Engineering,student,123456
+93,Priya Patel,student.ce012@smartface.com,STU-CE-012,Civil Engineering,student,123456
+127,Riya Reddy,student.mca001@smartface.com,STU-MCA-001,Computer Applications,student,123456
+128,Sneha Patel,student.mca002@smartface.com,STU-MCA-002,Computer Applications,student,123456
+129,Diya Singh,student.mca003@smartface.com,STU-MCA-003,Computer Applications,student,123456
+130,Rahul Gupta,student.mca004@smartface.com,STU-MCA-004,Computer Applications,student,123456
+131,Aditya Verma,student.mca005@smartface.com,STU-MCA-005,Computer Applications,student,123456
+132,Saanvi Sharma,student.mca006@smartface.com,STU-MCA-006,Computer Applications,student,123456
+133,Arjun Mehta,student.mca007@smartface.com,STU-MCA-007,Computer Applications,student,123456
+134,Aanya Das,student.mca008@smartface.com,STU-MCA-008,Computer Applications,student,123456
+135,Nisha Kumar,student.mca009@smartface.com,STU-MCA-009,Computer Applications,student,123456
+136,Vivaan Iyer,student.mca010@smartface.com,STU-MCA-010,Computer Applications,student,123456
+137,Anaya Jain,student.mca011@smartface.com,STU-MCA-011,Computer Applications,student,123456
+138,Kiran Nair,student.mca012@smartface.com,STU-MCA-012,Computer Applications,student,123456
+6,Riya Reddy,student.cse001@smartface.com,STU-CSE-001,Computer Science & Engineering,student,123456
+7,Sneha Patel,student.cse002@smartface.com,STU-CSE-002,Computer Science & Engineering,student,123456
+8,Diya Singh,student.cse003@smartface.com,STU-CSE-003,Computer Science & Engineering,student,123456
+9,Rahul Gupta,student.cse004@smartface.com,STU-CSE-004,Computer Science & Engineering,student,123456
+10,Aditya Verma,student.cse005@smartface.com,STU-CSE-005,Computer Science & Engineering,student,123456
+11,Saanvi Sharma,student.cse006@smartface.com,STU-CSE-006,Computer Science & Engineering,student,123456
+12,Arjun Mehta,student.cse007@smartface.com,STU-CSE-007,Computer Science & Engineering,student,123456
+13,Aanya Das,student.cse008@smartface.com,STU-CSE-008,Computer Science & Engineering,student,123456
+14,Nisha Kumar,student.cse009@smartface.com,STU-CSE-009,Computer Science & Engineering,student,123456
+15,Vivaan Iyer,student.cse010@smartface.com,STU-CSE-010,Computer Science & Engineering,student,123456
+16,Anaya Jain,student.cse011@smartface.com,STU-CSE-011,Computer Science & Engineering,student,123456
+17,Kiran Nair,student.cse012@smartface.com,STU-CSE-012,Computer Science & Engineering,student,123456
+36,Riya Reddy,student.eee001@smartface.com,STU-EEE-001,Electrical & Electronics,student,123456
+37,Sneha Patel,student.eee002@smartface.com,STU-EEE-002,Electrical & Electronics,student,123456
+38,Diya Singh,student.eee003@smartface.com,STU-EEE-003,Electrical & Electronics,student,123456
+39,Rahul Gupta,student.eee004@smartface.com,STU-EEE-004,Electrical & Electronics,student,123456
+40,Aditya Verma,student.eee005@smartface.com,STU-EEE-005,Electrical & Electronics,student,123456
+41,Saanvi Sharma,student.eee006@smartface.com,STU-EEE-006,Electrical & Electronics,student,123456
+43,Arjun Mehta,student.eee007@smartface.com,STU-EEE-007,Electrical & Electronics,student,123456
+44,Aanya Das,student.eee008@smartface.com,STU-EEE-008,Electrical & Electronics,student,123456
+45,Nisha Kumar,student.eee009@smartface.com,STU-EEE-009,Electrical & Electronics,student,123456
+46,Vivaan Iyer,student.eee010@smartface.com,STU-EEE-010,Electrical & Electronics,student,123456
+47,Anaya Jain,student.eee011@smartface.com,STU-EEE-011,Electrical & Electronics,student,123456
+48,Kiran Nair,student.eee012@smartface.com,STU-EEE-012,Electrical & Electronics,student,123456
+21,Riya Reddy,student.ece001@smartface.com,STU-ECE-001,Electronics & Communication,student,123456
+22,Sneha Patel,student.ece002@smartface.com,STU-ECE-002,Electronics & Communication,student,123456
+23,Diya Singh,student.ece003@smartface.com,STU-ECE-003,Electronics & Communication,student,123456
+24,Rahul Gupta,student.ece004@smartface.com,STU-ECE-004,Electronics & Communication,student,123456
+25,Aditya Verma,student.ece005@smartface.com,STU-ECE-005,Electronics & Communication,student,123456
+26,Saanvi Sharma,student.ece006@smartface.com,STU-ECE-006,Electronics & Communication,student,123456
+27,Arjun Mehta,student.ece007@smartface.com,STU-ECE-007,Electronics & Communication,student,123456
+28,Aanya Das,student.ece008@smartface.com,STU-ECE-008,Electronics & Communication,student,123456
+29,Nisha Kumar,student.ece009@smartface.com,STU-ECE-009,Electronics & Communication,student,123456
+30,Vivaan Iyer,student.ece010@smartface.com,STU-ECE-010,Electronics & Communication,student,123456
+31,Anaya Jain,student.ece011@smartface.com,STU-ECE-011,Electronics & Communication,student,123456
+32,Kiran Nair,student.ece012@smartface.com,STU-ECE-012,Electronics & Communication,student,123456
+52,Saanvi Singh,student.it001@smartface.com,STU-IT-001,Information Technology,student,123456
+53,Arjun Gupta,student.it002@smartface.com,STU-IT-002,Information Technology,student,123456
+54,Aanya Verma,student.it003@smartface.com,STU-IT-003,Information Technology,student,123456
+55,Nisha Sharma,student.it004@smartface.com,STU-IT-004,Information Technology,student,123456
+56,Vivaan Mehta,student.it005@smartface.com,STU-IT-005,Information Technology,student,123456
+57,Anaya Das,student.it006@smartface.com,STU-IT-006,Information Technology,student,123456
+58,Kiran Kumar,student.it007@smartface.com,STU-IT-007,Information Technology,student,123456
+59,Ishaan Iyer,student.it008@smartface.com,STU-IT-008,Information Technology,student,123456
+60,Kavya Jain,student.it009@smartface.com,STU-IT-009,Information Technology,student,123456
+61,Aarav Nair,student.it010@smartface.com,STU-IT-010,Information Technology,student,123456
+62,Myra Reddy,student.it011@smartface.com,STU-IT-011,Information Technology,student,123456
+63,Priya Patel,student.it012@smartface.com,STU-IT-012,Information Technology,student,123456
+67,Saanvi Singh,student.me001@smartface.com,STU-ME-001,Mechanical Engineering,student,123456
+68,Arjun Gupta,student.me002@smartface.com,STU-ME-002,Mechanical Engineering,student,123456
+69,Aanya Verma,student.me003@smartface.com,STU-ME-003,Mechanical Engineering,student,123456
+70,Nisha Sharma,student.me004@smartface.com,STU-ME-004,Mechanical Engineering,student,123456
+71,Vivaan Mehta,student.me005@smartface.com,STU-ME-005,Mechanical Engineering,student,123456
+72,Anaya Das,student.me006@smartface.com,STU-ME-006,Mechanical Engineering,student,123456
+73,Kiran Kumar,student.me007@smartface.com,STU-ME-007,Mechanical Engineering,student,123456
+74,Ishaan Iyer,student.me008@smartface.com,STU-ME-008,Mechanical Engineering,student,123456
+75,Kavya Jain,student.me009@smartface.com,STU-ME-009,Mechanical Engineering,student,123456
+76,Aarav Nair,student.me010@smartface.com,STU-ME-010,Mechanical Engineering,student,123456
+77,Myra Reddy,student.me011@smartface.com,STU-ME-011,Mechanical Engineering,student,123456
+78,Priya Patel,student.me012@smartface.com,STU-ME-012,Mechanical Engineering,student,123456
+157,Nisha Kumar,student.pharm001@smartface.com,STU-PHARM-001,Pharmacy,student,123456
+158,Vivaan Iyer,student.pharm002@smartface.com,STU-PHARM-002,Pharmacy,student,123456
+159,Anaya Jain,student.pharm003@smartface.com,STU-PHARM-003,Pharmacy,student,123456
+160,Kiran Nair,student.pharm004@smartface.com,STU-PHARM-004,Pharmacy,student,123456
+161,Ishaan Reddy,student.pharm005@smartface.com,STU-PHARM-005,Pharmacy,student,123456
+162,Kavya Patel,student.pharm006@smartface.com,STU-PHARM-006,Pharmacy,student,123456
+163,Aarav Singh,student.pharm007@smartface.com,STU-PHARM-007,Pharmacy,student,123456
+164,Myra Gupta,student.pharm008@smartface.com,STU-PHARM-008,Pharmacy,student,123456
+165,Priya Verma,student.pharm009@smartface.com,STU-PHARM-009,Pharmacy,student,123456
+166,Vihaan Sharma,student.pharm010@smartface.com,STU-PHARM-010,Pharmacy,student,123456
+167,Riya Mehta,student.pharm011@smartface.com,STU-PHARM-011,Pharmacy,student,123456
+168,Sneha Das,student.pharm012@smartface.com,STU-PHARM-012,Pharmacy,student,123456
+142,Saanvi Singh,student.sh001@smartface.com,STU-SH-001,Science & Humanities,student,123456
+143,Arjun Gupta,student.sh002@smartface.com,STU-SH-002,Science & Humanities,student,123456
+144,Aanya Verma,student.sh003@smartface.com,STU-SH-003,Science & Humanities,student,123456
+145,Nisha Sharma,student.sh004@smartface.com,STU-SH-004,Science & Humanities,student,123456
+146,Vivaan Mehta,student.sh005@smartface.com,STU-SH-005,Science & Humanities,student,123456
+147,Anaya Das,student.sh006@smartface.com,STU-SH-006,Science & Humanities,student,123456
+148,Kiran Kumar,student.sh007@smartface.com,STU-SH-007,Science & Humanities,student,123456
+149,Ishaan Iyer,student.sh008@smartface.com,STU-SH-008,Science & Humanities,student,123456
+150,Kavya Jain,student.sh009@smartface.com,STU-SH-009,Science & Humanities,student,123456
+151,Aarav Nair,student.sh010@smartface.com,STU-SH-010,Science & Humanities,student,123456
+152,Myra Reddy,student.sh011@smartface.com,STU-SH-011,Science & Humanities,student,123456
+153,Priya Patel,student.sh012@smartface.com,STU-SH-012,Science & Humanities,student,123456
+94,Vihaan Kumar,teacher.aids01@smartface.com,TCH-AIDS-001,AI & Data Science,teacher,Teacher@123
+95,Diya Gupta,teacher.aids02@smartface.com,TCH-AIDS-002,AI & Data Science,teacher,Teacher@123
+96,Saanvi Jain,teacher.aids03@smartface.com,TCH-AIDS-003,AI & Data Science,teacher,Teacher@123
+169,Vihaan Kumar,teacher.agri01@smartface.com,TCH-AGRI-001,Agriculture,teacher,Teacher@123
+170,Diya Gupta,teacher.agri02@smartface.com,TCH-AGRI-002,Agriculture,teacher,Teacher@123
+171,Saanvi Jain,teacher.agri03@smartface.com,TCH-AGRI-003,Agriculture,teacher,Teacher@123
+109,Vihaan Iyer,teacher.mba01@smartface.com,TCH-MBA-001,Business Administration,teacher,Teacher@123
+110,Diya Verma,teacher.mba02@smartface.com,TCH-MBA-002,Business Administration,teacher,Teacher@123
+111,Saanvi Nair,teacher.mba03@smartface.com,TCH-MBA-003,Business Administration,teacher,Teacher@123
+79,Vihaan Jain,teacher.ce01@smartface.com,TCH-CE-001,Civil Engineering,teacher,Teacher@123
+80,Diya Sharma,teacher.ce02@smartface.com,TCH-CE-002,Civil Engineering,teacher,Teacher@123
+81,Saanvi Reddy,teacher.ce03@smartface.com,TCH-CE-003,Civil Engineering,teacher,Teacher@123
+124,Vihaan Iyer,teacher.mca01@smartface.com,TCH-MCA-001,Computer Applications,teacher,Teacher@123
+125,Diya Verma,teacher.mca02@smartface.com,TCH-MCA-002,Computer Applications,teacher,Teacher@123
+126,Saanvi Nair,teacher.mca03@smartface.com,TCH-MCA-003,Computer Applications,teacher,Teacher@123
+3,Vihaan Iyer,teacher.cse01@smartface.com,TCH-CSE-001,Computer Science & Engineering,teacher,Teacher@123
+4,Diya Verma,teacher.cse02@smartface.com,TCH-CSE-002,Computer Science & Engineering,teacher,Teacher@123
+5,Saanvi Nair,teacher.cse03@smartface.com,TCH-CSE-003,Computer Science & Engineering,teacher,Teacher@123
+33,Vihaan Iyer,teacher.eee01@smartface.com,TCH-EEE-001,Electrical & Electronics,teacher,Teacher@123
+34,Diya Verma,teacher.eee02@smartface.com,TCH-EEE-002,Electrical & Electronics,teacher,Teacher@123
+35,Saanvi Nair,teacher.eee03@smartface.com,TCH-EEE-003,Electrical & Electronics,teacher,Teacher@123
+18,Vihaan Iyer,teacher.ece01@smartface.com,TCH-ECE-001,Electronics & Communication,teacher,Teacher@123
+19,Diya Verma,teacher.ece02@smartface.com,TCH-ECE-002,Electronics & Communication,teacher,Teacher@123
+20,Saanvi Nair,teacher.ece03@smartface.com,TCH-ECE-003,Electronics & Communication,teacher,Teacher@123
+49,Vihaan Jain,teacher.it01@smartface.com,TCH-IT-001,Information Technology,teacher,Teacher@123
+50,Diya Sharma,teacher.it02@smartface.com,TCH-IT-002,Information Technology,teacher,Teacher@123
+51,Saanvi Reddy,teacher.it03@smartface.com,TCH-IT-003,Information Technology,teacher,Teacher@123
+64,Vihaan Jain,teacher.me01@smartface.com,TCH-ME-001,Mechanical Engineering,teacher,Teacher@123
+65,Diya Sharma,teacher.me02@smartface.com,TCH-ME-002,Mechanical Engineering,teacher,Teacher@123
+66,Saanvi Reddy,teacher.me03@smartface.com,TCH-ME-003,Mechanical Engineering,teacher,Teacher@123
+154,Vihaan Das,teacher.pharm01@smartface.com,TCH-PHARM-001,Pharmacy,teacher,Teacher@123
+155,Diya Singh,teacher.pharm02@smartface.com,TCH-PHARM-002,Pharmacy,teacher,Teacher@123
+156,Saanvi Iyer,teacher.pharm03@smartface.com,TCH-PHARM-003,Pharmacy,teacher,Teacher@123
+139,Vihaan Jain,teacher.sh01@smartface.com,TCH-SH-001,Science & Humanities,teacher,Teacher@123
+140,Diya Sharma,teacher.sh02@smartface.com,TCH-SH-002,Science & Humanities,teacher,Teacher@123
+141,Saanvi Reddy,teacher.sh03@smartface.com,TCH-SH-003,Science & Humanities,teacher,Teacher@123

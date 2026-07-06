@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Settings - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>STUDENT</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="user_dashboard.html"><i class="fa-solid fa-gauge"></i> Overview</a></li>
+                    <li><a href="user_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li class="active"><a href="user_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Account Settings</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Configure account notifications and security settings</p>
+                </div>
+                <div class="header-actions">
+                     <button id="saveGlobalSettings" class="btn-premium" style="background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%); padding: 12px 24px; border-radius: 12px; font-weight: 800; letter-spacing: 1px; font-size: 0.8rem;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="margin-right: 10px;"></i> SAVE_CHANGES
+                    </button>
+                </div>
+            </header>
+
+            <div class="page-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 32px;">
+                <section class="widget-card settings-hero">
+                    <div class="settings-hero-copy">
+                        <span class="settings-hero-kicker">ACCOUNT CONTROL</span>
+                        <h2>Account Settings</h2>
+                        <p>Manage notifications, password security, and display preferences from one focused control surface. Press Save Changes when you're ready to sync the updates.</p>
+                    </div>
+                    <div class="settings-hero-chips">
+                        <span class="profile-status-chip badge-active">SYNCED_PROFILE</span>
+                        <span class="profile-status-chip badge-neutral">SECURE_PASSWORD</span>
+                        <span class="profile-status-chip badge-neutral">VISUAL_PREFERENCES</span>
+                    </div>
+                </section>
+
+                <div class="settings-layout">
+                    <section class="widget-card settings-panel">
+                        <div class="settings-panel-head">
+                            <h3>NOTIFICATION_SETTINGS</h3>
+                            <p>Fine-tune which alerts reach your inbox and device notifications.</p>
+                        </div>
+
+                        <div class="settings-toggle-list">
+                            <div class="settings-toggle-row">
+                                <div class="settings-toggle-copy">
+                                    <span>Email Verification</span>
+                                    <span>EMAIL_NOTIFICATIONS</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="emailVerify" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="settings-toggle-row">
+                                <div class="settings-toggle-copy">
+                                    <span>Telemetry Reports</span>
+                                    <span>WEEKLY_ATTENDANCE_SUMMARY</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="telemetryReports"><span class="slider"></span></label>
+                            </div>
+                            <div class="settings-toggle-row">
+                                <div class="settings-toggle-copy">
+                                    <span>System Health</span>
+                                    <span>SYSTEM_STATUS_ALERTS</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="systemHealth" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="settings-toggle-row">
+                                <div class="settings-toggle-copy">
+                                    <span>Push Notifications</span>
+                                    <span>REALTIME_NOTIFICATIONS</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="pushNotify" checked><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="widget-card settings-panel">
+                        <div class="settings-panel-head">
+                            <h3>SECURITY_SETTINGS</h3>
+                            <p>Keep the account locked down with a strong password rotation.</p>
+                        </div>
+
+                        <form id="changePasswordForm" class="settings-password-form">
+                            <div class="form-group">
+                                <label for="currentPassword">CURRENT_PASSWORD</label>
+                                <input type="password" id="currentPassword" class="auth-input" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">NEW_PASSWORD</label>
+                                <input type="password" id="newPassword" class="auth-input" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmNewPassword">CONFIRM_NEW_PASSWORD</label>
+                                <input type="password" id="confirmNewPassword" class="auth-input" placeholder="••••••••" required>
+                            </div>
+                            <div id="changePasswordMsg" style="font-size: 0.7rem; min-height: 1.2em; font-weight: 800;"></div>
+                            <button type="submit" class="btn-premium settings-action-btn">
+                                <i class="fa-solid fa-key" style="margin-right: 10px;"></i> UPDATE_PASSWORD
+                            </button>
+                        </form>
+                    </section>
+
+                    <section class="widget-card settings-panel">
+                        <div class="settings-panel-head">
+                            <h3>DISPLAY_PREFERENCES</h3>
+                            <p>Keep the interface comfortable with your preferred visual effects.</p>
+                        </div>
+
+                        <div class="settings-appearance-list">
+                            <div class="settings-mini-row">
+                                <div class="settings-toggle-copy">
+                                    <span>Dark Terminal</span>
+                                    <span>THEME: DARK_MODE</span>
+                                </div>
+                                <span class="badge" style="background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid rgba(255,255,255,0.1); font-size: 0.55rem;">PERSISTENT</span>
+                            </div>
+                            <div class="settings-mini-row">
+                                <div class="settings-toggle-copy">
+                                    <span>Glassmorphism</span>
+                                    <span>ENABLE_BLUR_EFFECTS</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="glassmorphism" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="settings-mini-row">
+                                <div class="settings-toggle-copy">
+                                    <span>HUD Overlays</span>
+                                    <span>ENABLE_SCANLINE_OVERLAY</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="hudOverlays" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="settings-mini-row">
+                                <div class="settings-toggle-copy">
+                                    <span>Prismatic Grid</span>
+                                    <span>ENABLE_ANIMATED_BACKGROUND</span>
+                                </div>
+                                <label class="toggle-switch"><input type="checkbox" id="prismaticGrid" checked><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="settings-danger-zone">
+                    <div class="settings-danger-grid">
+                        <div class="settings-danger-copy">
+                            <div class="settings-danger-icon">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="settings-danger-text">
+                                <h3>DANGER_ZONE: ACCOUNT_TERMINATION</h3>
+                                <p>This action will permanently erase your biometric profile and attendance history. This operation is irreversible and requires administrative authorization.</p>
+                            </div>
+                        </div>
+                        <button class="btn-premium" style="background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; color: #ef4444; padding: 18px 48px; border-radius: 14px; font-weight: 900; letter-spacing: 2px; font-size: 0.85rem; transition: 0.4s;">
+                            <i class="fa-solid fa-skull-crossbones" style="margin-right: 12px;"></i> REQUEST_TERMINATION
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await Api.requireAuth();
+            if (!user) return;
+            
+            // Sync settings from server
+            const prefs = user.preferences || {};
+            const toggleIds = ['emailVerify', 'telemetryReports', 'systemHealth', 'pushNotify', 'glassmorphism', 'hudOverlays', 'prismaticGrid'];
+            toggleIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && prefs[id] !== undefined) {
+                    el.checked = prefs[id];
+                }
+            });
+        });
+
+        document.getElementById('saveGlobalSettings').onclick = async () => {
+            const toggleIds = ['emailVerify', 'telemetryReports', 'systemHealth', 'pushNotify', 'glassmorphism', 'hudOverlays', 'prismaticGrid'];
+            const preferences = {};
+            toggleIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) preferences[id] = el.checked;
+            });
+
+            const btn = document.getElementById('saveGlobalSettings');
+            const originalContent = btn.innerHTML;
+
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SYNCING...';
+                
+                const { resp, data } = await Api.apiFetch('/users/me', {
+                    method: 'PATCH',
+                    body: { preferences }
+                });
+
+                if (resp.ok) {
+                    alert("GENERAL_PREFERENCES_COMMITTED_TO_PERSISTENCE");
+                } else {
+                    alert("SYNCHRONIZATION_FAILED: " + (data.detail || "Unknown error"));
+                }
+            } catch (err) {
+                alert("COMMUNICATION_ERROR: Secure terminal offline");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        };
+
+        document.getElementById('changePasswordForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const currentPass = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmNewPassword').value;
+            const msgEl = document.getElementById('changePasswordMsg');
+            const btn = e.target.querySelector('button[type="submit"]');
+
+            if (newPass !== confirmPass) {
+                msgEl.textContent = "NEW_PASSWORDS_DO_NOT_MATCH";
+                msgEl.style.color = "#ef4444";
+                return;
+            }
+
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SYNCING...';
+                
+                const { resp, data } = await Api.apiFetch('/users/me/change-password', {
+                    method: 'POST',
+                    body: { current_password: currentPass, new_password: newPass }
+                });
+
+                if (resp.ok) {
+                    msgEl.textContent = "PASSWORD_SYNCHRONIZED_SUCCESSFULLY";
+                    msgEl.style.color = "var(--accent)";
+                    e.target.reset();
+                } else {
+                    msgEl.textContent = data.detail || "SYNCHRONIZATION_FAILED";
+                    msgEl.style.color = "#ef4444";
+                }
+            } catch (err) {
+                msgEl.textContent = "COMMUNICATION_ERROR";
+                msgEl.style.color = "#ef4444";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-key" style="margin-right: 10px;"></i> UPDATE_PASSWORD';
+            }
+        };
+
+        document.getElementById('logoutBtn').onclick = () => {
+             Api.setToken(null);
+             window.location.href = 'login.html';
+        };
+    </script>
+</body>
+</html>

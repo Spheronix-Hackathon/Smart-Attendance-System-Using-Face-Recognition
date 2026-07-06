@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login - Smart Attendance System</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="auth-body">
+    <div class="auth-shell fade-in">
+        <aside class="auth-side">
+            <div class="side-orb"></div>
+            <h2>Secure Access</h2>
+            <p>Log in to manage and view your attendance records with high-level security.</p>
+            <div class="feature-pill"><i class="fa-solid fa-check"></i> AES-256 Encryption</div>
+            <div class="feature-pill"><i class="fa-solid fa-check"></i> Biometric Verification</div>
+            <div class="feature-pill"><i class="fa-solid fa-check"></i> Real-Time Data Synchronization</div>
+        </aside>
+
+        <main class="auth-main">
+            <div class="brand-title">Smart Attendance</div>
+            <header class="auth-header">
+                <h1>Welcome Back</h1>
+                <p>Please enter your credentials to access the system.</p>
+            </header>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-envelope"></i> EMAIL ADDRESS</label>
+                    <div class="input-wrap">
+                        <input type="email" id="email" placeholder="e.g., name@university.edu" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-lock"></i> PASSWORD</label>
+                    <div class="input-wrap">
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <i class="fa-solid fa-eye pass-toggle" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <div class="checkbox-row" style="margin-top: 4px;">
+                    <label style="display: flex; align-items: center; cursor: pointer; color: var(--text-dim);">
+                        <input type="checkbox" style="margin-right: 10px;"> Remember me
+                    </label>
+                    <a href="#" style="color: var(--accent); font-weight: 700;">Forgot Password?</a>
+                </div>
+
+                <div id="loginError" class="error-message"></div>
+
+                <button type="submit" class="auth-btn" style="margin-top: 10px;">
+                    Sign In <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <div class="auth-footer">
+                    <p>New to the system? <a href="register.html">Register Account</a></p>
+                    <p>Need to verify your email? <a href="#" id="manualVerifyLink">Verify now</a></p>
+                    <p>Back to Home? <a href="index.html">Home</a></p>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/auth-visuals.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

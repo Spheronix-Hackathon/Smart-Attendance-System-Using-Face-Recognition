@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Hub - SmartFace ADMIN</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>ADMIN</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="admin_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="admin_users.html"><i class="fa-solid fa-users-gear"></i> Users</a></li>
+                    <li><a href="admin_reports.html"><i class="fa-solid fa-file-invoice"></i> Reports</a></li>
+                    <li class="active"><a href="admin_security.html"><i class="fa-solid fa-shield-halved"></i> Security</a></li>
+                    <li><a href="admin_settings.html"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                    <li><a href="admin_profile.html"><i class="fa-solid fa-user-shield"></i> Profile</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Security Hub</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">System security and authentication policy management</p>
+                </div>
+                <div class="header-actions">
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2); display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-shield-virus" style="color: #ef4444;"></i>
+                        <span style="font-size: 0.75rem; font-weight: 900; color: #ef4444; letter-spacing: 1px;">SYSTEM_FIREWALL: ACTIVE</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-stack security-stack">
+                <section class="security-metrics-grid">
+                    <div class="widget-card security-live-metric" style="padding: 24px; border-left: 4px solid #ef4444; position: relative;">
+                        <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 16px;">LIVE_THREAT_INDEX</p>
+                        <h2 id="securityThreatValue" style="font-size: 2.2rem; font-weight: 900; color: #ef4444; font-family: var(--font-data);">STABLE</h2>
+                        <div id="securityThreatMeta" style="margin-top: 10px; font-size: 0.66rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 800;">SYNCING_LIVE_SECURITY_DATA</div>
+                    </div>
+                    <div class="widget-card security-live-metric" style="padding: 24px; border-left: 4px solid var(--accent); position: relative;">
+                        <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 16px;">ACTIVE_POLICIES</p>
+                        <h2 id="securityPolicyValue" style="font-size: 2.2rem; font-weight: 900; color: #fff; font-family: var(--font-data);">0 / 3</h2>
+                        <div id="securityPolicyMeta" style="margin-top: 10px; font-size: 0.66rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 800;">MFA_GEO_LOCKOUT_SYNCED</div>
+                    </div>
+                    <div class="widget-card security-live-metric" style="padding: 24px; border-left: 4px solid var(--primary); position: relative;">
+                        <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 16px;">AUDIT_EVENTS_24H</p>
+                        <h2 id="securityEventValue" style="font-size: 2.2rem; font-weight: 900; color: #fff; font-family: var(--font-data);">0</h2>
+                        <div id="securityEventMeta" style="margin-top: 10px; font-size: 0.66rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 800;">REAL_TIME_LOG_STREAM</div>
+                    </div>
+                </section>
+
+                <section class="security-main-grid">
+                    <div class="widget-card security-panel security-policy-panel">
+                        <div class="security-section-header">
+                            <h3 style="font-size: 1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">SECURITY_ACCESS_POLICIES</h3>
+                            <div id="pendingIndicator" style="display: none; align-items: center; gap: 8px; font-size: 0.65rem; color: #ffb454; font-weight: 900; letter-spacing: 1px; animation: pulse 2s infinite;">
+                                <i class="fa-solid fa-circle-exclamation"></i> CHANGES_PENDING_COMMIT
+                            </div>
+                        </div>
+                        <div class="security-policy-list">
+                            <div class="security-policy-item">
+                                <div class="security-policy-copy">
+                                    <h4>Multi-Factor Biometric Scan</h4>
+                                    <p>Requires two-factor authentication for administrative access</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="mfaToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="security-policy-item">
+                                <div class="security-policy-copy">
+                                    <h4>Geo-Fencing Constraint</h4>
+                                    <p>Restrict attendance marking to authorized campus locations</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="geoToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="security-policy-item">
+                                <div class="security-policy-copy">
+                                    <h4>Anomalous Access Lockout</h4>
+                                    <p>Automatic account suspension after multiple failed verification attempts</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="lockoutToggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="security-override-row">
+                            <div class="override-field">
+                                <i class="fa-solid fa-key" style="color: #ef4444; font-size: 1.2rem;"></i>
+                                <input type="password" id="adminConfirmPass" placeholder="AUTHORIZE_WITH_ADMIN_SECRET">
+                            </div>
+                            <button id="savePoliciesBtn" type="button" class="security-action-btn" style="white-space: nowrap; padding: 12px 32px;">
+                                CONFIRM_SYSTEM_OVERRIDE <i class="fa-solid fa-triangle-exclamation" style="margin-left: 10px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="security-detail-grid">
+                        <div class="widget-card security-panel security-review-panel">
+                            <div class="security-section-header">
+                                <h3 style="font-size: 1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">DUPLICATE_ACCOUNT_REVIEW_QUEUE</h3>
+                                <span id="duplicateReviewCount" class="security-log-count">0 RECORDS</span>
+                            </div>
+                            <div id="duplicateReviewEmpty" class="security-empty-state hidden">NO_DUPLICATE_REVIEWS_FOUND</div>
+                            <div id="duplicateReviewList" class="security-review-list"></div>
+                        </div>
+
+                        <section class="widget-card security-panel security-log-panel">
+                            <div class="security-section-header">
+                                <h3 style="font-size: 1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">SECURITY_AUDIT_LOG</h3>
+                                <span id="securityLogCount" class="security-log-count">0 EVENTS</span>
+                            </div>
+                            <div class="table-container security-log-table" style="flex: 1; padding: 0;">
+                                <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                                    <thead>
+                                        <tr style="background: rgba(255,255,255,0.02);">
+                                            <th style="padding: 14px 20px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.62rem; letter-spacing: 2px; font-weight: 800; width: 170px;">Timestamp</th>
+                                            <th style="padding: 14px 20px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.62rem; letter-spacing: 2px; font-weight: 800; width: 180px;">Event Type</th>
+                                            <th style="padding: 14px 20px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.62rem; letter-spacing: 2px; font-weight: 800;">Target User</th>
+                                            <th style="padding: 14px 20px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.62rem; letter-spacing: 2px; font-weight: 800;">Reason/Details</th>
+                                            <th style="padding: 14px 20px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.62rem; letter-spacing: 2px; font-weight: 800; width: 110px;">Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="securityLogsBody">
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; padding: 32px; color: var(--text-dim);">LOADING_SECURITY_EVENTS...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        let initialConfig = {};
+        let securityUsersById = new Map();
+        let latestSecurityLogs = [];
+        let latestSecurityConfig = {
+            mfa_enabled: false,
+            geofencing_enabled: false,
+            lockout_enabled: false
+        };
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function formatTimestamp(value) {
+            if (!value) return '--';
+            return String(value).replace('T', ' ').split('.')[0];
+        }
+
+        function formatMatchDistance(value) {
+            const numberValue = Number(value);
+            if (!Number.isFinite(numberValue)) return null;
+            return numberValue.toFixed(4);
+        }
+
+        function updateSecurityOverview() {
+            const duplicateCount = latestSecurityLogs.filter(log => log.event_type === 'DUPLICATE_FACE_DETECTED').length;
+            const eventCount = latestSecurityLogs.length;
+            const activePolicies = [
+                latestSecurityConfig.mfa_enabled,
+                latestSecurityConfig.geofencing_enabled,
+                latestSecurityConfig.lockout_enabled
+            ].filter(Boolean).length;
+            const criticalCount = latestSecurityLogs.filter(log => String(log.severity || '').toLowerCase() === 'critical').length;
+
+            const threatNode = document.getElementById('securityThreatValue');
+            const threatMeta = document.getElementById('securityThreatMeta');
+            const policyNode = document.getElementById('securityPolicyValue');
+            const policyMeta = document.getElementById('securityPolicyMeta');
+            const eventNode = document.getElementById('securityEventValue');
+            const eventMeta = document.getElementById('securityEventMeta');
+
+            if (threatNode) {
+                const threatState = duplicateCount >= 5 || criticalCount >= 5
+                    ? { label: 'HIGH', color: '#ef4444' }
+                    : duplicateCount > 0 || criticalCount > 0
+                        ? { label: 'ELEVATED', color: '#f59e0b' }
+                        : { label: 'STABLE', color: 'var(--accent)' };
+                threatNode.textContent = threatState.label;
+                threatNode.style.color = threatState.color;
+            }
+
+            if (threatMeta) {
+                threatMeta.textContent = `${duplicateCount} duplicate block${duplicateCount === 1 ? '' : 's'} • ${criticalCount} critical event${criticalCount === 1 ? '' : 's'}`;
+            }
+
+            if (policyNode) {
+                policyNode.textContent = `${activePolicies} / 3`;
+            }
+
+            if (policyMeta) {
+                const policyFlags = [
+                    `MFA ${latestSecurityConfig.mfa_enabled ? 'ON' : 'OFF'}`,
+                    `GEO ${latestSecurityConfig.geofencing_enabled ? 'ON' : 'OFF'}`,
+                    `LOCKOUT ${latestSecurityConfig.lockout_enabled ? 'ON' : 'OFF'}`,
+                ];
+                policyMeta.textContent = policyFlags.join(' • ');
+            }
+
+            if (eventNode) {
+                eventNode.textContent = String(eventCount);
+            }
+
+            if (eventMeta) {
+                eventMeta.textContent = eventCount > 0 ? 'UPDATED FROM LIVE AUDIT STREAM' : 'WAITING_FOR_LOG_UPDATES';
+            }
+        }
+
+        function formatAccountName(account = {}, fallbackLabel = 'UNNAMED_USER') {
+            const fullName = account.full_name && String(account.full_name).trim();
+            if (fullName && !fullName.includes('@')) return fullName;
+            if (account.email && String(account.email).includes('@')) {
+                return String(account.email).split('@')[0].replace(/[._-]+/g, ' ').trim().toUpperCase();
+            }
+            if (account.id != null) return `${fallbackLabel} #${account.id}`;
+            return fallbackLabel;
+        }
+
+        function renderFieldGrid(fields) {
+            return `
+                <div class="review-field-grid">
+                    ${fields.map(field => `
+                        <div class="review-field">
+                            <span class="review-field-label">${escapeHtml(field.label)}</span>
+                            <span class="review-field-value">${escapeHtml(field.value || '--')}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function normalizeAccount(account = {}, fallback = {}) {
+            const merged = {
+                id: account.id ?? fallback.id ?? null,
+                full_name: account.full_name ?? fallback.full_name ?? null,
+                email: account.email ?? fallback.email ?? null,
+                roll_number: account.roll_number ?? fallback.roll_number ?? null,
+                department: account.department ?? fallback.department ?? null,
+                role: account.role ?? fallback.role ?? null,
+                blocked_reason: account.blocked_reason ?? fallback.blocked_reason ?? null,
+                is_active: typeof account.is_active === 'boolean' ? account.is_active : fallback.is_active,
+            };
+            return merged;
+        }
+
+        function renderAccountSummary(account = {}) {
+            const lines = [];
+            if (account.full_name) lines.push(account.full_name);
+            if (account.email) lines.push(account.email);
+            if (account.roll_number) lines.push(`ID: ${account.roll_number}`);
+            if (account.department) lines.push(account.department);
+            if (account.is_active === true) lines.push('STATUS: ACTIVE');
+            if (account.is_active === false) lines.push('STATUS: BLOCKED');
+            if (account.blocked_reason) lines.push(`REASON: ${account.blocked_reason}`);
+            return lines.length ? lines.map(escapeHtml).join('<br>') : '--';
+        }
+
+        function renderSecurityLogs(logs) {
+            const tbody = document.getElementById('securityLogsBody');
+            const countNode = document.getElementById('securityLogCount');
+            countNode.textContent = `${logs.length} EVENTS`;
+            tbody.innerHTML = '';
+
+            if (logs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 28px; color: var(--text-dim);">NO_SECURITY_EVENTS_RECORDED</td></tr>';
+                return;
+            }
+
+            logs.forEach(log => {
+                const tr = document.createElement('tr');
+                const ts = escapeHtml(formatTimestamp(log.created_at));
+                const statusColor = log.severity === 'critical' ? '#ef4444' : log.severity === 'warning' ? '#f59e0b' : '#00d1c7';
+                const oldSnapshot = log.metadata?.old_account || {};
+                const presentSnapshot = log.metadata?.present_account || {};
+                const duplicateUserId = log.target_user_id ?? log.metadata?.duplicate_user_id ?? oldSnapshot.id ?? null;
+                const currentOldAccount = duplicateUserId != null ? normalizeAccount(securityUsersById.get(Number(duplicateUserId)) || {}, {
+                    ...oldSnapshot,
+                    id: duplicateUserId,
+                    email: oldSnapshot.email || log.metadata?.duplicate_email,
+                }) : normalizeAccount(oldSnapshot);
+                const targetLabel = log.event_type === 'DUPLICATE_FACE_DETECTED'
+                    ? (currentOldAccount.email || oldSnapshot.email || `USER #${duplicateUserId ?? '--'}`)
+                    : (log.metadata?.email || log.metadata?.attempted_email || log.target_user_id || 'SYSTEM');
+                const matchDistance = formatMatchDistance(log.metadata?.match_distance);
+                const isDuplicate = log.event_type === 'DUPLICATE_FACE_DETECTED';
+                const detailHtml = isDuplicate
+                    ? `
+                        <div class="security-log-details">
+                            <div class="security-log-pair">
+                                <span class="pair-label">Old Account</span>
+                                <span class="pair-value">${renderAccountSummary(currentOldAccount)}</span>
+                            </div>
+                            <div class="security-log-pair">
+                                <span class="pair-label">Present Attempt</span>
+                                <span class="pair-value">${renderAccountSummary(normalizeAccount(presentSnapshot, {
+                                    full_name: presentSnapshot.full_name || log.metadata?.attempted_email || 'NEW_ACCOUNT_ATTEMPT',
+                                    email: log.metadata?.attempted_email,
+                                    roll_number: log.metadata?.attempted_roll_number,
+                                    department: log.metadata?.attempted_department
+                                }))}</span>
+                            </div>
+                            ${matchDistance ? `
+                                <div class="security-log-pair">
+                                    <span class="pair-label">Face Distance</span>
+                                    <span class="pair-value">${escapeHtml(matchDistance)}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `
+                    : escapeHtml(log.details || 'NO_SPECIFIC_DETAILS_PROVIDED');
+
+                tr.innerHTML = `
+                    <td style="padding: 14px 20px; font-family: var(--font-data); font-size: 0.75rem; color: var(--text-dim);">${ts}</td>
+                    <td style="padding: 14px 20px; font-weight: 700; color: ${statusColor};">${escapeHtml(log.event_type || 'SYSTEM_EVENT')}</td>
+                    <td style="padding: 14px 20px; color: #fff; font-family: var(--font-data); font-size: 0.8rem;">${escapeHtml(targetLabel)}</td>
+                    <td style="padding: 14px 20px; color: var(--text-dim); font-size: 0.76rem; line-height: 1.4;">${detailHtml}</td>
+                    <td style="padding: 14px 20px; text-align: right;"><span style="color: var(--accent); font-weight: 900; font-size: 0.62rem;">${isDuplicate ? 'BLOCKED' : 'LOGGED'}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            latestSecurityLogs = logs;
+            updateSecurityOverview();
+        }
+
+        function renderDuplicateReviews(logs) {
+            const reviewLogs = logs.filter(log => log.event_type === 'DUPLICATE_FACE_DETECTED');
+            const list = document.getElementById('duplicateReviewList');
+            const emptyState = document.getElementById('duplicateReviewEmpty');
+            const countNode = document.getElementById('duplicateReviewCount');
+            countNode.textContent = `${reviewLogs.length} RECORDS`;
+            list.innerHTML = '';
+            emptyState.classList.toggle('hidden', reviewLogs.length > 0);
+
+            if (!reviewLogs.length) {
+                return;
+            }
+
+            reviewLogs.forEach(log => {
+                const oldSnapshot = log.metadata?.old_account || {};
+                const presentSnapshot = log.metadata?.present_account || {};
+                const duplicateUserId = log.target_user_id ?? log.metadata?.duplicate_user_id ?? oldSnapshot.id ?? null;
+                const currentOldAccount = duplicateUserId != null ? normalizeAccount(securityUsersById.get(Number(duplicateUserId)) || {}, {
+                    ...oldSnapshot,
+                    id: duplicateUserId,
+                    email: oldSnapshot.email || log.metadata?.duplicate_email,
+                }) : normalizeAccount(oldSnapshot);
+                const presentAccount = normalizeAccount(presentSnapshot, {
+                    full_name: presentSnapshot.full_name || log.metadata?.attempted_email || 'NEW_ACCOUNT_ATTEMPT',
+                    email: log.metadata?.attempted_email,
+                    roll_number: log.metadata?.attempted_roll_number,
+                    department: log.metadata?.attempted_department
+                });
+                const matchDistance = formatMatchDistance(log.metadata?.match_distance);
+                const oldDisplayName = formatAccountName(currentOldAccount, 'OLD_ACCOUNT');
+                const presentDisplayName = formatAccountName(presentAccount, 'PRESENT_ACCOUNT');
+                const timestamp = formatTimestamp(log.created_at);
+                const card = document.createElement('article');
+                card.className = 'duplicate-review-card';
+                card.innerHTML = `
+                    <div class="duplicate-review-head">
+                        <div class="duplicate-review-meta">
+                            <span class="security-badge security-badge--critical"><i class="fa-solid fa-triangle-exclamation"></i> DUPLICATE_BLOCKED</span>
+                            <span>EVENT #${escapeHtml(log.id ?? '--')}</span>
+                            <span>DETECTED ${escapeHtml(timestamp)}</span>
+                        </div>
+                        <div class="duplicate-review-meta">
+                            ${matchDistance ? `<span class="security-badge security-badge--warning">FACE_DISTANCE ${escapeHtml(matchDistance)}</span>` : ''}
+                            <span class="security-badge ${currentOldAccount.is_active ? 'security-badge--info' : 'security-badge--critical'}">${currentOldAccount.is_active ? 'CURRENTLY_ACTIVE' : 'BLOCKED'}</span>
+                        </div>
+                    </div>
+                    <div class="review-account-grid">
+                        <div class="review-account">
+                            <span class="account-label">Old Account</span>
+                            <div class="account-name">${escapeHtml(oldDisplayName)}</div>
+                            ${renderFieldGrid([
+                                { label: 'Email', value: currentOldAccount.email || oldSnapshot.email || '--' },
+                                { label: 'User ID', value: duplicateUserId ?? '--' },
+                                { label: 'Roll Number', value: currentOldAccount.roll_number || oldSnapshot.roll_number || '--' },
+                                { label: 'Department', value: currentOldAccount.department || oldSnapshot.department || '--' },
+                                { label: 'Role', value: currentOldAccount.role || oldSnapshot.role || '--' },
+                                { label: 'Status', value: currentOldAccount.is_active ? 'ACTIVE' : 'BLOCKED' },
+                            ])}
+                        </div>
+                        <div class="review-account">
+                            <span class="account-label">Present Attempt</span>
+                            <div class="account-name">${escapeHtml(presentDisplayName)}</div>
+                            ${renderFieldGrid([
+                                { label: 'Email', value: presentAccount.email || log.metadata?.attempted_email || '--' },
+                                { label: 'Roll Number', value: presentAccount.roll_number || log.metadata?.attempted_roll_number || '--' },
+                                { label: 'Department', value: presentAccount.department || log.metadata?.attempted_department || '--' },
+                                { label: 'Role', value: presentAccount.role || '--' },
+                                { label: 'Status', value: 'BLOCKED FOR REVIEW' },
+                                { label: 'Match Distance', value: matchDistance || '--' },
+                            ])}
+                        </div>
+                    </div>
+                    <div class="review-actions">
+                        <div class="review-note">${escapeHtml(log.details || 'NO_SPECIFIC_DETAILS_PROVIDED')}</div>
+                        <button type="button" class="security-action-btn js-unblock-duplicate" ${duplicateUserId == null || currentOldAccount.is_active ? 'disabled' : ''}>${duplicateUserId == null ? 'ACCOUNT_NOT_FOUND' : currentOldAccount.is_active ? 'ACCOUNT_ALREADY_ACTIVE' : 'UNBLOCK_ACCOUNT'}</button>
+                    </div>
+                `;
+
+                const button = card.querySelector('.js-unblock-duplicate');
+                if (button && duplicateUserId != null && !currentOldAccount.is_active) {
+                    button.addEventListener('click', () => unblockDuplicateAccount(Number(duplicateUserId), currentOldAccount.full_name || currentOldAccount.email || `User #${duplicateUserId}`, button));
+                } else if (button) {
+                    button.classList.add('security-action-btn--ghost');
+                }
+
+                list.appendChild(card);
+            });
+        }
+
+        async function loadSecurityLogs() {
+            const [logsResult, usersResult] = await Promise.allSettled([
+                window.Api.apiFetch('/admin/security-logs?limit=50'),
+                window.Api.apiFetch('/admin/users')
+            ]);
+
+            if (usersResult.status === 'fulfilled') {
+                const { resp, data } = usersResult.value;
+                if (resp.ok && Array.isArray(data)) {
+                latestSecurityLogs = [];
+                updateSecurityOverview();
+                    securityUsersById = new Map(data.map(user => [Number(user.id), user]));
+                }
+            }
+
+            if (logsResult.status !== 'fulfilled') {
+                document.getElementById('securityLogsBody').innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 28px; color: var(--text-dim);">SECURITY_EVENTS_UNAVAILABLE</td></tr>';
+                renderDuplicateReviews([]);
+                return;
+            }
+
+            const { resp, data } = logsResult.value;
+                latestSecurityLogs = [];
+                updateSecurityOverview();
+            if (resp.ok) {
+                const logs = Array.isArray(data) ? data : [];
+                renderSecurityLogs(logs);
+                renderDuplicateReviews(logs);
+            } else {
+                document.getElementById('securityLogsBody').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 28px; color: var(--text-dim);">${escapeHtml(data.detail || 'SECURITY_EVENTS_UNAVAILABLE')}</td></tr>`;
+                renderDuplicateReviews([]);
+            }
+        }
+
+        async function loadSecurityConfig() {
+            const { resp, data } = await window.Api.apiFetch('/admin/config');
+            if (resp.ok) {
+                initialConfig = {
+                    mfa_enabled: !!data.mfa_enabled,
+                    geofencing_enabled: !!data.geofencing_enabled,
+                    lockout_enabled: !!data.lockout_enabled
+                };
+                latestSecurityConfig = { ...initialConfig };
+                document.getElementById('mfaToggle').checked = initialConfig.mfa_enabled;
+                document.getElementById('geoToggle').checked = initialConfig.geofencing_enabled;
+                document.getElementById('lockoutToggle').checked = initialConfig.lockout_enabled;
+                checkPendingChanges();
+                updateSecurityOverview();
+            }
+        }
+
+        async function unblockDuplicateAccount(userId, accountLabel, button) {
+            const adminPassword = window.prompt(`Enter administrator password to unblock ${accountLabel || `User #${userId}`} (ID #${userId}):`);
+            if (adminPassword === null) return;
+            if (!adminPassword) {
+                alert('ADMIN_PASSWORD_REQUIRED_FOR_UNBLOCK');
+                return;
+            }
+
+            const originalText = button.innerHTML;
+            try {
+                button.disabled = true;
+                button.innerHTML = 'UNBLOCKING... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+                const { resp, data } = await window.Api.apiFetch(`/admin/users/${userId}/set-active`, {
+                    method: 'POST',
+                    body: {
+                        admin_password: adminPassword,
+                        is_active: true
+                    }
+                });
+
+                if (resp.ok) {
+                    alert(data.message || 'ACCOUNT_UNBLOCKED_SUCCESSFULLY');
+                    await loadSecurityLogs();
+                } else {
+                    alert('UNBLOCK_FAILED: ' + (data.detail || 'UNKNOWN_ERROR'));
+                }
+            } catch (e) {
+                alert('NETWORK_COMMUNICATION_FAULT');
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        function checkPendingChanges() {
+            const mfa = document.getElementById('mfaToggle').checked;
+            const geo = document.getElementById('geoToggle').checked;
+            const lock = document.getElementById('lockoutToggle').checked;
+            
+            const isModified = mfa !== initialConfig.mfa_enabled || 
+                               geo !== initialConfig.geofencing_enabled || 
+                               lock !== initialConfig.lockout_enabled;
+            
+            document.getElementById('pendingIndicator').style.display = isModified ? 'flex' : 'none';
+        }
+
+        ['mfaToggle', 'geoToggle', 'lockoutToggle'].forEach(id => {
+            document.getElementById(id).onchange = checkPendingChanges;
+        });
+
+        async function saveSecurityPolicies() {
+            const password = document.getElementById('adminConfirmPass').value;
+            const btn = document.getElementById('savePoliciesBtn');
+            const originalText = btn.innerHTML;
+
+            if (!password) { alert("ADMIN_PASSWORD_REQUIRED_FOR_OVERRIDE"); return; }
+
+            const payload = {
+                admin_password: password,
+                mfa_enabled: document.getElementById('mfaToggle').checked,
+                geofencing_enabled: document.getElementById('geoToggle').checked,
+                lockout_enabled: document.getElementById('lockoutToggle').checked
+            };
+
+            try {
+                btn.innerHTML = 'AUTHORIZING... <i class="fa-solid fa-spinner fa-spin"></i>';
+                btn.disabled = true;
+
+                const { resp, data } = await window.Api.apiFetch('/admin/config', {
+                    method: 'PATCH',
+                    body: payload
+                });
+
+                if (resp.ok) {
+                    alert("SECURITY_POLICIES_SYNCHRONIZED_SUCCESSFULLY");
+                    document.getElementById('adminConfirmPass').value = '';
+                    await loadSecurityConfig();
+                    await loadSecurityLogs();
+                } else {
+                    alert("OVERRIDE_FAILED: " + (data.detail || "UNKNOWN_ERROR"));
+                }
+            } catch (e) {
+                alert("NETWORK_COMMUNICATION_FAULT");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        document.getElementById('savePoliciesBtn').onclick = saveSecurityPolicies;
+        document.getElementById('logoutBtn').onclick = () => { window.Api.setToken(null); window.location.href = 'login.html'; };
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!(await window.Api.requireAdmin())) return;
+            loadSecurityLogs();
+            loadSecurityConfig();
+            setInterval(loadSecurityLogs, 15000);
+        });
+    </script>
+</body>
+</html>

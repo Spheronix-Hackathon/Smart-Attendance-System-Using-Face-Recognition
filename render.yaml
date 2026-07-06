@@ -1,0 +1,107 @@
+services:
+  - type: web
+    name: sasufr
+    runtime: python
+    region: singapore          # choose the region closest to your users
+    plan: free                 # change to 'starter' or higher for production
+
+    # Render sets the working directory to the repo root.
+    # All commands run from the repo root.
+    rootDir: backend
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: >-
+      gunicorn main:app
+      --worker-class uvicorn.workers.UvicornWorker
+      --workers 1
+      --bind 0.0.0.0:$PORT
+      --timeout 120
+      --graceful-timeout 30
+      --log-level info
+
+    healthCheckPath: /health
+
+    # ── Environment variables ─────────────────────────────────────────────────
+    # Sensitive values (SECRET_KEY, MONGODB_URI, MAIL_PASSWORD) must be set
+    # in the Render Dashboard → Environment tab. Never commit real values here.
+    envVars:
+      # ── JWT ────────────────────────────────────────────────────────────────
+      - key: SECRET_KEY
+        sync: false          # set manually in Render dashboard
+
+      - key: ALGORITHM
+        value: HS256
+
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+
+      # ── Database ───────────────────────────────────────────────────────────
+      - key: MONGODB_URI
+        sync: false          # set manually — contains credentials
+
+      - key: MONGODB_DB
+        value: smart_attendance
+
+      # ── Frontend URL (used in emails) ──────────────────────────────────────
+      # After first deploy, update this to your actual Render URL:
+      #   https://<your-service-name>.onrender.com/static
+      - key: FRONTEND_BASE_URL
+        sync: false
+
+      # ── Email (SMTP / Gmail App Password) ─────────────────────────────────
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: MAIL_SERVER
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_STARTTLS
+        value: "True"
+      - key: MAIL_SSL_TLS
+        value: "False"
+      - key: USE_CREDENTIALS
+        value: "True"
+      - key: MAIL_ENABLED
+        value: "true"
+
+      # ── Campus / Attendance Config ─────────────────────────────────────────
+      - key: CAMPUS_LAT
+        value: "12.846910"
+      - key: CAMPUS_LON
+        value: "77.680528"
+      - key: MAX_DISTANCE_KM
+        value: "3.0"
+      - key: LATE_HOUR
+        value: "10"
+      - key: LATE_MINUTE
+        value: "30"
+      - key: ABSENT_NOTICE_HOUR
+        value: "17"
+      - key: ABSENT_NOTICE_MINUTE
+        value: "0"
+
+      # ── Feature Flags ──────────────────────────────────────────────────────
+      - key: FACE_RECOGNITION_ENABLED
+        value: "true"
+      - key: GEOFENCING_ENABLED
+        value: "false"
+      - key: MFA_ENABLED
+        value: "false"
+      - key: LOCKOUT_ENABLED
+        value: "false"
+      - key: ABSENT_NOTIFICATIONS_ENABLED
+        value: "true"
+
+      - key: FACE_TOLERANCE
+        value: "0.5"
+
+      # ── CORS (optional — leave blank for same-origin / wildcard) ──────────
+      # If your frontend is on a DIFFERENT domain from the API, set:
+      #   ALLOWED_ORIGINS=https://your-frontend.onrender.com
+      - key: ALLOWED_ORIGINS
+        value: ""

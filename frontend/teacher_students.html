@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Directory - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark Attendance</a></li>
+                    <li class="active"><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View Attendance</a></li>
+                    <li><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Student Directory</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Overview and management of department students</p>
+                </div>
+                <div class="header-actions">
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-building-columns" style="color: var(--secondary);"></i>
+                        <span id="teacherDept" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">DEPT: ---</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-stack teacher-directory-stack">
+                <div class="widget-card full-width-widget teacher-students-card" style="padding: 0; overflow: hidden;">
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 20px; flex-wrap: wrap;">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <h3 style="font-size: 1.05rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Department Directory</h3>
+                            <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Live roster for the authenticated faculty department only</span>
+                        </div>
+                        <div class="search-node" style="position: relative; width: min(100%, 360px);">
+                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.8rem;"></i>
+                            <input type="text" id="studentSearch" placeholder="Filter by name, roll, email..." style="width: 100%; padding: 12px 12px 12px 40px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-size: 0.85rem;">
+                        </div>
+                    </div>
+
+                    <div class="table-container teacher-students-table-wrap" style="border: none; border-radius: 0;">
+                        <table id="studentsTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: rgba(255,255,255,0.02);">
+                                <tr>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Status</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Full Name & Email</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Roll Number</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Student ID</th>
+                                    <th style="padding: 18px 24px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 72px 40px; font-weight: 800; letter-spacing: 2px; opacity: 0.3; font-size: 0.75rem;">LOADING_STUDENT_DIRECTORY...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="studentProfileModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content profile-modal" style="max-width: 760px;">
+            <div class="modal-header">
+                <div>
+                    <h3 class="glow-text" style="font-size: 1.3rem; margin-bottom: 6px; font-weight: 900;">Student Profile</h3>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.5;">Department-scoped student details and status snapshot.</p>
+                </div>
+                <button type="button" class="modal-close-btn" id="closeStudentProfileBtn" aria-label="Close student profile">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="profile-summary-card" style="padding: 0; gap: 22px; background: transparent;">
+                    <div class="profile-summary-head" style="flex-direction: row; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 18px; min-width: 0;">
+                            <div id="studentAvatar" style="width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 209, 199, 0.2) 0%, rgba(43, 111, 255, 0.15) 100%); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; font-weight: 900; font-family: var(--font-data); box-shadow: 0 0 24px rgba(0, 209, 199, 0.14); flex-shrink: 0;">ST</div>
+                            <div style="min-width: 0;">
+                                <h4 id="studentFullName" style="font-size: 1.05rem; font-weight: 900; color: #fff; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Student Name</h4>
+                                <p id="studentMeta" style="font-size: 0.8rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">ROLL • DEPARTMENT</p>
+                            </div>
+                        </div>
+                        <span id="studentStatusBadge" class="badge-neutral">ACTIVE</span>
+                    </div>
+
+                    <div class="profile-detail-grid">
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Student ID</span>
+                            <span id="detailStudentId" class="profile-detail-value">--</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Roll Number</span>
+                            <span id="detailRollNumber" class="profile-detail-value">--</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Email Address</span>
+                            <span id="detailStudentEmail" class="profile-detail-value muted">--</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Department</span>
+                            <span id="detailStudentDepartment" class="profile-detail-value muted">--</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Role</span>
+                            <span id="detailStudentRole" class="profile-detail-value muted">--</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Verification</span>
+                            <span id="detailStudentVerified" class="profile-detail-value muted">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-glass" id="closeStudentProfileFooterBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teacher.js"></script>
+    <script>
+        let __allStudents = [];
+
+        function renderStudents(students) {
+            const tbody = document.querySelector('#studentsTable tbody');
+            tbody.innerHTML = '';
+
+            if (!students.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 100px 40px; color: var(--text-dim);">
+                            <i class="fa-solid fa-users-slash" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.12; display: block;"></i>
+                            <span style="font-weight: 800; letter-spacing: 2px; opacity: 0.5;">NO_STUDENTS_FOUND_MATCHING_SEARCH</span>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            students.forEach((student) => {
+                const tr = document.createElement('tr');
+                tr.style.transition = 'all 0.3s ease';
+                tr.innerHTML = `
+                    <td style="padding: 20px 24px;">
+                        <span style="width: 10px; height: 10px; border-radius: 50%; background: ${student.is_active ? 'var(--accent)' : '#ff5a6f'}; display: inline-block; box-shadow: 0 0 15px ${student.is_active ? 'rgba(0,209,199,0.4)' : 'rgba(255,90,111,0.4)'};"></span>
+                    </td>
+                    <td style="padding: 20px 24px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-weight: 800; color: #fff; letter-spacing: 0.5px;">${student.full_name || 'Unnamed Student'}</span>
+                            <span style="font-size: 0.7rem; color: var(--text-dim); font-family: var(--font-data); letter-spacing: 0.5px;">${student.email || '--'}</span>
+                        </div>
+                    </td>
+                    <td style="padding: 20px 24px; font-family: var(--font-data); color: var(--text-muted);">${student.roll_number || '---'}</td>
+                    <td style="padding: 20px 24px; font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-data); opacity: 0.7;">#${student.id}</td>
+                    <td style="padding: 20px 24px; text-align: right;">
+                        <button type="button" class="btn-glass student-view-btn" style="font-size: 0.65rem; padding: 10px 18px; border-radius: 8px; font-weight: 800; letter-spacing: 1px;">
+                            <i class="fa-solid fa-shield-halved" style="margin-right: 8px; color: var(--primary);"></i> VIEW_PROFILE
+                        </button>
+                    </td>
+                `;
+
+                const button = tr.querySelector('.student-view-btn');
+                if (button) {
+                    button.addEventListener('click', () => openStudentProfile(student));
+                }
+
+                tr.addEventListener('mouseenter', () => {
+                    tr.style.background = 'rgba(255,255,255,0.02)';
+                    tr.style.transform = 'translateX(4px)';
+                });
+                tr.addEventListener('mouseleave', () => {
+                    tr.style.background = 'transparent';
+                    tr.style.transform = 'translateX(0)';
+                });
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function syncStudentModal(student) {
+            const fullName = student.full_name || 'Student';
+            const initials = fullName.split(' ').map((part) => part[0]).join('').toUpperCase().slice(0, 2) || 'ST';
+            document.getElementById('studentAvatar').textContent = initials;
+            document.getElementById('studentFullName').textContent = fullName;
+            document.getElementById('studentMeta').textContent = `${student.roll_number || '---'} • ${student.department || 'UNASSIGNED'}`.toUpperCase();
+            document.getElementById('studentStatusBadge').textContent = student.is_active ? 'ACTIVE' : 'INACTIVE';
+            document.getElementById('studentStatusBadge').className = student.is_active ? 'badge-active' : 'badge-neutral';
+            document.getElementById('detailStudentId').textContent = `#${student.id}`;
+            document.getElementById('detailRollNumber').textContent = student.roll_number || '---';
+            document.getElementById('detailStudentEmail').textContent = student.email || '--';
+            document.getElementById('detailStudentDepartment').textContent = student.department || '--';
+            document.getElementById('detailStudentRole').textContent = `SYSTEM_${String(student.role || 'student').toUpperCase()}`;
+            document.getElementById('detailStudentVerified').textContent = student.is_verified ? 'VERIFIED' : 'PENDING_VERIFICATION';
+        }
+
+        function openStudentProfile(student) {
+            syncStudentModal(student);
+            const modal = document.getElementById('studentProfileModal');
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeStudentProfile() {
+            const modal = document.getElementById('studentProfileModal');
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        async function init() {
+            const user = await ensureTeacher();
+            if (!user) return;
+
+            const deptEl = document.getElementById('teacherDept');
+            if (deptEl) deptEl.textContent = `DEPT: ${user.department || 'UNASSIGNED'}`;
+
+            try {
+                const students = await fetchJson('/teacher/department/students?unmarked_only=false', { method: 'GET' });
+                __allStudents = Array.isArray(students) ? students : [];
+                renderStudents(__allStudents);
+            } catch (error) {
+                console.error('Failed to load students:', error);
+                const tbody = document.querySelector('#studentsTable tbody');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 100px 40px; color: var(--text-dim);">
+                            <span style="font-weight: 800; letter-spacing: 2px; opacity: 0.5;">${error.message || 'FAILED_TO_LOAD_STUDENTS'}</span>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        document.getElementById('studentSearch').addEventListener('input', (e) => {
+            const q = String(e.target.value || '').toLowerCase();
+            const filtered = __allStudents.filter((student) => {
+                const fullName = String(student.full_name || '').toLowerCase();
+                const rollNumber = String(student.roll_number || '').toLowerCase();
+                const email = String(student.email || '').toLowerCase();
+                const department = String(student.department || '').toLowerCase();
+                return fullName.includes(q) || rollNumber.includes(q) || email.includes(q) || department.includes(q);
+            });
+            renderStudents(filtered);
+        });
+
+        document.getElementById('closeStudentProfileBtn').addEventListener('click', closeStudentProfile);
+        document.getElementById('closeStudentProfileFooterBtn').addEventListener('click', closeStudentProfile);
+        document.getElementById('studentProfileModal').addEventListener('click', (event) => {
+            if (event.target && event.target.id === 'studentProfileModal') {
+                closeStudentProfile();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeStudentProfile();
+        });
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

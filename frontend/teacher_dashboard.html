@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Hub - Smart Attendance System Using Face Recognition</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+                    </li>
+                    <li><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark Attendance</a>
+                    </li>
+                    <li><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View
+                            Attendance</a></li>
+                    <li><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Faculty Hub</h1>
+                    <p style="color: var(--text-dim);">Real-time session monitoring and departmental analytics</p>
+                </div>
+                <div class="header-actions">
+                    <button id="notifyAbsentBtn" class="btn-secondary"
+                        style="border-color: #ff5a6f; color: #ff5a6f; padding: 10px 20px; font-size: 0.75rem;">Absent
+                        Alerts <i class="fa-solid fa-bullhorn"></i></button>
+                    <button class="btn-premium" onclick="window.location.href='teacher_mark_attendance.html'"
+                        style="padding: 10px 20px; font-size: 0.75rem;">Mark Attendance <i
+                            class="fa-solid fa-circle-play"></i></button>
+
+                </div>
+            </header>
+
+            <div class="page-stack">
+                <div class="dashboard-grid">
+                    <!-- Row 1 -->
+                    <div class="widget-card large-widget"
+                        style="padding: 0; overflow: hidden; min-height: 360px; background: linear-gradient(135deg, rgba(9, 18, 31, 0.98) 0%, rgba(12, 29, 45, 0.92) 100%); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);">
+                        <div
+                            style="padding: 28px 32px 24px; display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden;">
+                            <div
+                                style="position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(0, 209, 199, 0.16), transparent 34%), radial-gradient(circle at bottom left, rgba(111, 69, 255, 0.14), transparent 36%); pointer-events: none;">
+                            </div>
+                            <div style="position: relative; z-index: 1; max-width: 64%;">
+                                <p
+                                    style="color: var(--accent); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; margin-bottom: 12px; opacity: 0.85;">
+                                    Department Command Center</p>
+                                <h3
+                                    style="font-size: clamp(1.8rem, 2vw, 2.6rem); line-height: 1.05; letter-spacing: -1px; color: var(--text-main); font-weight: 900; margin-bottom: 14px;">
+                                    Attendance Operations</h3>
+                                <p
+                                    style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; max-width: 58ch;">
+                                    Track today's attendance, dispatch absent alerts, and keep the department aligned in
+                                    real time from a single, clean control surface.
+                                </p>
+                                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                                    <span id="teacherMeta" class="badge badge-active"
+                                        style="padding: 6px 12px; border-radius: 999px; font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase;">
+                                        Department: --
+                                    </span>
+                                    <span class="badge badge-neutral"
+                                        style="padding: 6px 12px; border-radius: 999px; font-size: 0.58rem; letter-spacing: 1.5px;">
+                                        Realtime Sync
+                                    </span>
+                                    <span class="badge badge-neutral"
+                                        style="padding: 6px 12px; border-radius: 999px; font-size: 0.58rem; letter-spacing: 1.5px;">
+                                        Alert Dispatch
+                                    </span>
+                                </div>
+                            </div>
+                            <div
+                                style="position: relative; z-index: 1; min-width: 220px; display: flex; flex-direction: column; gap: 12px; align-items: stretch;">
+                                <button type="button" class="btn-premium"
+                                    onclick="window.location.href='teacher_mark_attendance.html'"
+                                    style="width: 100%; justify-content: center;">
+                                    Mark Attendance <i class="fa-solid fa-circle-play"></i>
+                                </button>
+                                <button type="button" class="btn-secondary"
+                                    onclick="window.location.href='teacher_students.html'"
+                                    style="width: 100%; justify-content: center;">
+                                    View Students <i class="fa-solid fa-user-graduate"></i>
+                                </button>
+                                <button type="button" class="btn-secondary"
+                                    onclick="window.location.href='teacher_reports.html'"
+                                    style="width: 100%; justify-content: center;">
+                                    Open Reports <i class="fa-solid fa-chart-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="padding: 24px 32px 30px;">
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+                                <div
+                                    style="padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
+                                    <p
+                                        style="color: var(--text-dim); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 900; margin-bottom: 10px;">
+                                        Today</p>
+                                    <strong
+                                        style="display: block; color: var(--text-main); font-size: 1rem; letter-spacing: 0.3px; margin-bottom: 8px;">
+                                        Live attendance summary</strong>
+                                    <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.6;">
+                                        Values refresh automatically as scans and manual entries land.
+                                    </p>
+                                </div>
+                                <div
+                                    style="padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
+                                    <p
+                                        style="color: var(--text-dim); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 900; margin-bottom: 10px;">
+                                        Alerts</p>
+                                    <strong
+                                        style="display: block; color: var(--text-main); font-size: 1rem; letter-spacing: 0.3px; margin-bottom: 8px;">
+                                        Absent dispatch</strong>
+                                    <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.6;">
+                                        Send notifications again whenever a new absence batch appears.
+                                    </p>
+                                </div>
+                                <div
+                                    style="padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
+                                    <p
+                                        style="color: var(--text-dim); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 900; margin-bottom: 10px;">
+                                        Scope</p>
+                                    <strong
+                                        style="display: block; color: var(--text-main); font-size: 1rem; letter-spacing: 0.3px; margin-bottom: 8px;">
+                                        Department bound</strong>
+                                    <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.6;">
+                                        Only students in the authenticated teacher's department are shown.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card"
+                        style="display: flex; flex-direction: column; justify-content: center; text-align: left; border-left: 4px solid var(--accent);">
+                        <p
+                            style="color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; margin-bottom: 16px; opacity: 0.6;">
+                            TOTAL_STUDENTS</p>
+                        <h2 id="statTotal"
+                            style="font-size: 5rem; font-weight: 900; color:var(--accent); font-family: var(--font-data); line-height: 0.8; letter-spacing: -2px;">
+                            0</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-top: 24px;">
+                            Total students in assigned courses</p>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="widget-card"
+                        style="display: flex; flex-direction: column; justify-content: center; text-align: left; border-left: 4px solid var(--primary);">
+                        <p
+                            style="color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; margin-bottom: 16px; opacity: 0.6;">
+                            PRESENT_TODAY</p>
+                        <h2 id="statPresent"
+                            style="font-size: 5rem; font-weight: 900; color:var(--primary); font-family: var(--font-data); line-height: 0.8; letter-spacing: -2px;">
+                            0</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-top: 24px;">
+                            Confirmed attendees</p>
+                    </div>
+
+                    <div class="widget-card"
+                        style="display: flex; flex-direction: column; justify-content: center; text-align: left; border-left: 4px solid #f59e0b;">
+                        <p
+                            style="color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; margin-bottom: 16px; opacity: 0.6;">
+                            LATE_TODAY</p>
+                        <h2 id="statLate"
+                            style="font-size: 5rem; font-weight: 900; color:#f59e0b; font-family: var(--font-data); line-height: 0.8; letter-spacing: -2px;">
+                            0</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-top: 24px;">
+                            Punctuality Alert Count</p>
+                    </div>
+
+                    <div class="widget-card"
+                        style="display: flex; flex-direction: column; justify-content: center; text-align: left; border-left: 4px solid #ff5a6f;">
+                        <p
+                            style="color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; margin-bottom: 16px; opacity: 0.6;">
+                            ABSENT_TODAY</p>
+                        <h2 id="statAbsent"
+                            style="font-size: 5rem; font-weight: 900; color:#ff5a6f; font-family: var(--font-data); line-height: 0.8; letter-spacing: -2px;">
+                            0</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-top: 24px;">
+                            Unverified students</p>
+                    </div>
+
+                    <div class="widget-card"
+                        style="display: flex; flex-direction: column; justify-content: space-between; min-height: 240px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)); border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="space-between" style="margin-bottom: 18px;">
+                            <div>
+                                <p
+                                    style="color: var(--text-dim); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 900; margin-bottom: 10px;">
+                                    Session Health</p>
+                                <h3
+                                    style="font-size: 1.2rem; color: var(--text-main); letter-spacing: -0.4px; font-weight: 900;">
+                                    Operational</h3>
+                            </div>
+                            <span class="badge badge-active"
+                                style="padding: 6px 12px; border-radius: 999px; font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase;">
+                                LIVE</span>
+                        </div>
+                        <div style="display: grid; gap: 14px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                <span
+                                    style="color: var(--text-dim); font-size: 0.72rem; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 800;">Realtime Sync</span>
+                                <span style="color: var(--accent); font-weight: 800; font-size: 0.78rem;">ON</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                <span
+                                    style="color: var(--text-dim); font-size: 0.72rem; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 800;">Department Scope</span>
+                                <span style="color: var(--primary); font-weight: 800; font-size: 0.78rem;">PINNED</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span
+                                    style="color: var(--text-dim); font-size: 0.72rem; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 800;">Alert Queue</span>
+                                <span style="color: #f59e0b; font-weight: 800; font-size: 0.78rem;">READY</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Full Width Registry -->
+                    <div class="widget-card full-width-widget" style="padding: 0;">
+                        <div class="space-between"
+                            style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                            <h3
+                                style="font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; color: var(--text-main);">
+                                TODAY'S ATTENDANCE RECORDS</h3>
+                            <button class="btn-secondary" onclick="window.location.reload()"
+                                style="font-size: 0.7rem; padding: 10px 20px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 800; letter-spacing: 1px; transition: 0.3s; cursor: pointer;">
+                                <i class="fa-solid fa-rotate" style="margin-right: 10px; color: var(--accent);"></i>
+                                REFRESH RECORDS
+                            </button>
+                        </div>
+                        <div class="table-container" style="border: none; border-radius: 0;">
+                            <table id="teacherTodayTable">
+                                <thead>
+                                    <tr>
+                                        <th>IDENTIFICATION_NUMBER</th>
+                                        <th>STUDENT_NAME</th>
+                                        <th>ATTENDANCE_STATUS</th>
+                                        <th style="text-align: right;">TIME_OF_ENTRY</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4"
+                                            style="text-align: center; color: var(--text-dim); padding: 80px; font-weight: 800; letter-spacing: 3px; opacity: 0.3; font-size: 0.7rem;">
+                                            LOADING ATTENDANCE RECORDS...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/teacher.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('notifyAbsentBtn')?.addEventListener('click', async () => {
+                if (!confirm("Are you sure you want to dispatch absent alerts to all unmarked students in your department?")) return;
+                const btn = document.getElementById('notifyAbsentBtn');
+                const originalHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatching...';
+
+                try {
+                    const { resp, data } = await Api.apiFetch('/teacher/notifications/absent', { method: 'POST' });
+                    if (!resp.ok) {
+                        throw new Error(data.detail || data.message || 'Failed to dispatch alerts.');
+                    }
+                    alert(data.message || "Alerts successfully dispatched.");
+                } catch (err) {
+                    alert(err.message || "Failed to dispatch alerts.");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

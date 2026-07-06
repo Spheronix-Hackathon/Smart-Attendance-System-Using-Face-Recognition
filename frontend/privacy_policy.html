@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Smart Attendance System Using Face Recognition</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .policy-container {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+        .policy-card {
+            padding: 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .policy-card h1 {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+        .policy-section {
+            margin-bottom: 40px;
+        }
+        .policy-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .policy-section h2 i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        .policy-section p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+        .policy-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .policy-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+        .policy-list li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            margin-bottom: 24px;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body class="landing-page">
+    <nav class="glass-nav">
+        <div class="container nav-inner">
+            <div class="logo">Smart Attendance System Using Face Recognition</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html" class="btn-primary">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="policy-container container">
+        <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Return to Home</a>
+        <div class="policy-card perfect-glass fade-in">
+            <h1>Privacy Policy</h1>
+            <p style="margin-bottom: 48px; opacity: 0.7;">Last Updated: April 2024</p>
+
+            <div class="policy-section">
+                <h2><i class="fa-solid fa-shield-halved"></i> Biometric Data Handling</h2>
+                <p>The Smart Attendance System utilizes advanced dlib-based neural networks to generate 128-dimensional biometric vectors. We prioritize your privacy and handle all data with mathematical precision.</p>
+                <ul class="policy-list">
+                    <li>We do NOT store raw facial images after the enrollment process is complete.</li>
+                    <li>Faces are converted into encrypted numerical vectors (hashes) that cannot be reversed into an image.</li>
+                    <li>Biometric data is strictly used for identity verification and attendance logging.</li>
+                </ul>
+            </div>
+
+            <div class="policy-section">
+                <h2><i class="fa-solid fa-location-dot"></i> Geolocation Privacy</h2>
+                <p>To ensure academic integrity, the system utilizes high-precision GPS geofencing. This data is only processed locally on your device during the attendance window to verify presence within authorized campus coordinates.</p>
+                <ul class="policy-list">
+                    <li>Your location is never tracked in the background or outside of classroom hours.</li>
+                    <li>We do not share your travel history or frequent locations with third parties.</li>
+                </ul>
+            </div>
+
+            <div class="policy-section">
+                <h2><i class="fa-solid fa-database"></i> Data Security & Storage</h2>
+                <p>All student records and biometric hashes are stored in a secure MongoDB environment. Access is restricted to authorized personnel and is protected by JWT-based authentication layers.</p>
+                <ul class="policy-list">
+                    <li>Encryption-at-rest for sensitive enrollment metadata.</li>
+                    <li>Automated audit logs for all administrative access.</li>
+                    <li>Secure SSL/TLS transmission for all client-server communications.</li>
+                </ul>
+            </div>
+
+            <div class="policy-section">
+                <h2><i class="fa-solid fa-user-gear"></i> Your Rights</h2>
+                <p>As a student or faculty member, you maintain full control over your digital identitiy within our system.</p>
+                <ul class="policy-list">
+                    <li>Request a full report of your attendance history and data profile.</li>
+                    <li>Withdraw consent for biometric processing and request account deletion.</li>
+                    <li>Correction of any administrative or identification errors.</li>
+                </ul>
+            </div>
+
+            <div class="policy-section">
+                <h2><i class="fa-solid fa-envelope"></i> Contact Us</h2>
+                <p>If you have any questions regarding how your biometric data is managed, please contact our System Administrator at <span style="color: var(--accent); font-weight: 700;">vishnugupta.projects@gmail.com</span>.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer" style="padding-top: 40px; margin-top: 80px;">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Smart Attendance System Using Face Recognition - Managed Attendance Services. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth reveal
+            document.querySelector('.policy-card').style.opacity = '1';
+        });
+    </script>
+</body>
+</html>

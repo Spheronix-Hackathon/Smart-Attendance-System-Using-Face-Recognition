@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Profile - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css?v=2.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark Attendance</a></li>
+                    <li><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View Attendance</a></li>
+                    <li><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li class="active"><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Profile Overview</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Manage professional credentials and department affiliation</p>
+                </div>
+            </header>
+
+            <div class="page-stack admin-page-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 32px 40px 40px;">
+                <div class="admin-profile-grid">
+                    <section class="widget-card profile-summary-card">
+                        <div class="profile-summary-head">
+                            <div>
+                                <h3 class="profile-summary-eyebrow">PROFILE_DETAILS</h3>
+                                <p class="profile-summary-copy">Review the current faculty identity here. Use the edit button to open the popup and sync changes instantly.</p>
+                            </div>
+                            <button type="button" id="openProfileModalBtn" class="btn-glass" style="align-self: flex-start;">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+                            </button>
+                        </div>
+                        <div class="profile-detail-grid">
+                            <div class="profile-detail-item">
+                                <span class="profile-detail-label">Full Name</span>
+                                <span id="detailFullName" class="profile-detail-value">Faculty Member</span>
+                            </div>
+                            <div class="profile-detail-item">
+                                <span class="profile-detail-label">Email Address</span>
+                                <span id="detailEmail" class="profile-detail-value muted">faculty@smartface.com</span>
+                            </div>
+                            <div class="profile-detail-item">
+                                <span class="profile-detail-label">Department</span>
+                                <span id="detailDepartment" class="profile-detail-value muted">Administration</span>
+                            </div>
+                            <div class="profile-detail-item">
+                                <span class="profile-detail-label">Role</span>
+                                <span id="detailRole" class="profile-detail-value muted">SYSTEM_TEACHER</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="widget-card" style="padding: 32px; border-radius: 20px; border-left: 4px solid var(--accent);">
+                        <h3 style="font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 24px; color: var(--text-dim); font-weight: 800; text-transform: uppercase;">EMPLOYEE_ID</h3>
+                        <p id="refId" style="color: var(--accent); font-size: 1rem; font-weight: 900; font-family: var(--font-data); letter-spacing: 2px;">N/A</p>
+                    </div>
+
+                    <form id="passwordForm" class="widget-card" style="padding: 32px; border-radius: 20px; border-left: 4px solid #ef4444;">
+                        <h3 style="font-size: 1rem; letter-spacing: 1px; margin-bottom: 24px; color: #fff; font-weight: 800;">AUTHENTICATION_SHIELD</h3>
+                        <div style="display: flex; flex-direction: column; gap: 20px;">
+                            <div class="form-group">
+                                <label style="display: block; color: rgba(255,255,255,0.4); font-size: 0.65rem; margin-bottom: 8px; font-weight: 800; text-transform: uppercase;">Current_Secret</label>
+                                <input type="password" id="currentPass" required style="width: 100%; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; color: rgba(255,255,255,0.4); font-size: 0.65rem; margin-bottom: 8px; font-weight: 800; text-transform: uppercase;">New_Identity_Credential</label>
+                                <input type="password" id="newPass" required style="width: 100%; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff;">
+                            </div>
+                        </div>
+                        <div style="margin-top: 24px;">
+                            <button type="submit" class="btn-premium" style="width: 100%; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; font-size: 0.75rem; letter-spacing: 2px; font-weight: 900;">
+                                OVERWRITE_SECURITY_KEY <i class="fa-solid fa-shield-halved" style="margin-left: 10px;"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="profileModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content profile-modal">
+            <div class="modal-header">
+                <div>
+                    <h3 class="glow-text" style="font-size: 1.3rem; margin-bottom: 6px; font-weight: 900;">Edit Profile Identity</h3>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.5;">Update the visible details and sync them to the live profile view.</p>
+                </div>
+                <button type="button" class="modal-close-btn" id="closeProfileModalBtn" aria-label="Close profile editor">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="profileForm">
+                <div class="modal-body">
+                    <div class="admin-form-grid">
+                        <div class="input-group" style="grid-column: 1 / -1;">
+                            <label>Legal Full Name</label>
+                            <input type="text" id="inFullName" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email Address (Read-Only)</label>
+                            <input type="email" id="inEmail" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Departmental Affiliation</label>
+                            <select id="inDepartment" required>
+                                <option value="Administration">Administration</option>
+                                <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                                <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                                <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
+                                <option value="Information Technology">Information Technology (IT)</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
+                                <option value="Civil Engineering">Civil Engineering (CE)</option>
+                                <option value="AI & Data Science">AI & Data Science (AI & DS)</option>
+                                <option value="Business Administration">Business Administration (MBA)</option>
+                                <option value="Computer Applications">Computer Applications (MCA/BCA)</option>
+                                <option value="Science & Humanities">Science & Humanities (S&H)</option>
+                                <option value="Pharmacy">Pharmacy</option>
+                                <option value="Agriculture">Agriculture</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-glass" id="cancelProfileModalBtn">Cancel</button>
+                    <button type="submit" class="btn-premium" style="padding: 16px 40px; font-size: 0.85rem; letter-spacing: 2px; font-weight: 900;">
+                        UPDATE_PROFILE_CHANGES <i class="fa-solid fa-circle-check" style="margin-left: 10px;"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teacher.js"></script>
+    <script>
+        let profileState = null;
+
+        function setProfileText(id, value) {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        }
+
+        function setProfileInputValue(id, value) {
+            const element = document.getElementById(id);
+            if (element) element.value = value;
+        }
+
+        function setProfileSelectValue(id, value, fallbackValue = '') {
+            const element = document.getElementById(id);
+            if (!element) return;
+
+            const normalizedValue = String(value ?? '').trim();
+            const mappedValue = normalizedValue.toLowerCase() === 'admin' ? 'Administration' : normalizedValue;
+            const availableOptions = Array.from(element.options || []).map((option) => option.value);
+            const selectedValue = availableOptions.includes(mappedValue)
+                ? mappedValue
+                : (availableOptions.includes(fallbackValue) ? fallbackValue : (availableOptions[0] || ''));
+
+            element.value = selectedValue;
+        }
+
+        function getRoleLabel(profile) {
+            const rawRole = profile && profile.role ? String(profile.role) : 'teacher';
+            return `SYSTEM_${rawRole.toUpperCase()}`;
+        }
+
+        function syncProfileView(profile) {
+            const fullName = profile && profile.full_name && profile.full_name.trim() ? profile.full_name.trim() : 'Faculty Member';
+            const email = profile && profile.email ? profile.email : 'faculty@smartface.com';
+            const department = profile && profile.department && profile.department.trim() ? profile.department.trim() : 'Administration';
+            const roleLabel = getRoleLabel(profile);
+            const employeeId = profile && profile.roll_number && profile.roll_number.trim() ? profile.roll_number.trim() : 'N/A';
+
+            setProfileText('detailFullName', fullName);
+            setProfileText('detailEmail', email);
+            setProfileText('detailDepartment', department);
+            setProfileText('detailRole', roleLabel);
+            setProfileText('refId', employeeId);
+
+            setProfileInputValue('inFullName', profile && profile.full_name ? profile.full_name : '');
+            setProfileInputValue('inEmail', email);
+            setProfileSelectValue('inDepartment', profile && profile.department ? profile.department : '', 'Administration');
+        }
+
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (!modal) return;
+
+            syncProfileView(profileState || {});
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            const fullNameInput = document.getElementById('inFullName');
+            if (fullNameInput) {
+                window.setTimeout(() => fullNameInput.focus(), 50);
+            }
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (!modal) return;
+
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        async function loadProfile() {
+            const user = await ensureTeacher();
+            if (!user) return null;
+            profileState = user;
+            syncProfileView(user);
+            return user;
+        }
+
+        document.getElementById('profileForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SYNCING...';
+
+            const fullName = document.getElementById('inFullName').value.trim();
+            const department = document.getElementById('inDepartment').value.trim();
+            const payload = {
+                full_name: fullName,
+                department: department
+            };
+
+            const { resp, data } = await Api.apiFetch('/users/me', {
+                method: 'PATCH',
+                body: payload
+            });
+
+            if (resp.ok) {
+                profileState = {
+                    ...(profileState || {}),
+                    ...payload
+                };
+                syncProfileView(profileState);
+                closeProfileModal();
+                loadProfile().catch(() => { });
+                alert('Success: Profile identity has been updated across all nodes.');
+            } else {
+                alert('Error: ' + (data.detail || 'Identity sync failed.'));
+            }
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        };
+
+        document.getElementById('passwordForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+
+            const payload = {
+                current_password: document.getElementById('currentPass').value,
+                new_password: document.getElementById('newPass').value
+            };
+
+            if (payload.new_password.length < 6) {
+                alert('Security Protocol Violation: New password must be at least 6 characters.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENCRYPTING...';
+
+            const { resp, data } = await Api.apiFetch('/users/me/change-password', {
+                method: 'POST',
+                body: payload
+            });
+
+            if (resp.ok) {
+                alert('Success: Security credentials updated. Please re-authenticate on next session.');
+                e.target.reset();
+            } else {
+                alert('Authentication Failure: ' + (data.detail || 'Access denied.'));
+            }
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const currentUser = await loadProfile();
+            if (!currentUser) return;
+
+            const openButton = document.getElementById('openProfileModalBtn');
+            if (openButton) openButton.addEventListener('click', openProfileModal);
+
+            const modal = document.getElementById('profileModal');
+            if (modal) {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        closeProfileModal();
+                    }
+                });
+            }
+
+            const closeButton = document.getElementById('closeProfileModalBtn');
+            if (closeButton) closeButton.addEventListener('click', closeProfileModal);
+
+            const cancelButton = document.getElementById('cancelProfileModalBtn');
+            if (cancelButton) cancelButton.addEventListener('click', closeProfileModal);
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeProfileModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

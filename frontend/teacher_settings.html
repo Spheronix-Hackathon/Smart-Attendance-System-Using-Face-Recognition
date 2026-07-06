@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Settings - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark Attendance</a></li>
+                    <li><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View Attendance</a></li>
+                    <li><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li class="active"><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Account Settings</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Manage authentication protocols and live faculty preferences</p>
+                </div>
+                <div class="header-actions" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end;">
+                    <span id="settingsSyncState" class="badge-neutral" style="padding: 8px 14px; border-radius: 999px;">LIVE_SYNC</span>
+                    <span id="teacherDept" class="badge-neutral" style="padding: 8px 14px; border-radius: 999px;">DEPT: ---</span>
+                </div>
+            </header>
+
+            <div class="page-stack admin-page-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 32px 40px 40px; gap: 32px;">
+                <div class="admin-split-grid">
+                    <section class="widget-card profile-summary-card" style="min-height: 0;">
+                        <div class="profile-summary-head" style="gap: 14px;">
+                            <div>
+                                <h3 class="profile-summary-eyebrow">AUTHENTICATION_PROTOCOL</h3>
+                                <p class="profile-summary-copy">Update your faculty password and keep the session secure. The preference panel on the right saves instantly when toggles change.</p>
+                            </div>
+                            <span class="badge-neutral">PROTECTED</span>
+                        </div>
+
+                        <form id="securityForm" class="admin-form-grid" style="margin-top: 8px;">
+                            <div class="input-group">
+                                <label>Current Password</label>
+                                <input type="password" id="currentPassword" placeholder="••••••••" required>
+                            </div>
+                            <div class="input-group">
+                                <label>New Password</label>
+                                <input type="password" id="newPassword" placeholder="••••••••" required>
+                            </div>
+                            <div class="input-group" style="grid-column: 1 / -1;">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                            </div>
+                            <div style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 4px;">
+                                <span id="securityMsg" style="font-size: 0.75rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">READY_FOR_UPDATE</span>
+                                <button type="submit" class="btn-premium" style="padding: 16px 28px; letter-spacing: 2px; font-weight: 900;">
+                                    UPDATE_SECURITY_CREDENTIALS <i class="fa-solid fa-microchip" style="margin-left: 10px;"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="widget-card profile-summary-card" style="min-height: 0;">
+                        <div class="profile-summary-head" style="gap: 14px;">
+                            <div>
+                                <h3 class="profile-summary-eyebrow">LIVE_PREFERENCE_SYNC</h3>
+                                <p class="profile-summary-copy">These preferences are synced in real time as you change them, so the faculty workspace stays current without a manual save.</p>
+                            </div>
+                            <span class="badge-neutral">AUTO_SAVE</span>
+                        </div>
+
+                        <div style="display: grid; gap: 14px; margin-top: 8px;">
+                            <div class="space-between" style="padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; gap: 18px; flex-wrap: wrap;">
+                                <div style="min-width: 0;">
+                                    <p style="font-size: 0.88rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Absent Notifications</p>
+                                    <p style="font-size: 0.68rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Notify students after attendance windows close</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="absentNotifications" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="space-between" style="padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; gap: 18px; flex-wrap: wrap;">
+                                <div style="min-width: 0;">
+                                    <p style="font-size: 0.88rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Email Reports</p>
+                                    <p style="font-size: 0.68rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Receive weekly attendance summaries by email</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailReports" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="space-between" style="padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; gap: 18px; flex-wrap: wrap;">
+                                <div style="min-width: 0;">
+                                    <p style="font-size: 0.88rem; font-weight: 800; color: #fff; margin-bottom: 4px;">System Alerts</p>
+                                    <p style="font-size: 0.68rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Surface health and integrity warnings immediately</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="systemAlerts" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="space-between" style="padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 14px; gap: 18px; flex-wrap: wrap;">
+                                <div style="min-width: 0;">
+                                    <p style="font-size: 0.88rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Push Notifications</p>
+                                    <p style="font-size: 0.68rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Allow browser notifications for live events</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="pushNotify" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="preferenceSyncMsg" style="margin-top: 16px; color: var(--text-dim); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; line-height: 1.5;">Preference changes save immediately to your profile.</div>
+                    </section>
+                </div>
+
+                <section class="widget-card profile-summary-card" style="min-height: 0;">
+                    <div class="profile-summary-head" style="flex-direction: row; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap;">
+                        <div>
+                            <h3 class="profile-summary-eyebrow">SESSION_SNAPSHOT</h3>
+                            <p class="profile-summary-copy">Current account context pulled from the live authenticated profile.</p>
+                        </div>
+                        <span id="lastSyncBadge" class="badge-neutral">LAST_SYNC: --</span>
+                    </div>
+
+                    <div class="profile-detail-grid" style="margin-top: 8px;">
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Full Name</span>
+                            <span id="snapshotName" class="profile-detail-value">Faculty Member</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Email Address</span>
+                            <span id="snapshotEmail" class="profile-detail-value muted">faculty@smartface.com</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Department</span>
+                            <span id="snapshotDepartment" class="profile-detail-value muted">Administration</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span class="profile-detail-label">Role</span>
+                            <span id="snapshotRole" class="profile-detail-value muted">SYSTEM_TEACHER</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teacher.js"></script>
+    <script>
+        const preferenceKeys = ['absentNotifications', 'emailReports', 'systemAlerts', 'pushNotify'];
+        let currentUser = null;
+        let currentPreferences = {};
+        let lastSyncAt = null;
+
+        function setMessage(elementId, text, color) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            element.textContent = text;
+            if (color) {
+                element.style.color = color;
+            }
+        }
+
+        function formatSyncStamp() {
+            return new Intl.DateTimeFormat(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            }).format(new Date());
+        }
+
+        function setSyncState(text) {
+            const syncState = document.getElementById('settingsSyncState');
+            if (syncState) syncState.textContent = text;
+        }
+
+        function updateSnapshot(user) {
+            const fullName = user.full_name || 'Faculty Member';
+            const email = user.email || 'faculty@smartface.com';
+            const department = user.department || 'Administration';
+            const role = `SYSTEM_${String(user.role || 'teacher').toUpperCase()}`;
+
+            document.getElementById('snapshotName').textContent = fullName;
+            document.getElementById('snapshotEmail').textContent = email;
+            document.getElementById('snapshotDepartment').textContent = department;
+            document.getElementById('snapshotRole').textContent = role;
+            document.getElementById('teacherDept').textContent = `DEPT: ${department}`;
+        }
+
+        function applyPreferences(preferences) {
+            const defaults = {
+                absentNotifications: true,
+                emailReports: true,
+                systemAlerts: true,
+                pushNotify: true,
+            };
+            currentPreferences = { ...defaults, ...(preferences || {}) };
+            preferenceKeys.forEach((key) => {
+                const control = document.getElementById(key);
+                if (control) control.checked = Boolean(currentPreferences[key]);
+            });
+        }
+
+        async function savePreferences(partialPreferences) {
+            if (!currentUser) return;
+
+            setSyncState('SYNCING...');
+            setMessage('preferenceSyncMsg', 'Saving preference changes...', 'var(--accent)');
+
+            const nextPreferences = {
+                ...currentPreferences,
+                ...partialPreferences,
+            };
+
+            const { resp, data } = await Api.apiFetch('/users/me', {
+                method: 'PATCH',
+                body: { preferences: partialPreferences },
+            });
+
+            if (resp.ok) {
+                currentPreferences = nextPreferences;
+                lastSyncAt = new Date();
+                setSyncState('SYNCED');
+                document.getElementById('lastSyncBadge').textContent = `LAST_SYNC: ${formatSyncStamp()}`;
+                setMessage('preferenceSyncMsg', 'Preferences saved and synced in real time.', 'var(--accent)');
+                return data;
+            }
+
+            setSyncState('SYNC ERROR');
+            setMessage('preferenceSyncMsg', data.detail || 'Preference sync failed.', '#ff5a6f');
+            throw new Error(data.detail || 'Preference sync failed');
+        }
+
+        async function init() {
+            const user = await ensureTeacher();
+            if (!user) return;
+
+            currentUser = user;
+            updateSnapshot(user);
+            applyPreferences(user.preferences || {});
+            setSyncState('LIVE');
+            document.getElementById('lastSyncBadge').textContent = `LAST_SYNC: ${formatSyncStamp()}`;
+            setMessage('securityMsg', 'READY_FOR_UPDATE', 'var(--text-dim)');
+
+            preferenceKeys.forEach((key) => {
+                const control = document.getElementById(key);
+                if (!control) return;
+                control.addEventListener('change', async () => {
+                    try {
+                        await savePreferences({ [key]: control.checked });
+                    } catch {
+                        control.checked = Boolean(currentPreferences[key]);
+                    }
+                });
+            });
+        }
+
+        document.getElementById('securityForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+
+            if (newPassword.length < 6) {
+                setMessage('securityMsg', 'NEW_PASSWORD_MUST_BE_AT_LEAST_6_CHARACTERS', '#ff5a6f');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                setMessage('securityMsg', 'PASSWORDS_DO_NOT_MATCH', '#ff5a6f');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ENCRYPTING...';
+            setMessage('securityMsg', 'SYNCING_CREDENTIALS...', 'var(--accent)');
+
+            const { resp, data } = await Api.apiFetch('/users/me/change-password', {
+                method: 'POST',
+                body: {
+                    current_password: currentPassword,
+                    new_password: newPassword,
+                },
+            });
+
+            if (resp.ok) {
+                setMessage('securityMsg', 'SECURITY_CREDENTIALS_UPDATED', 'var(--accent)');
+                event.target.reset();
+            } else {
+                setMessage('securityMsg', data.detail || 'SECURITY_UPDATE_FAILED', '#ff5a6f');
+            }
+
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalText;
+        });
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

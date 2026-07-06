@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Reports - SmartFace TEACHER</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page overflow-hidden">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>TEACHER</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="teacher_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li><a href="teacher_mark_attendance.html"><i class="fa-solid fa-camera"></i> Mark Attendance</a></li>
+                    <li><a href="teacher_students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teacher_view_attendance.html"><i class="fa-solid fa-file-invoice"></i> View Attendance</a></li>
+                    <li class="active"><a href="teacher_reports.html"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                    <li><a href="teacher_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="teacher_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Academic Reports</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Attendance metrics and department performance analytics</p>
+                </div>
+                <div class="header-actions" style="display: flex; align-items: center; gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-building-columns" style="color: var(--secondary);"></i>
+                        <span id="teacherDept" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">DEPT: ---</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-fingerprint" style="color: var(--accent);"></i>
+                        <span style="font-size: 0.75rem; font-weight: 900; color: var(--accent); letter-spacing: 1px;">SYSTEM_OPERATIONAL</span>
+                   </div>
+                </div>
+            </header>
+
+            <div class="page-stack report-page-stack">
+                <div class="widget-card report-generator-card" style="border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 24px 60px rgba(0,0,0,0.28); backdrop-filter: blur(16px);">
+                    <div class="space-between report-generator-head" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 20px; flex-wrap: wrap;">
+                        <div style="display: grid; gap: 8px;">
+                            <h3 style="font-size: 1rem; letter-spacing: 2px; color: var(--accent); font-weight: 900; text-transform: uppercase;">REPORT_GENERATOR</h3>
+                            <p style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.6;">Choose a scope, confirm the date range, then download the report as PDF or Excel.</p>
+                        </div>
+                        <span id="reportRangePreview" class="badge badge-active" style="padding: 8px 14px; border-radius: 999px; font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase;">RANGE: --</span>
+                    </div>
+                    <div class="report-generator-grid">
+                        <div class="widget-card report-generator-panel" style="padding: 24px; border-left: 4px solid var(--accent); background: rgba(255,255,255,0.02);">
+                            <p style="font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">REPORT_SCOPE</p>
+                            <select id="reportScope" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px;">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="yearly">Yearly</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <div id="reportScopeHint" style="margin-top: 14px; font-size: 0.74rem; color: var(--text-muted); line-height: 1.6;">Daily and weekly reports use a reference date.</div>
+                            <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px;">
+                                <span id="reportDepartmentBadge" class="badge badge-neutral" style="padding: 8px 12px; border-radius: 999px; font-size: 0.58rem; letter-spacing: 1.4px; text-transform: uppercase;">Department: --</span>
+                            </div>
+                        </div>
+
+                        <div class="widget-card report-generator-panel" style="padding: 24px; border-left: 4px solid var(--primary); background: rgba(255,255,255,0.02);">
+                            <p style="font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">RANGE_INPUTS</p>
+                            <div id="reportRangeFields" style="display: grid; gap: 14px;">
+                                <div data-scope-group="daily weekly" style="display: grid; gap: 8px;">
+                                    <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Reference Date</label>
+                                    <input id="reportDate" type="date" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                </div>
+                                <div data-scope-group="monthly" style="display: grid; gap: 8px;">
+                                    <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Report Month</label>
+                                    <input id="reportMonth" type="month" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                </div>
+                                <div data-scope-group="yearly" style="display: grid; gap: 8px;">
+                                    <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Report Year</label>
+                                    <input id="reportYear" type="number" min="2020" max="2100" step="1" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                </div>
+                                <div data-scope-group="custom" style="display: grid; gap: 12px;">
+                                    <div style="display: grid; gap: 8px;">
+                                        <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">From Date</label>
+                                        <input id="reportFrom" type="date" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                    </div>
+                                    <div style="display: grid; gap: 8px;">
+                                        <label style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">To Date</label>
+                                        <input id="reportTo" type="date" style="width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-weight: 800;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget-card report-generator-panel" style="padding: 24px; border-left: 4px solid #ff5a6f; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; justify-content: space-between; gap: 18px;">
+                            <div>
+                                <p style="font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 12px;">EXPORT_OUTPUT</p>
+                                <div id="reportRangeSummary" style="font-size: 0.9rem; font-weight: 800; color: #fff; line-height: 1.7;">Select a scope to preview the range.</div>
+                                <p style="margin-top: 12px; font-size: 0.76rem; color: var(--text-muted); line-height: 1.7;">The exported file includes the teacher who marked each attendance row. Completed unmarked days count as absent; pending days stay excluded until the day closes.</p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                                <button id="reportExcelBtn" type="button" class="btn-secondary" style="padding: 12px 20px; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; border: 1px solid #22c55e; color: #22c55e; background: rgba(34,197,94,0.1);">
+                                    <i class="fa-solid fa-file-excel" style="margin-right: 10px;"></i> EXCEL
+                                </button>
+                                <button id="reportPdfBtn" type="button" class="btn-premium" style="padding: 12px 20px; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; background: rgba(239,68,68,0.12); border: 1px solid #ef4444; color: #ef4444;">
+                                    <i class="fa-solid fa-file-pdf" style="margin-right: 10px;"></i> PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid report-metrics-grid">
+                    <!-- High-level Analytics -->
+                    <div class="widget-card" style="padding: 48px; position: relative; border-left: 4px solid var(--accent); display: flex; flex-direction: column; justify-content: center;">
+                        <p style="color: var(--text-dim); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 24px;">TOTAL_STUDENTS</p>
+                        <h2 id="totalEnrollment" style="font-size: 4.8rem; font-weight: 900; color:#fff; font-family: var(--font-data); line-height: 1; letter-spacing: -2px;">0</h2>
+                        <div style="width: 100%; height: 2px; background: rgba(0,209,199,0.05); margin-top: 40px; overflow: hidden; border-radius: 4px;">
+                            <div style="width: 100%; height: 100%; background: var(--accent); box-shadow: 0 0 20px var(--accent);"></div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" style="padding: 48px; position: relative; border-left: 4px solid var(--primary); display: flex; flex-direction: column; justify-content: center;">
+                        <p style="color: var(--text-dim); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 24px;">ATTENDANCE_PERCENTAGE</p>
+                        <h2 id="presentToday" style="font-size: 4.8rem; font-weight: 900; color:#fff; font-family: var(--font-data); line-height: 1; letter-spacing: -2px;">0%</h2>
+                        <div style="width: 100%; height: 2px; background: rgba(43,111,255,0.05); margin-top: 40px; overflow: hidden; border-radius: 4px;">
+                            <div style="width: 75%; height: 100%; background: var(--primary); box-shadow: 0 0 20px var(--primary);"></div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" style="padding: 48px; position: relative; border-left: 4px solid #ff5a6f; display: flex; flex-direction: column; justify-content: center;">
+                        <p style="color: var(--text-dim); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 800; margin-bottom: 24px;">ABSENT_STUDENTS</p>
+                        <h2 id="absentToday" style="font-size: 4.8rem; font-weight: 900; color:#ff5a6f; font-family: var(--font-data); line-height: 1; letter-spacing: -2px;">0</h2>
+                        <div style="width: 100%; height: 2px; background: rgba(255,90,111,0.05); margin-top: 40px; overflow: hidden; border-radius: 4px;">
+                            <div style="width: 25%; height: 100%; background: #ff5a6f; box-shadow: 0 0 20px #ff5a6f;"></div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card full-width-widget" style="padding: 0; overflow: hidden; position: relative;">
+                        <div class="scanline-hud"></div>
+                        <div class="space-between" style="padding: 32px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                            <h3 style="font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">DEPARTMENT_ANALYTICS_SUMMARY</h3>
+                            <button id="notifyBtn" class="btn-premium" style="font-size: 0.75rem; padding: 12px 24px; background: rgba(255,90,111,0.1); border: 1px solid rgba(255,90,111,0.3); color: #ff5a6f; font-weight: 900; letter-spacing: 1px; border-radius: 12px;">
+                                <i class="fa-solid fa-bell-slash" style="margin-right: 12px;"></i> SEND_ABSENT_NOTIFICATIONS
+                            </button>
+                        </div>
+                        <div class="department-analytics-grid">
+                            <div class="department-analytics-cell" style="padding: 48px 40px; border-right: 1px solid rgba(255,255,255,0.05); text-align: center;">
+                                <i class="fa-solid fa-graduation-cap" style="font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; opacity: 0.4;"></i>
+                                <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">AVERAGE_ATTENDANCE</p>
+                                <h4 style="font-size: 2.2rem; font-weight: 900; color: #fff; font-family: var(--font-data);" id="avgAtt">---</h4>
+                            </div>
+                            <div class="department-analytics-cell" style="padding: 48px 40px; border-right: 1px solid rgba(255,255,255,0.05); text-align: center;">
+                                <i class="fa-solid fa-bolt" style="font-size: 1.8rem; color: var(--primary); margin-bottom: 20px; opacity: 0.4;"></i>
+                                <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">PEAK_ATTENDANCE_TIME</p>
+                                <h4 style="font-size: 2.2rem; font-weight: 900; color: #fff; font-family: var(--font-data);">10:15 AM</h4>
+                            </div>
+                            <div class="department-analytics-cell" style="padding: 48px 40px; border-right: 1px solid rgba(255,255,255,0.05); text-align: center;">
+                                <i class="fa-solid fa-shield-heart" style="font-size: 1.8rem; color: #ff5a6f; margin-bottom: 20px; opacity: 0.4;"></i>
+                                <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">ATTENDANCE_RETENTION</p>
+                                <h4 style="font-size: 2.2rem; font-weight: 900; color: #fff; font-family: var(--font-data);">92.4%</h4>
+                            </div>
+                            <div class="department-analytics-cell" style="padding: 48px 40px; text-align: center;">
+                                <i class="fa-solid fa-microchip" style="font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; opacity: 0.4;"></i>
+                                <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">SYSTEM_ACCURACY</p>
+                                <h4 style="font-size: 2.2rem; font-weight: 900; color: #fff; font-family: var(--font-data);">99.2%</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/teacher.js"></script>
+    <script>
+        function pad(value) {
+            return String(value).padStart(2, '0');
+        }
+
+        function formatLocalDate(date) {
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+        }
+
+        function formatLocalMonth(date) {
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+        }
+
+        function parseDateInput(value) {
+            if (!value) return null;
+            const [year, month, day] = value.split('-').map(Number);
+            if (!year || !month || !day) return null;
+            return new Date(year, month - 1, day);
+        }
+
+        function startOfMonth(monthValue) {
+            const [year, month] = monthValue.split('-').map(Number);
+            return new Date(year, month - 1, 1);
+        }
+
+        function endOfMonth(monthValue) {
+            const [year, month] = monthValue.split('-').map(Number);
+            return new Date(year, month, 0);
+        }
+
+        function startOfYear(yearValue) {
+            return new Date(Number(yearValue), 0, 1);
+        }
+
+        function endOfYear(yearValue) {
+            return new Date(Number(yearValue), 11, 31);
+        }
+
+        function addDays(date, days) {
+            const clone = new Date(date);
+            clone.setDate(clone.getDate() + days);
+            return clone;
+        }
+
+        function setScopeDescription(scope) {
+            const hint = document.getElementById('reportScopeHint');
+            if (!hint) return;
+
+            const copy = {
+                daily: 'Daily reports use the selected day as both the start and end of the range.',
+                weekly: 'Weekly reports use a 7-day window ending on the selected reference date.',
+                monthly: 'Monthly reports use the selected calendar month.',
+                yearly: 'Yearly reports use the selected calendar year.',
+                custom: 'Custom reports let you choose any start and end date.',
+            };
+
+            hint.textContent = copy[scope] || copy.custom;
+        }
+
+        function setVisibleRangeFields(scope) {
+            document.querySelectorAll('[data-scope-group]').forEach((block) => {
+                const groups = (block.getAttribute('data-scope-group') || '').split(' ');
+                block.style.display = groups.includes(scope) ? 'grid' : 'none';
+            });
+        }
+
+        function refreshReportRangePreview() {
+            const scope = document.getElementById('reportScope')?.value || 'daily';
+            const preview = document.getElementById('reportRangePreview');
+            const summary = document.getElementById('reportRangeSummary');
+            if (!preview || !summary) return null;
+
+            const today = new Date();
+            const todayValue = formatLocalDate(today);
+            const reportDateValue = document.getElementById('reportDate')?.value || todayValue;
+            const reportMonthValue = document.getElementById('reportMonth')?.value || formatLocalMonth(today);
+            const reportYearValue = document.getElementById('reportYear')?.value || String(today.getFullYear());
+            const reportFromValue = document.getElementById('reportFrom')?.value || todayValue;
+            const reportToValue = document.getElementById('reportTo')?.value || todayValue;
+
+            let fromDate = todayValue;
+            let toDate = todayValue;
+            let label = `${todayValue} to ${todayValue}`;
+
+            if (scope === 'weekly') {
+                const anchorDate = parseDateInput(reportDateValue) || today;
+                fromDate = formatLocalDate(addDays(anchorDate, -6));
+                toDate = formatLocalDate(anchorDate);
+                label = `${fromDate} to ${toDate}`;
+            } else if (scope === 'monthly') {
+                fromDate = formatLocalDate(startOfMonth(reportMonthValue));
+                toDate = formatLocalDate(endOfMonth(reportMonthValue));
+                label = `${reportMonthValue} (${fromDate} to ${toDate})`;
+            } else if (scope === 'yearly') {
+                fromDate = formatLocalDate(startOfYear(reportYearValue));
+                toDate = formatLocalDate(endOfYear(reportYearValue));
+                label = `${reportYearValue} (${fromDate} to ${toDate})`;
+            } else if (scope === 'custom') {
+                fromDate = reportFromValue;
+                toDate = reportToValue;
+                label = `${fromDate} to ${toDate}`;
+            }
+
+            preview.textContent = `RANGE: ${label}`;
+            summary.textContent = `${scope.toUpperCase()} report will export ${label}.`;
+
+            return { scope, fromDate, toDate, label };
+        }
+
+        function validateRange(range) {
+            if (!range || !range.fromDate || !range.toDate) return false;
+            return range.fromDate <= range.toDate;
+        }
+
+        function buildReportFilename(format, scope, fromDate, toDate, department) {
+            const deptSlug = (department || 'teacher')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '_')
+                .replace(/^_|_$/g, '') || 'teacher';
+            return `${deptSlug}_${scope}_${fromDate}_to_${toDate}.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+        }
+
+        async function exportTeacherReport(format) {
+            const range = refreshReportRangePreview();
+            if (!validateRange(range)) {
+                alert('Please choose a valid report range.');
+                return;
+            }
+
+            const user = await ensureTeacher();
+            if (!user) return;
+
+            const params = new URLSearchParams({
+                format,
+                scope: range.scope,
+                from_date: range.fromDate,
+                to_date: range.toDate,
+            });
+            const filename = buildReportFilename(format, range.scope, range.fromDate, range.toDate, user.department || 'teacher');
+
+            try {
+                await Api.downloadFile(`/teacher/reports/export?${params.toString()}`, filename);
+            } catch (error) {
+                alert(error.message || 'Failed to export report.');
+            }
+        }
+
+        async function loadTeacherReports() {
+            const user = await ensureTeacher();
+            if (!user) return;
+
+            const deptEl = document.getElementById('teacherDept');
+            if (deptEl) deptEl.textContent = `DEPT: ${user.department || 'UNASSIGNED'}`;
+
+            const reportDeptBadge = document.getElementById('reportDepartmentBadge');
+            if (reportDeptBadge) reportDeptBadge.textContent = `Department: ${user.department || 'UNASSIGNED'}`;
+
+            try {
+                const { resp, data } = await Api.apiFetch('/teacher/department/stats');
+                if (resp.ok) {
+                    const total = data.total_students || 0;
+                    const attended = (data.present || 0) + (data.late || 0);
+                    const percentage = total > 0 ? Math.round((attended / total) * 100) : 0;
+                    const absent = (data.absent || 0) + (data.attendance_finalized ? (data.not_marked || 0) : 0);
+
+                    const totalEnrollment = document.getElementById('totalEnrollment');
+                    const presentToday = document.getElementById('presentToday');
+                    const absentToday = document.getElementById('absentToday');
+                    const avgAtt = document.getElementById('avgAtt');
+
+                    if (totalEnrollment) totalEnrollment.textContent = total;
+                    if (presentToday) presentToday.textContent = `${percentage}%`;
+                    if (absentToday) absentToday.textContent = absent;
+                    if (avgAtt) avgAtt.textContent = `${percentage}%`;
+                }
+            } catch (error) {
+                console.error('Failed to load teacher report stats', error);
+            }
+
+            refreshReportRangePreview();
+        }
+
+        async function sendAbsentNotifications() {
+            if (!confirm('Are you sure you want to send notifications to absent students?')) return;
+            const button = document.getElementById('notifyBtn');
+            const originalHtml = button ? button.innerHTML : '';
+            if (button) {
+                button.disabled = true;
+                button.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 12px;"></i> SENDING...';
+            }
+
+            try {
+                const { resp, data } = await Api.apiFetch('/teacher/notifications/absent', { method: 'POST' });
+                if (!resp.ok) {
+                    throw new Error(data.detail || data.message || 'Failed to send absent notifications.');
+                }
+                alert(data.message || 'Notification cycle complete.');
+            } catch (error) {
+                alert(error.message || 'Failed to send absent notifications.');
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.innerHTML = originalHtml;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const today = formatLocalDate(new Date());
+            const currentMonth = formatLocalMonth(new Date());
+            const currentYear = String(new Date().getFullYear());
+
+            const reportDate = document.getElementById('reportDate');
+            const reportMonth = document.getElementById('reportMonth');
+            const reportYear = document.getElementById('reportYear');
+            const reportFrom = document.getElementById('reportFrom');
+            const reportTo = document.getElementById('reportTo');
+            const reportScope = document.getElementById('reportScope');
+
+            if (reportDate && !reportDate.value) reportDate.value = today;
+            if (reportMonth && !reportMonth.value) reportMonth.value = currentMonth;
+            if (reportYear && !reportYear.value) reportYear.value = currentYear;
+            if (reportFrom && !reportFrom.value) reportFrom.value = today;
+            if (reportTo && !reportTo.value) reportTo.value = today;
+
+            if (reportScope) {
+                reportScope.value = 'daily';
+                setScopeDescription('daily');
+                setVisibleRangeFields('daily');
+                reportScope.addEventListener('change', (event) => {
+                    const scope = event.target.value;
+                    setScopeDescription(scope);
+                    setVisibleRangeFields(scope);
+                    refreshReportRangePreview();
+                });
+            }
+
+            reportDate?.addEventListener('change', refreshReportRangePreview);
+            reportMonth?.addEventListener('change', refreshReportRangePreview);
+            reportYear?.addEventListener('input', refreshReportRangePreview);
+            reportFrom?.addEventListener('change', refreshReportRangePreview);
+            reportTo?.addEventListener('change', refreshReportRangePreview);
+            document.getElementById('reportExcelBtn')?.addEventListener('click', () => exportTeacherReport('excel'));
+            document.getElementById('reportPdfBtn')?.addEventListener('click', () => exportTeacherReport('pdf'));
+            document.getElementById('notifyBtn')?.addEventListener('click', sendAbsentNotifications);
+
+            await loadTeacherReports();
+        });
+    </script>
+</body>
+</html>

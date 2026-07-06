@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - SmartFace ADMIN</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>ADMIN</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="admin_dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                    <li class="active"><a href="admin_users.html"><i class="fa-solid fa-users-gear"></i> Users</a></li>
+                    <li><a href="admin_reports.html"><i class="fa-solid fa-file-invoice"></i> Reports</a></li>
+                    <li><a href="admin_security.html"><i class="fa-solid fa-shield-halved"></i> Security</a></li>
+                    <li><a href="admin_settings.html"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                    <li><a href="admin_profile.html"><i class="fa-solid fa-user-shield"></i> Profile</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">User Management</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">System-wide user administration active</p>
+                </div>
+                <div class="header-actions">
+                    <button id="openCreateModalBtn" class="btn-premium" style="padding: 14px 28px; font-weight: 900; letter-spacing: 1px; font-size: 0.8rem; background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%); border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 209, 199, 0.2);">
+                        <i class="fa-solid fa-plus-circle" style="margin-right: 12px;"></i> CREATE_ACCOUNT
+                    </button>
+                </div>
+            </header>
+
+            <div class="page-stack users-stack" style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 32px 40px 40px; display: flex; flex-direction: column; gap: 28px;">
+                <div class="users-metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; flex-shrink: 0;">
+                    <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid var(--accent);">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">TOTAL_REGISTERED_USERS</p>
+                        <h2 id="totalSubjects" style="font-size: 2.8rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid var(--primary);">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">ACTIVE_TEACHERS</p>
+                        <h2 id="activeFaculty" style="font-size: 2.8rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid #f59e0b;">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">ACTIVE_ADMIN_ACCOUNTS</p>
+                        <h2 id="activeAdmins" style="font-size: 2.8rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid #8b5cf6;">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">ACTIVE_STUDENTS</p>
+                        <h2 id="activeStudents" style="font-size: 2.8rem; font-weight: 900; color: #fff; font-family: var(--font-data); line-height: 1;">0</h2>
+                    </div>
+                </div>
+
+                <div class="widget-card users-directory-card" style="padding: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+                    <div class="scanline-hud"></div>
+
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 20px; flex-wrap: wrap; align-items: flex-start;">
+                        <div style="display: flex; flex-direction: column; gap: 10px; min-width: 180px;">
+                            <h3 style="font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">User Directory</h3>
+                            <span id="directoryCount" class="badge-neutral" style="align-self: flex-start;">0 RESULTS</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-end; width: min(100%, 940px);">
+                            <div class="search-node" style="position: relative; flex: 1 1 260px; min-width: 240px;">
+                                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--accent); opacity: 0.6;"></i>
+                                <input id="searchInput" type="text" placeholder="Search by name, email, roll number, or department..."
+                                    style="width: 100%; padding: 14px 14px 14px 48px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.85rem; letter-spacing: 1px;">
+                            </div>
+                            <select id="departmentFilter" style="flex: 0 0 220px; min-width: 220px; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.8rem; letter-spacing: 1px;">
+                                <option value="all">ALL_DEPARTMENTS</option>
+                            </select>
+                            <select id="roleFilter" style="flex: 0 0 180px; min-width: 180px; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.8rem; letter-spacing: 1px;">
+                                <option value="all">ALL_ROLES</option>
+                            </select>
+                            <select id="statusFilter" style="flex: 0 0 160px; min-width: 160px; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.8rem; letter-spacing: 1px;">
+                                <option value="all">ALL_STATUSES</option>
+                                <option value="active">ACTIVE</option>
+                                <option value="inactive">INACTIVE</option>
+                            </select>
+                            <button id="clearFiltersBtn" type="button" class="btn-glass" style="padding: 12px 18px; min-height: 48px; border-radius: 12px;">CLEAR_FILTERS</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container" style="padding: 0;">
+                        <table id="usersTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: rgba(255,255,255,0.02);">
+                                <tr>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">User ID</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Full Name & Email</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Roll Number</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Department</th>
+                                    <th style="padding: 18px 24px; text-align: center; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Status</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Role</th>
+                                    <th style="padding: 18px 24px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="7" style="padding: 72px 48px; text-align: center; color: var(--text-dim); letter-spacing: 4px; opacity: 0.5; font-size: 0.8rem; font-weight: 900;">LOADING USER DIRECTORY...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-split-grid">
+                    <div class="widget-card users-department-card" style="padding: 0; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; flex-shrink: 0;">
+                        <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 16px; flex-wrap: wrap;">
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <h3 style="font-size: 0.95rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Department Distribution</h3>
+                                <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Live user breakdown by department</span>
+                            </div>
+                            <span id="departmentSummaryCount" class="badge-neutral">0 DEPARTMENTS</span>
+                        </div>
+                        <div id="departmentSummaryGrid" class="department-summary-grid" style="padding: 24px 32px 32px;">
+                            <div class="security-empty-state" style="margin: 0;">NO_DEPARTMENT_DATA</div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" style="padding: 0; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; flex-shrink: 0;">
+                        <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 16px; flex-wrap: wrap;">
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <h3 style="font-size: 0.95rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Security Status</h3>
+                                <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">System-wide account control</span>
+                            </div>
+                            <span class="badge-neutral">LIVE</span>
+                        </div>
+                        <div style="padding: 28px 32px;">
+                            <h2 style="font-size: 2rem; font-weight: 900; color: #ffb454; font-family: var(--font-data); line-height: 1;">ACTIVE</h2>
+                        </div>
+                    </div>
+                </div>
+
+    <!-- Tactical Modals -->
+    <div id="createTeacherModal" class="modal-overlay">
+        <div class="modal-content" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: 0 0 100px rgba(0,0,0,0.8); position: relative; overflow: hidden; max-width: 760px;">
+            <header class="modal-header" style="padding: 32px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                <div>
+                    <h3 style="font-size: 1.1rem; font-weight: 900; letter-spacing: 3px; color: var(--accent);">CREATE_NEW_ACCOUNT</h3>
+                    <p style="font-size: 0.72rem; margin-top: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">Provision faculty or admin access with live sync.</p>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="document.getElementById('createTeacherModal').classList.remove('active')" aria-label="Close create account modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+            <form id="createAccountForm" class="modal-body" style="padding: 40px;">
+                <div class="input-group" style="margin-bottom: 24px;">
+                    <label style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">ADMINISTRATOR_PASSWORD</label>
+                    <input type="password" id="m_adminPassword" required placeholder="••••••••" style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px;">
+                </div>
+                <div class="admin-mini-grid" style="gap: 24px; margin-bottom: 24px;">
+                    <div class="input-group">
+                        <label style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">ACCOUNT_TYPE</label>
+                        <select id="m_accountType" style="width: 100%; background: #0f172a; border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px; cursor: pointer;">
+                            <option value="teacher">FACULTY_ACCOUNT</option>
+                            <option value="admin">ADMIN_ACCOUNT</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label id="m_identifierLabel" style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">EMPLOYEE_ID</label>
+                        <input type="text" id="m_identifier" required placeholder="EMP-101" style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="admin-mini-grid" style="gap: 24px; margin-bottom: 24px;">
+                    <div class="input-group">
+                        <label style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">FULL_NAME</label>
+                        <input type="text" id="m_fullName" required placeholder="Dr. John Doe" style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px;">
+                    </div>
+                    <div class="input-group">
+                        <label style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">EMAIL_ADDRESS</label>
+                        <input type="email" id="m_email" required placeholder="doe@university.edu" style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="admin-mini-grid" style="gap: 24px; margin-bottom: 24px;">
+                    <div class="input-group">
+                        <label style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">DEPARTMENT</label>
+                        <select id="m_department" style="width: 100%; background: #0f172a; border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px; cursor: pointer;">
+                            <option value="Administration">Administration</option>
+                            <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                            <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                            <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
+                            <option value="Information Technology">Information Technology (IT)</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
+                            <option value="Civil Engineering">Civil Engineering (CE)</option>
+                            <option value="AI & Data Science">AI & Data Science (AI & DS)</option>
+                            <option value="Business Administration">Business Administration (MBA)</option>
+                            <option value="Computer Applications">Computer Applications (MCA/BCA)</option>
+                            <option value="Science & Humanities">Science & Humanities (S&H)</option>
+                            <option value="Pharmacy">Pharmacy</option>
+                            <option value="Agriculture">Agriculture</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label style="font-size: 0.7rem; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">ACCOUNT_PASSWORD</label>
+                        <input type="password" id="m_password" required placeholder="Min 6 characters" style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 8px;">
+                    </div>
+                </div>
+                <div id="createAccountHint" style="margin-bottom: 24px; color: var(--text-dim); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; line-height: 1.5;">Faculty accounts use employee IDs; admin accounts use a system identifier.</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="document.getElementById('createTeacherModal').classList.remove('active')">CANCEL</button>
+                    <button type="submit" class="btn-premium">CREATE_ACCOUNT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; position: relative; border-left: 4px solid #ffb454;">
+                        <p style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 12px;">SECURITY_STATUS</p>
+                        <h2 style="font-size: 2.8rem; font-weight: 900; color: #ffb454; font-family: var(--font-data); line-height: 1;">ACTIVE</h2>
+                    </div>
+                </div>
+
+                <div class="widget-card users-department-card" style="padding: 0; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; flex-shrink: 0;">
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 16px; flex-wrap: wrap;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <h3 style="font-size: 0.95rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Department Distribution</h3>
+                            <span style="font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;">Live user breakdown by department</span>
+                        </div>
+                        <span id="departmentSummaryCount" class="badge-neutral">0 DEPARTMENTS</span>
+                    </div>
+                    <div id="departmentSummaryGrid" class="department-summary-grid" style="padding: 24px 32px 32px;">
+                        <div class="security-empty-state" style="margin: 0;">NO_DEPARTMENT_DATA</div>
+                    </div>
+                </div>
+
+                <!-- Directory Container -->
+                <div class="widget-card users-directory-card" style="padding: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+                    <div class="scanline-hud"></div>
+                            
+                    <div class="space-between" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 20px; flex-wrap: wrap; align-items: flex-start;">
+                        <div style="display: flex; flex-direction: column; gap: 10px; min-width: 180px;">
+                            <h3 style="font-size: 1.1rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">User Directory</h3>
+                            <span id="directoryCount" class="badge-neutral" style="align-self: flex-start;">0 RESULTS</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-end; width: min(100%, 940px);">
+                            <div class="search-node" style="position: relative; flex: 1 1 260px; min-width: 240px;">
+                                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--accent); opacity: 0.6;"></i>
+                                <input id="searchInput" type="text" placeholder="Search by name, email, roll number, or department..." 
+                                    style="width: 100%; padding: 14px 14px 14px 48px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.85rem; letter-spacing: 1px;">
+                            </div>
+                            <select id="departmentFilter" style="flex: 0 0 220px; min-width: 220px; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.8rem; letter-spacing: 1px;">
+                                <option value="all">ALL_DEPARTMENTS</option>
+                            </select>
+                            <select id="roleFilter" style="flex: 0 0 180px; min-width: 180px; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.8rem; letter-spacing: 1px;">
+                                <option value="all">ALL_ROLES</option>
+                            </select>
+                            <select id="statusFilter" style="flex: 0 0 160px; min-width: 160px; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; font-family: var(--font-data); font-size: 0.8rem; letter-spacing: 1px;">
+                                <option value="all">ALL_STATUSES</option>
+                                <option value="active">ACTIVE</option>
+                                <option value="inactive">INACTIVE</option>
+                            </select>
+                            <button id="clearFiltersBtn" type="button" class="btn-glass" style="padding: 12px 18px; min-height: 48px; border-radius: 12px;">CLEAR_FILTERS</button>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container" style="padding: 0;">
+                        <table id="usersTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: rgba(255,255,255,0.02);">
+                                <tr>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">User ID</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Full Name & Email</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Roll Number</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Department</th>
+                                    <th style="padding: 18px 24px; text-align: center; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Status</th>
+                                    <th style="padding: 18px 24px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Role</th>
+                                    <th style="padding: 18px 24px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="7" style="padding: 72px 48px; text-align: center; color: var(--text-dim); letter-spacing: 4px; opacity: 0.5; font-size: 0.8rem; font-weight: 900;">LOADING USER DIRECTORY...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Tactical Modals -->
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal-overlay">
+        <div class="modal-content" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; max-width: 500px;">
+            <header class="modal-header" style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <h3 style="font-size: 0.9rem; font-weight: 900; letter-spacing: 2px; color: var(--accent);">EDIT_USER_METADATA</h3>
+                <button type="button" class="modal-close-btn" onclick="document.getElementById('editUserModal').classList.remove('active')" aria-label="Close edit user modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+            <form id="editUserForm" style="padding: 32px;">
+                <input type="hidden" id="e_userId">
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label style="font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block;">ADMIN_PASSWORD_REQUIRED</label>
+                    <input type="password" id="e_adminPassword" required style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 12px; border-radius: 8px;">
+                </div>
+                <div class="input-group">
+                    <label>Full_Name</label>
+                    <input type="text" id="e_fullName" required>
+                </div>
+                <div class="admin-mini-grid" style="gap: 20px; margin-bottom: 20px;">
+                    <div class="input-group">
+                        <label>Email_Address</label>
+                        <input type="email" id="e_email" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Identification_ID</label>
+                        <input type="text" id="e_rollNumber" required>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: 32px;">
+                    <label>Departmental_Affiliation</label>
+                    <select id="e_department" required style="width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); color: #fff; padding: 12px; border-radius: 8px; cursor: pointer;">
+                        <option value="Administration">Administration</option>
+                        <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                        <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                        <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
+                        <option value="Information Technology">Information Technology (IT)</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
+                        <option value="Civil Engineering">Civil Engineering (CE)</option>
+                        <option value="AI & Data Science">AI & Data Science (AI & DS)</option>
+                        <option value="Business Administration">Business Administration (MBA)</option>
+                        <option value="Computer Applications">Computer Applications (MCA/BCA)</option>
+                        <option value="Science & Humanities">Science & Humanities (S&H)</option>
+                        <option value="Pharmacy">Pharmacy</option>
+                        <option value="Agriculture">Agriculture</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="document.getElementById('editUserModal').classList.remove('active')">CANCEL</button>
+                    <button type="submit" class="btn-premium">SAVE_CHANGES</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/api.js"></script>
+    <script>
+        // (Maintaining existing logic but updated with role-specific naming and perfection)
+        const API_BASE = window.location.origin;
+        let __allUsers = [];
+        let __realtimeTimer = null;
+        const USERS_REFRESH_INTERVAL_MS = 5000;
+
+        function normalizeFilterValue(value) {
+            return String(value ?? '').trim().toLowerCase();
+        }
+
+        function updateDirectoryMetrics(users) {
+            document.getElementById('totalSubjects').textContent = users.length;
+            document.getElementById('activeFaculty').textContent = users.filter(u => normalizeFilterValue(u.role) === 'teacher' && u.is_active).length;
+            const activeAdmins = users.filter(u => (normalizeFilterValue(u.role) === 'admin' || u.is_admin) && u.is_active).length;
+            const activeStudents = users.filter(u => normalizeFilterValue(u.role) === 'student' && u.is_active).length;
+            const adminMetric = document.getElementById('activeAdmins');
+            const studentMetric = document.getElementById('activeStudents');
+            if (adminMetric) adminMetric.textContent = activeAdmins;
+            if (studentMetric) studentMetric.textContent = activeStudents;
+        }
+
+        function updateDirectoryCount(count) {
+            const label = document.getElementById('directoryCount');
+            if (label) {
+                label.textContent = `${count} RESULT${count === 1 ? '' : 'S'}`;
+            }
+        }
+
+        function getCurrentDepartmentFilter() {
+            return normalizeFilterValue(document.getElementById('departmentFilter')?.value || 'all');
+        }
+
+        function syncDepartmentSummaryState() {
+            const activeDepartment = getCurrentDepartmentFilter();
+            document.querySelectorAll('.department-summary-card').forEach(card => {
+                const cardDepartment = normalizeFilterValue(card.dataset.department || 'all');
+                card.classList.toggle('is-active', cardDepartment === activeDepartment);
+            });
+        }
+
+        function syncCreateAccountMode() {
+            const accountType = normalizeFilterValue(document.getElementById('m_accountType')?.value || 'teacher');
+            const identifierLabel = document.getElementById('m_identifierLabel');
+            const identifierInput = document.getElementById('m_identifier');
+            const departmentSelect = document.getElementById('m_department');
+            const hint = document.getElementById('createAccountHint');
+
+            if (accountType === 'admin') {
+                if (identifierLabel) identifierLabel.textContent = 'ADMIN_CODE';
+                if (identifierInput) identifierInput.placeholder = 'ADM-001';
+                if (departmentSelect) departmentSelect.value = 'Administration';
+                if (hint) hint.textContent = 'Admin accounts are verified immediately and appear with system-level access.';
+            } else {
+                if (identifierLabel) identifierLabel.textContent = 'EMPLOYEE_ID';
+                if (identifierInput) identifierInput.placeholder = 'EMP-101';
+                if (departmentSelect) departmentSelect.value = 'Computer Science & Engineering';
+                if (hint) hint.textContent = 'Faculty accounts use employee IDs and department routing.';
+            }
+        }
+
+        function openCreateAccountModal() {
+            const modal = document.getElementById('createTeacherModal');
+            const form = document.getElementById('createAccountForm');
+            if (!modal || !form) return;
+
+            form.reset();
+            const accountType = document.getElementById('m_accountType');
+            const departmentSelect = document.getElementById('m_department');
+            if (accountType) accountType.value = 'teacher';
+            if (departmentSelect) departmentSelect.value = 'Computer Science & Engineering';
+            syncCreateAccountMode();
+            modal.classList.add('active');
+        }
+
+        function closeCreateAccountModal() {
+            const modal = document.getElementById('createTeacherModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function startRealtimeUsersSync() {
+            if (__realtimeTimer) clearInterval(__realtimeTimer);
+            __realtimeTimer = setInterval(() => {
+                if (!document.hidden) {
+                    loadUsers();
+                }
+            }, USERS_REFRESH_INTERVAL_MS);
+        }
+
+        function renderDepartmentSummary(users) {
+            const grid = document.getElementById('departmentSummaryGrid');
+            const countLabel = document.getElementById('departmentSummaryCount');
+            if (!grid || !countLabel) return;
+
+            const counts = new Map();
+            let unassignedCount = 0;
+
+            users.forEach(user => {
+                const department = String(user.department || '').trim();
+                if (!department) {
+                    unassignedCount += 1;
+                    return;
+                }
+                counts.set(department, (counts.get(department) || 0) + 1);
+            });
+
+            const summaryRows = [...counts.entries()].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]));
+            if (unassignedCount > 0) {
+                summaryRows.push(['UNASSIGNED', unassignedCount]);
+            }
+
+            countLabel.textContent = `${summaryRows.length} DEPARTMENT${summaryRows.length === 1 ? '' : 'S'}`;
+
+            if (summaryRows.length === 0) {
+                grid.innerHTML = '<div class="security-empty-state" style="margin: 0;">NO_DEPARTMENT_DATA</div>';
+                return;
+            }
+
+            const maxCount = Math.max(...summaryRows.map(([, value]) => value), 1);
+            grid.innerHTML = '';
+
+            const allCard = document.createElement('button');
+            allCard.type = 'button';
+            allCard.className = 'department-summary-card';
+            allCard.dataset.department = 'all';
+            allCard.innerHTML = `
+                <div class="department-summary-head">
+                    <span class="department-summary-name">ALL USERS</span>
+                    <span class="department-summary-count">${users.length}</span>
+                </div>
+                <div class="department-summary-bar">
+                    <span style="width: 100%;"></span>
+                </div>
+                <div class="department-summary-meta">
+                    <span>100% of all users</span>
+                    <span>directory</span>
+                </div>
+            `;
+            allCard.onclick = () => {
+                const select = document.getElementById('departmentFilter');
+                if (select) {
+                    select.value = 'all';
+                    applyUserFilters();
+                }
+            };
+            grid.appendChild(allCard);
+
+            summaryRows.forEach(([department, count]) => {
+                const percentage = Math.round((count / users.length) * 100);
+                const block = document.createElement('button');
+                block.className = 'department-summary-card';
+                block.type = 'button';
+                block.dataset.department = department;
+                block.innerHTML = `
+                    <div class="department-summary-head">
+                        <span class="department-summary-name">${department}</span>
+                        <span class="department-summary-count">${count}</span>
+                    </div>
+                    <div class="department-summary-bar">
+                        <span style="width: ${Math.max(6, Math.round((count / maxCount) * 100))}%;"></span>
+                    </div>
+                    <div class="department-summary-meta">
+                        <span>${percentage}% of all users</span>
+                        <span>${count === 1 ? 'member' : 'members'}</span>
+                    </div>
+                `;
+                block.onclick = () => {
+                    const select = document.getElementById('departmentFilter');
+                    if (select) {
+                        select.value = department;
+                        applyUserFilters();
+                    }
+                };
+                grid.appendChild(block);
+            });
+
+            syncDepartmentSummaryState();
+        }
+
+        function populateDirectoryFilters(users) {
+            const departmentSelect = document.getElementById('departmentFilter');
+            const roleSelect = document.getElementById('roleFilter');
+
+            if (!departmentSelect || !roleSelect) return;
+
+            const currentDepartment = departmentSelect.value || 'all';
+            const currentRole = roleSelect.value || 'all';
+
+            const departmentMap = new Map();
+            let hasUnassignedDepartment = false;
+            users.forEach(user => {
+                const department = String(user.department || '').trim();
+                if (!department) {
+                    hasUnassignedDepartment = true;
+                    return;
+                }
+                const key = department.toLowerCase();
+                if (!departmentMap.has(key)) departmentMap.set(key, department);
+            });
+
+            const roleMap = new Map();
+            users.forEach(user => {
+                const role = String(user.role || '').trim();
+                if (!role) return;
+                const key = role.toLowerCase();
+                if (!roleMap.has(key)) roleMap.set(key, role);
+            });
+
+            departmentSelect.innerHTML = '<option value="all">ALL_DEPARTMENTS</option>';
+            if (hasUnassignedDepartment) {
+                const option = document.createElement('option');
+                option.value = 'unassigned';
+                option.textContent = 'UNASSIGNED';
+                departmentSelect.appendChild(option);
+            }
+            [...departmentMap.values()].sort((left, right) => left.localeCompare(right)).forEach(department => {
+                const option = document.createElement('option');
+                option.value = department;
+                option.textContent = department;
+                departmentSelect.appendChild(option);
+            });
+
+            roleSelect.innerHTML = '<option value="all">ALL_ROLES</option>';
+            [...roleMap.values()].sort((left, right) => left.localeCompare(right)).forEach(role => {
+                const option = document.createElement('option');
+                option.value = role;
+                option.textContent = role.toUpperCase();
+                roleSelect.appendChild(option);
+            });
+
+            departmentSelect.value = [...departmentSelect.options].some(option => option.value === currentDepartment) ? currentDepartment : 'all';
+            roleSelect.value = [...roleSelect.options].some(option => option.value === currentRole) ? currentRole : 'all';
+        }
+
+        function applyUserFilters() {
+            const query = normalizeFilterValue(document.getElementById('searchInput')?.value);
+            const departmentFilter = normalizeFilterValue(document.getElementById('departmentFilter')?.value);
+            const roleFilter = normalizeFilterValue(document.getElementById('roleFilter')?.value);
+            const statusFilter = normalizeFilterValue(document.getElementById('statusFilter')?.value);
+
+            const filtered = __allUsers.filter(user => {
+                const searchableValues = [user.full_name, user.email, user.roll_number, user.department, user.role]
+                    .map(normalizeFilterValue)
+                    .join(' ');
+
+                const matchesSearch = !query || searchableValues.includes(query);
+                const matchesDepartment = departmentFilter === 'all' || (
+                    departmentFilter === 'unassigned'
+                        ? !normalizeFilterValue(user.department)
+                        : normalizeFilterValue(user.department) === departmentFilter
+                );
+                const matchesRole = roleFilter === 'all' || normalizeFilterValue(user.role) === roleFilter;
+                const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? !!user.is_active : !user.is_active);
+
+                return matchesSearch && matchesDepartment && matchesRole && matchesStatus;
+            });
+
+            renderUsers(filtered);
+            updateDirectoryCount(filtered.length);
+            syncDepartmentSummaryState();
+        }
+
+        async function apiFetch(path, options = {}) {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = 'login.html'; return null; }
+            const resp = await fetch(`${API_BASE}${path}`, {
+                method: options.method || 'GET',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${token}`,
+                    ...(options.headers || {})
+                },
+                body: options.body ? JSON.stringify(options.body) : undefined
+            });
+            const data = await resp.json().catch(() => ({}));
+            return { resp, data };
+        }
+
+        async function loadUsers() {
+            const request = await apiFetch('/admin/users');
+            if (!request) {
+                const tbody = document.querySelector('#usersTable tbody');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 60px; color: var(--text-dim);">AUTHENTICATION_REQUIRED</td></tr>';
+                }
+                return;
+            }
+
+            const { resp, data } = request;
+            if (!resp.ok) {
+                const tbody = document.querySelector('#usersTable tbody');
+                if (tbody) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 60px; color: var(--text-dim);">${data.detail || 'USER_DIRECTORY_UNAVAILABLE'}</td></tr>`;
+                }
+                return;
+            }
+
+            __allUsers = Array.isArray(data) ? data : [];
+            updateDirectoryMetrics(__allUsers);
+            renderDepartmentSummary(__allUsers);
+            populateDirectoryFilters(__allUsers);
+            applyUserFilters();
+        }
+
+        function renderUsers(users) {
+            const tbody = document.querySelector('#usersTable tbody');
+            tbody.innerHTML = '';
+
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 56px 40px;">NO_USERS_FOUND</td></tr>';
+                return;
+            }
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                const userLabel = user.full_name || user.email || `User #${user.id}`;
+                const department = user.department || 'UNASSIGNED';
+                const role = normalizeFilterValue(user.role || 'user');
+                const roleLabel = role ? role.toUpperCase() : 'USER';
+                const roleStyle = role === 'admin'
+                    ? 'color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);'
+                    : role === 'teacher'
+                        ? 'color:var(--accent);background:rgba(0,209,199,0.1);border:1px solid rgba(0,209,199,0.25);'
+                        : role === 'student'
+                            ? 'color:#8b5cf6;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);'
+                            : 'color:var(--text-dim);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);';
+                tr.innerHTML = `
+                    <td style="padding: 18px 24px; color: var(--accent); font-family: var(--font-data); font-size: 0.85rem; font-weight: 800;">#${user.id}</td>
+                    <td style="padding: 18px 24px;">
+                        <div style="font-weight: 900; font-size: 1rem; color: #fff;">${user.full_name || 'UNNAMED_USER'}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-dim);">${user.email}</div>
+                    </td>
+                    <td style="padding: 18px 24px; font-family: var(--font-data); color: #fff;">${user.roll_number || '---'}</td>
+                    <td style="padding: 18px 24px; color: var(--accent); font-family: var(--font-data); font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; line-height: 1.45;">${department}</td>
+                    <td style="padding: 18px 24px; text-align: center;">
+                        <span style="font-weight: 900; font-size: 0.62rem; color: ${user.is_active ? 'var(--accent)' : '#ff5a6f'}; background: ${user.is_active ? 'rgba(0,209,199,0.1)' : 'rgba(255,90,111,0.1)'}; padding: 5px 12px; border-radius: 40px; border: 1px solid ${user.is_active ? 'rgba(0,209,199,0.2)' : 'rgba(255,90,111,0.2)'};">
+                            ${user.is_active ? 'ACTIVE' : 'INACTIVE'}
+                        </span>
+                    </td>
+                    <td style="padding: 18px 24px;">
+                        <span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; ${roleStyle}">${roleLabel}</span>
+                    </td>
+                    <td style="padding: 18px 24px; text-align: right;">
+                        <div style="display: flex; gap: 20px; justify-content: flex-end;">
+                            <button onclick="openEditModal(${user.id})" title="Edit User" style="background:none; border:none; color:var(--text-dim); cursor:pointer;"><i class="fa-solid fa-pen-nib"></i></button>
+                            <button onclick="toggleUser(${user.id}, ${user.is_active})" title="${user.is_active ? 'Deactivate' : 'Activate'}" style="background:none; border:none; color:var(--text-dim); cursor:pointer;"><i class="fa-solid ${user.is_active?'fa-lock':'fa-lock-open'}"></i></button>
+                            <button type="button" data-user-id="${user.id}" data-user-label="${encodeURIComponent(userLabel)}" onclick="resetUserPassword(Number(this.dataset.userId), decodeURIComponent(this.dataset.userLabel))" title="Reset Password" style="background:none; border:none; color:#f59e0b; cursor:pointer;"><i class="fa-solid fa-key"></i></button>
+                            <button onclick="deleteUser(${user.id})" title="Delete User" style="background:none; border:none; color:#ff5a6f; cursor:pointer; opacity:0.6;"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function toggleUser(userId, currentStatus) {
+            const adminPassword = prompt('CONFIRM_AUTHORIZATION: This will change the status of account ID #' + userId + '. Please enter administrative password:');
+            if (adminPassword === null) return; // User cancelled
+            if (!adminPassword) {
+                alert("Administrative password is Required.");
+                return;
+            }
+
+            const request = await apiFetch(`/admin/users/${userId}/set-active`, {
+                method: 'POST',
+                body: { admin_password: adminPassword, is_active: !currentStatus }
+            });
+
+            if (!request) return;
+            const { resp, data } = request;
+
+            if (resp.ok) {
+                alert(data.message || 'Status updated successfully.');
+                loadUsers();
+            } else {
+                console.error('Toggle Status Error:', data);
+                alert(data.detail || 'Critical: Authorization failed or account is protected.');
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm('CRITICAL_WARNING: This action is permanent and will remove all associated telemetry data for ID #' + userId + '. Proceed?')) return;
+            const adminPassword = prompt('CONFIRM_AUTHORIZATION: Final confirmation required via Administrative Password:');
+            if (adminPassword === null) return;
+            if (!adminPassword) {
+                alert("Administrative password is required for account termination.");
+                return;
+            }
+
+            const request = await apiFetch(`/admin/users/${userId}`, {
+                method: 'DELETE',
+                body: { admin_password: adminPassword }
+            });
+
+            if (!request) return;
+            const { resp, data } = request;
+
+            if (resp.ok) {
+                alert(data.message || 'Account successfully terminated.');
+                loadUsers();
+            } else {
+                console.error('Deletion Error:', data);
+                alert(data.detail || 'System Error: Deletion failed.');
+            }
+        }
+
+        async function resetUserPassword(userId, userLabel) {
+            const adminPassword = prompt(`CONFIRM_AUTHORIZATION: Reset password for ${userLabel}. Please enter administrative password:`);
+            if (adminPassword === null) return;
+            if (!adminPassword) {
+                alert('Administrative password is required for password reset.');
+                return;
+            }
+
+            const request = await apiFetch(`/admin/users/${userId}/reset-password`, {
+                method: 'POST',
+                body: { admin_password: adminPassword }
+            });
+
+            if (!request) return;
+            const { resp, data } = request;
+
+            if (resp.ok) {
+                alert(`Password reset successfully for ${userLabel}. Temporary password: ${data.temporary_password || 'SASUFR'}`);
+                loadUsers();
+            } else {
+                console.error('Reset Password Error:', data);
+                alert(data.detail || 'Critical: Password reset failed.');
+            }
+        }
+
+        function openEditModal(userId) {
+            // Robust match regardless of string/number type
+            const user = __allUsers.find(u => Number(u.id) === Number(userId));
+            if (!user) {
+                console.warn('ID_NOT_FOUND:', userId);
+                return;
+            }
+            document.getElementById('e_userId').value = user.id;
+            document.getElementById('e_fullName').value = user.full_name || '';
+            document.getElementById('e_email').value = user.email || '';
+            document.getElementById('e_rollNumber').value = user.roll_number || '';
+            document.getElementById('e_department').value = user.department || '';
+            document.getElementById('e_adminPassword').value = '';
+            document.getElementById('editUserModal').classList.add('active');
+        }
+
+        document.getElementById('editUserForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('e_userId').value;
+            const payload = {
+                admin_password: document.getElementById('e_adminPassword').value,
+                full_name: document.getElementById('e_fullName').value,
+                email: document.getElementById('e_email').value,
+                roll_number: document.getElementById('e_rollNumber').value,
+                department: document.getElementById('e_department').value
+            };
+
+            const request = await apiFetch(`/admin/users/${userId}`, {
+                method: 'PATCH',
+                body: payload
+            });
+
+            if (!request) return;
+            const { resp, data } = request;
+
+            if (resp.ok) {
+                alert(data.message || 'User metadata updated successfully.');
+                document.getElementById('editUserModal').classList.remove('active');
+                loadUsers();
+            } else {
+                console.error('Update Error:', data);
+                alert(data.detail || 'Critical: Update failed. Verify password and connectivity.');
+            }
+        };
+
+        document.getElementById('createAccountForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SAVING...';
+
+            const accountType = document.getElementById('m_accountType').value;
+            const payload = {
+                admin_password: document.getElementById('m_adminPassword').value,
+                full_name: document.getElementById('m_fullName').value,
+                email: document.getElementById('m_email').value,
+                account_type: accountType,
+                identifier: document.getElementById('m_identifier').value,
+                department: document.getElementById('m_department').value,
+                password: document.getElementById('m_password').value
+            };
+
+            const request = await apiFetch('/admin/accounts', {
+                method: 'POST',
+                body: payload
+            });
+
+            if (!request) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                return;
+            }
+            const { resp, data } = request;
+
+            if (resp.ok) {
+                alert(data.message || 'Account created successfully.');
+                closeCreateAccountModal();
+                loadUsers();
+            } else {
+                alert(data.detail || 'Account creation failed');
+            }
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        };
+
+        // Search and filter logic
+        document.getElementById('searchInput').oninput = applyUserFilters;
+        document.getElementById('departmentFilter').onchange = applyUserFilters;
+        document.getElementById('roleFilter').onchange = applyUserFilters;
+        document.getElementById('statusFilter').onchange = applyUserFilters;
+        document.getElementById('clearFiltersBtn').onclick = () => {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('departmentFilter').value = 'all';
+            document.getElementById('roleFilter').value = 'all';
+            document.getElementById('statusFilter').value = 'all';
+            applyUserFilters();
+        };
+
+        document.getElementById('openCreateModalBtn').onclick = openCreateAccountModal;
+        document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem('token'); window.location.href = 'login.html'; };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!(await window.Api.requireAdmin())) return;
+            await loadUsers();
+            syncCreateAccountMode();
+            document.getElementById('m_accountType')?.addEventListener('change', syncCreateAccountMode);
+            document.getElementById('createTeacherModal')?.addEventListener('click', (event) => {
+                if (event.target && event.target.id === 'createTeacherModal') {
+                    closeCreateAccountModal();
+                }
+            });
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) loadUsers();
+            });
+            window.addEventListener('focus', () => loadUsers());
+            startRealtimeUsersSync();
+        });
+    </script>
+</body>
+</html>

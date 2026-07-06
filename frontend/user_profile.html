@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - Smart Attendance System Using Face Recognition</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ID Card Print Styles */
+        @media print {
+            body * { visibility: hidden; }
+            #idCardContainer, #idCardContainer * { visibility: visible; }
+            #idCardContainer { position: absolute; left: 0; top: 0; box-shadow: none; border: 2px solid #000; }
+            .no-print { display: none !important; }
+        }
+        
+        #idCardContainer {
+            width: 350px;
+            height: 500px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 20px;
+            padding: 30px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(0, 209, 199, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .id-header { text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%; padding-bottom: 15px; }
+        .id-header h1 { font-size: 1.2rem; font-weight: 900; margin: 0; letter-spacing: 2px; color: #00d1c7; }
+        .id-header p { font-size: 0.6rem; color: #94a3b8; margin: 5px 0 0; letter-spacing: 1px; }
+
+        .id-photo { width: 150px; height: 150px; border-radius: 15px; border: 2px solid #00d1c7; margin-bottom: 20px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
+        .id-photo i { font-size: 4rem; color: rgba(0, 209, 199, 0.2); }
+
+        .id-body { width: 100%; text-align: left; }
+        .id-field { margin-bottom: 15px; }
+        .id-label { font-size: 0.55rem; color: #94a3b8; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 4px; }
+        .id-value { font-size: 0.9rem; font-weight: 700; color: #fff; }
+
+        .id-footer { margin-top: auto; width: 100%; text-align: center; font-size: 0.5rem; color: #475569; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>STUDENT</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="user_dashboard.html"><i class="fa-solid fa-gauge"></i> Overview</a></li>
+                    <li class="active"><a href="user_profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="user_settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Student Profile</h1>
+                    <p style="color: var(--text-dim);">Personal profile and identification details</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-premium" onclick="downloadIDCard()">Download Identity Card <i class="fa-solid fa-id-card"></i></button>
+                </div>
+            </header>
+
+            <!-- Identity Card Template (Hidden) -->
+            <div id="idCardContainer">
+                <div class="id-header">
+                    <h1>SmartFace <span style="color:#fff">HUB</span></h1>
+                    <p>VERIFIED_STUDENT_IDENTITY</p>
+                </div>
+                <div class="id-photo" id="idPhoto">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+                <div class="id-body">
+                    <div class="id-field">
+                        <div class="id-label">Full Legal Name</div>
+                        <div class="id-value" id="idName">STUDENT_NAME</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="id-field">
+                            <div class="id-label">Roll Number</div>
+                            <div class="id-value" id="idRoll">ROLL_000</div>
+                        </div>
+                        <div class="id-field">
+                            <div class="id-label">Department</div>
+                            <div class="id-value" id="idDept">DEPT_DATA</div>
+                        </div>
+                    </div>
+                    <div class="id-field">
+                        <div class="id-label">Security Protocol</div>
+                        <div class="id-value" style="color: #00d1c7;">BIOMETRIC_ACTIVE_AES256</div>
+                    </div>
+                </div>
+                <div class="id-footer">
+                    This is an electronically generated and verified security document.<br>
+                    &copy; 2026 Smart Attendance System Using Face Recognition &bull; DEEP_SPACE_PROTOCOLS v2.0
+                </div>
+            </div>
+
+            <div class="page-stack" style="padding: 40px; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px;">
+                <div class="profile-layout">
+                    <section class="widget-card profile-summary-card">
+                        <div class="profile-avatar" id="profileAvatar">ST</div>
+                        <div class="profile-summary-head">
+                            <span class="profile-summary-kicker">STUDENT PROFILE</span>
+                            <h2 id="dispFullName" class="profile-summary-name">Student Name</h2>
+                            <p id="dispUserRole" class="profile-summary-copy">VERIFIED_STUDENT</p>
+                            <p class="profile-summary-copy">Keep your identity details current so attendance, reporting, and verification stay aligned.</p>
+                        </div>
+
+                        <div class="profile-meta-grid">
+                            <div class="profile-meta-item">
+                                <span>Roll Number</span>
+                                <strong id="summaryRoll">ROLL_000</strong>
+                            </div>
+                            <div class="profile-meta-item">
+                                <span>Department</span>
+                                <strong id="summaryDepartment">DEPT_DATA</strong>
+                            </div>
+                            <div class="profile-meta-item">
+                                <span>Email</span>
+                                <strong id="summaryEmail">student@example.com</strong>
+                            </div>
+                            <div class="profile-meta-item">
+                                <span>Status</span>
+                                <strong id="summaryStatus">IDENTITY_ACTIVE</strong>
+                            </div>
+                        </div>
+
+                        <p class="profile-note">Your email and roll number stay locked for account integrity. Name and department changes sync back to your student profile.</p>
+                    </section>
+
+                    <form id="studentProfileForm" class="widget-card profile-form-card">
+                        <div class="profile-form-head">
+                            <span class="profile-summary-kicker">EDIT_STUDENT_IDENTITY</span>
+                            <h3>Update the details that appear across attendance and ID artifacts.</h3>
+                            <p>Your email and roll number stay locked. Profile edits are reflected in reports and identity exports after saving.</p>
+                        </div>
+
+                        <div class="profile-form-grid">
+                            <div class="form-group profile-field full-span">
+                                <label for="sFullName">Legal Full Name</label>
+                                <input type="text" id="sFullName" required>
+                            </div>
+                            <div class="form-group profile-field">
+                                <label for="sEmail">Institutional Email (Read-Only)</label>
+                                <input type="email" id="sEmail" readonly>
+                            </div>
+                            <div class="form-group profile-field">
+                                <label for="sRollNumber">University Roll Number (Read-Only)</label>
+                                <input type="text" id="sRollNumber" readonly>
+                            </div>
+                            <div class="form-group profile-field">
+                                <label for="sDepartment">Academic Department</label>
+                                <input type="text" id="sDepartment">
+                            </div>
+                            <div class="form-group profile-field">
+                                <label>Account Status</label>
+                                <div id="sStatusBadge" class="profile-status-chip badge-neutral">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <span id="sStatus">LOADING...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="profile-note">The identity card export uses these fields directly, so keep the profile aligned before printing.</p>
+
+                        <div class="profile-action-row">
+                            <button type="submit" class="btn-premium" style="flex: 2; padding: 18px; font-size: 0.9rem; letter-spacing: 2.5px; font-weight: 900; border-radius: 14px;">
+                                UPDATE_PROFILE <i class="fa-solid fa-user-check" style="margin-left: 10px;"></i>
+                            </button>
+                            <button type="button" class="btn-glass" onclick="window.location.href='user_dashboard.html'" style="flex: 1; padding: 18px; justify-content: center; border-radius: 14px;">
+                                CANCEL
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        function getProfileInitials(fullName, email) {
+            const source = (fullName || email || 'STUDENT').trim();
+            const parts = source.split(/\s+/).filter(Boolean);
+            if (!parts.length) {
+                return 'ST';
+            }
+
+            const initials = parts.slice(0, 2).map((part) => part[0]).join('');
+            return initials.toUpperCase().slice(0, 2);
+        }
+
+        function syncProfilePreview(data) {
+            const fullName = data.full_name || 'Student Name';
+            const rollNumber = data.roll_number || 'ROLL_000';
+            const department = data.department || 'DEPT_DATA';
+            const email = data.email || 'student@example.com';
+            const active = Boolean(data.is_active);
+
+            document.getElementById('dispFullName').textContent = fullName;
+            document.getElementById('dispUserRole').textContent = active ? 'VERIFIED_STUDENT' : 'ACCOUNT_LOCKED';
+            document.getElementById('summaryRoll').textContent = rollNumber;
+            document.getElementById('summaryDepartment').textContent = department;
+            document.getElementById('summaryEmail').textContent = email;
+            document.getElementById('summaryStatus').textContent = active ? 'IDENTITY_ACTIVE' : 'LOCKED_BY_ADMIN';
+            document.getElementById('profileAvatar').textContent = getProfileInitials(fullName, email);
+        }
+
+        async function loadProfile() {
+            try {
+                const { resp, data } = await Api.apiFetch('/users/me');
+                if (!resp.ok) {
+                    throw new Error(data.detail || 'Unable to load profile');
+                }
+
+                syncProfilePreview(data);
+
+                document.getElementById('sFullName').value = data.full_name || '';
+                document.getElementById('sEmail').value = data.email || '';
+                document.getElementById('sRollNumber').value = data.roll_number || '';
+                document.getElementById('sDepartment').value = data.department || '';
+
+                const statusEl = document.getElementById('sStatus');
+                const statusBadge = document.getElementById('sStatusBadge');
+                if (data.is_active) {
+                    statusEl.textContent = 'IDENTITY_ACTIVE';
+                    statusBadge.className = 'profile-status-chip badge-active';
+                } else {
+                    statusEl.textContent = 'LOCKED_BY_ADMIN';
+                    statusBadge.className = 'profile-status-chip badge-locked';
+                }
+            } catch (error) {
+                document.getElementById('dispFullName').textContent = 'Student Name';
+                document.getElementById('dispUserRole').textContent = 'PROFILE_UNAVAILABLE';
+                document.getElementById('profileAvatar').textContent = 'ST';
+                document.getElementById('summaryStatus').textContent = 'PROFILE_UNAVAILABLE';
+                alert(error.message || 'Failed to load profile.');
+            }
+        }
+
+        document.getElementById('studentProfileForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SYNCING...';
+
+            const payload = {
+                full_name: document.getElementById('sFullName').value,
+                department: document.getElementById('sDepartment').value
+            };
+
+            const { resp, data } = await Api.apiFetch('/users/me', {
+                method: 'PATCH',
+                body: payload
+            });
+
+            if (resp.ok) {
+                alert('Profile updated successfully.');
+                loadProfile();
+            } else {
+                alert('Failed to update profile: ' + (data.detail || 'Access denied.'));
+            }
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProfile();
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            Api.setToken(null);
+            window.location.href = 'login.html';
+        });
+
+        function downloadIDCard() {
+            const container = document.getElementById('idCardContainer');
+            
+            // Populate data from form inputs (which are already loaded)
+            document.getElementById('idName').textContent = document.getElementById('sFullName').value.toUpperCase();
+            document.getElementById('idRoll').textContent = document.getElementById('sRollNumber').value;
+            document.getElementById('idDept').textContent = document.getElementById('sDepartment').value.toUpperCase() || 'GENERAL';
+            
+            // In a real app, you might use the face_image from the user data here.
+            // For now, we use the icon placeholder or a static image if available.
+
+            // Display for printing
+            container.style.display = 'flex';
+            setTimeout(() => {
+                window.print();
+                container.style.display = 'none';
+            }, 100);
+        }
+    </script>
+</body>
+</html>

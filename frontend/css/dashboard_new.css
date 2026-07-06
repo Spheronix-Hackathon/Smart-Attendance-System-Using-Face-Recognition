@@ -1,0 +1,61 @@
+:root {
+    --sidebar-width: 240px;
+    --sidebar-width-collapsed: 70px;
+}
+
+.dashboard-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    background:
+        radial-gradient(1000px 560px at 88% 4%, rgba(0, 209, 199, 0.08), transparent 62%),
+        radial-gradient(760px 380px at 8% 90%, rgba(43, 111, 255, 0.12), transparent 66%),
+        linear-gradient(180deg, #081122 0%, #050b16 100%);
+    color: #ebf3ff;
+    transition: grid-template-columns 0.3s ease;
+}
+
+.sidebar {
+    background: rgba(8, 16, 33, 0.88);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(138, 159, 201, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.main-content {
+    min-width: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        transform: translateX(-100%);
+        z-index: 1000;
+    }
+
+    body.sidebar-open .sidebar {
+        transform: translateX(0);
+        box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+    }
+}
+
+/* Rest of the styles... */
+/* I'll append the rest of the existing styles from the original file */

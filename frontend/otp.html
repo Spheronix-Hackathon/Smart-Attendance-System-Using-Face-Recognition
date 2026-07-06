@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Smart Attendance System</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <div class="auth-shell fade-in" style="width: min(1000px, 98vw); min-height: 580px;">
+        <aside class="auth-side">
+            <div class="side-orb"></div>
+            <h2>Secure Verification</h2>
+            <p>Two-factor authentication adds an extra layer of security to your account</p>
+            <div class="feature-pill"><i class="fa-solid fa-check"></i> End-to-end encrypted</div>
+            <div class="feature-pill"><i class="fa-solid fa-check"></i> Time-limited codes</div>
+            <div class="feature-pill"><i class="fa-solid fa-check"></i> Identity verification</div>
+        </aside>
+
+        <main class="auth-main">
+            <div class="brand-title">Smart Attendance System Using Face Recognition</div>
+            <header class="auth-header" style="text-align: center;">
+                <h1>Verify Your Identity</h1>
+                <p>We've sent a 6-digit verification code to:</p>
+                <div id="displayEmail" class="otp-email-box">---@---.com</div>
+            </header>
+
+            <form id="otpForm" class="auth-form">
+                <div class="otp-card">
+                    <div class="form-group">
+                        <div class="input-wrap">
+                            <input type="text" class="otp-field" placeholder="_ _ _ _ _ _" maxlength="6" style="letter-spacing: 0.8em; text-align: center; font-weight: 900; font-size: 1.8rem; background: rgba(255,255,255,0.02);">
+                        </div>
+                    </div>
+
+                    <div class="feature-pill" style="margin: 24px auto; width: max-content; background: transparent; border: none;">
+                        <i class="fa-solid fa-clock"></i> Code expires in <span id="timer" class="otp-time" style="color: var(--accent); margin-left: 5px;">02:00</span>
+                    </div>
+
+                    <button type="submit" class="auth-btn">
+                        Verify Code <i class="fa-solid fa-check-double"></i>
+                    </button>
+                    
+                    <div class="auth-footer" style="margin-top: 32px;">
+                        <p>Didn't receive the code?</p>
+                        <button type="button" id="resendOtp" class="auth-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); box-shadow: none; width: auto; display: inline-flex; padding: 10px 24px; margin-top: 12px;">
+                            <i class="fa-solid fa-rotate"></i> Resend Code
+                        </button>
+                    </div>
+                    <div class="auth-footer" style="margin-top: 24px;">
+                        <a href="login.html" style="font-size: 0.9rem; opacity: 0.7;"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/auth-visuals.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Hub - SmartFace</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">SmartFace <span>STUDENT</span></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="user_dashboard.html"><i class="fa-solid fa-gauge"></i> Overview</a></li>
+                    <li><a href="user_profile.html"><i class="fa-solid fa-user-astronaut"></i> My Identity</a></li>
+                    <li><a href="user_settings.html"><i class="fa-solid fa-gear"></i> Preferences</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-welcome">
+                    <h1 class="glow-text">Student Dashboard</h1>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Welcome back, <span id="userName"
+                            style="color: var(--accent); font-weight: 800;">Student</span></p>
+                </div>
+                <div class="header-actions">
+                    <div id="digitalClock"
+                        style="font-family: var(--font-data); font-size: 1rem; color: var(--text-dim); letter-spacing: 2px; background: rgba(255,255,255,0.03); padding: 8px 16px; border-radius: 8px; border: 1px solid var(--glass-border); margin-right:20px;">
+                        00:00:00</div>
+                </div>
+            </header>
+
+            <div class="page-stack"
+                style="min-height: calc(100vh - 80px); overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 40px;">
+                <!-- KPI Header: Personal Metrics Row -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;">
+                    <div class="widget-card"
+                        style="padding: 24px; border-left: 4px solid var(--accent); position: relative;">
+                        <p
+                            style="font-size:0.6rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-weight: 800;">
+                            ATTENDANCE_RATE</p>
+                        <h2 id="attendanceRate"
+                            style="font-size: 2.8rem; font-weight: 900; color:#fff; font-family: var(--font-data); line-height: 1;">
+                            0%</h2>
+                        <div style="height: 2px; width: 40px; background: var(--accent); margin-top: 16px;"></div>
+                    </div>
+                    <div class="widget-card"
+                        style="padding: 24px; border-left: 4px solid var(--primary); position: relative;">
+                        <p
+                            style="font-size:0.6rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-weight: 800;">
+                            ATTENDED_DAYS</p>
+                        <h2 id="daysPresent"
+                            style="font-size: 2.8rem; font-weight: 900; color:#fff; font-family: var(--font-data); line-height: 1;">
+                            0</h2>
+                        <div style="height: 2px; width: 40px; background: var(--primary); margin-top: 16px;"></div>
+                    </div>
+                    <div class="widget-card" style="padding: 24px; border-left: 4px solid #ff5a6f; position: relative;">
+                        <p
+                            style="font-size:0.6rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-weight: 800;">
+                            ABSENT_DAYS</p>
+                        <h2 id="daysAbsent"
+                            style="font-size: 2.8rem; font-weight: 900; color:#ff5a6f; font-family: var(--font-data); line-height: 1;">
+                            0</h2>
+                        <div style="height: 2px; width: 40px; background: #ff5a6f; margin-top: 16px;"></div>
+                    </div>
+                    <div class="widget-card"
+                        style="padding: 24px; border-left: 4px solid var(--accent); position: relative;">
+                        <p
+                            style="font-size:0.6rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-weight: 800;">
+                            AVG_CHECK_IN_TIME</p>
+                        <h2 id="avgCheckIn"
+                            style="font-size: 2.8rem; font-weight: 900; color:#fff; font-family: var(--font-data); line-height: 1;">
+                            --:--</h2>
+                        <div style="height: 2px; width: 40px; background: var(--accent); margin-top: 16px;"></div>
+                    </div>
+                </div>
+
+                <!-- Main Content: Attendance Intelligence -->
+                <div style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; flex: 1;">
+                    <div id="attendance-history" class="widget-card"
+                        style="display: flex; flex-direction: column; padding: 0; position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(12, 21, 40, 0.95) 0%, rgba(7, 14, 28, 0.92) 100%); border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="space-between"
+                            style="padding: 24px 32px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); gap: 20px; flex-wrap: wrap; align-items: center;">
+                            <div style="display: grid; gap: 8px;">
+                                <h3 style="font-size: 1.1rem; color: #fff; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">
+                                    ATTENDANCE CALENDAR & HISTORY</h3>
+                                <p style="font-size: 0.76rem; color: var(--text-dim); line-height: 1.7;">
+                                    Present and Late count as attended. Gray cells are unmarked and are excluded until finalized.
+                                </p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-end;">
+                                <input id="attendanceMonthPicker" type="month"
+                                    style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 10px 16px; border-radius: 10px; color: #fff; font-weight: 800; font-size: 0.75rem;">
+                                <span class="badge badge-active"
+                                    style="font-size:0.6rem; padding: 6px 16px; border-radius: 40px; letter-spacing: 1px;">
+                                    YEAR <span id="attendanceCalendarYearLabel" style="margin-left: 6px;">----</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="attendance-intel-grid">
+                            <div class="calendar-shell">
+                                <div class="calendar-legend">
+                                    <span class="calendar-legend-item"><span class="calendar-legend-dot" style="color: var(--accent); background: var(--accent);"></span>Present</span>
+                                    <span class="calendar-legend-item"><span class="calendar-legend-dot" style="color: #f59e0b; background: #f59e0b;"></span>Late</span>
+                                    <span class="calendar-legend-item"><span class="calendar-legend-dot" style="color: #ff5a6f; background: #ff5a6f;"></span>Absent</span>
+                                    <span class="calendar-legend-item"><span class="calendar-legend-dot" style="color: #a855f7; background: #a855f7;"></span>Pending</span>
+                                    <span class="calendar-legend-item"><span class="calendar-legend-dot" style="color: var(--text-dim); background: var(--text-dim);"></span>Unmarked</span>
+                                </div>
+
+                                <div class="calendar-weekdays">
+                                    <span class="calendar-weekday">Sun</span>
+                                    <span class="calendar-weekday">Mon</span>
+                                    <span class="calendar-weekday">Tue</span>
+                                    <span class="calendar-weekday">Wed</span>
+                                    <span class="calendar-weekday">Thu</span>
+                                    <span class="calendar-weekday">Fri</span>
+                                    <span class="calendar-weekday">Sat</span>
+                                </div>
+
+                                <div id="attendanceCalendarGrid" class="attendance-calendar-grid"></div>
+                            </div>
+
+                            <div class="summary-stack">
+                                <section class="summary-card summary-card--accent">
+                                    <p class="summary-label">Monthly Snapshot</p>
+                                    <h2 id="monthAttendancePercent" class="summary-percent">0%</h2>
+                                    <p id="monthPeriodLabel" class="summary-copy">----</p>
+                                    <p id="monthFormulaText" class="formula-panel"></p>
+                                    <div class="summary-metrics">
+                                        <div class="metric-line"><span>Attended</span><strong id="monthAttendedCount">0</strong></div>
+                                        <div class="metric-line"><span>Present</span><strong id="monthPresentCount">0</strong></div>
+                                        <div class="metric-line"><span>Late</span><strong id="monthLateCount">0</strong></div>
+                                        <div class="metric-line"><span>Absent</span><strong id="monthAbsentCount">0</strong></div>
+                                        <div class="metric-line"><span>Marked</span><strong id="monthMarkedCount">0</strong></div>
+                                        <div class="metric-line"><span>Pending</span><strong id="monthPendingCount">0</strong></div>
+                                    </div>
+                                </section>
+
+                                <section class="summary-card summary-card--secondary">
+                                    <p class="summary-label">Yearly Snapshot</p>
+                                    <h2 id="yearAttendancePercent" class="summary-percent">0%</h2>
+                                    <p id="yearPeriodLabel" class="summary-copy">----</p>
+                                    <p id="yearFormulaText" class="formula-panel"></p>
+                                    <div class="summary-metrics">
+                                        <div class="metric-line"><span>Attended</span><strong id="yearAttendedCount">0</strong></div>
+                                        <div class="metric-line"><span>Present</span><strong id="yearPresentCount">0</strong></div>
+                                        <div class="metric-line"><span>Late</span><strong id="yearLateCount">0</strong></div>
+                                        <div class="metric-line"><span>Absent</span><strong id="yearAbsentCount">0</strong></div>
+                                        <div class="metric-line"><span>Marked</span><strong id="yearMarkedCount">0</strong></div>
+                                        <div class="metric-line"><span>Pending</span><strong id="yearPendingCount">0</strong></div>
+                                    </div>
+                                </section>
+
+                                <section class="summary-card summary-card--neutral">
+                                    <p class="summary-label">Calculation Rules</p>
+                                    <p id="attendanceCalculationNote" class="summary-copy"></p>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div class="space-between"
+                            style="padding: 24px 32px; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                            <h3 style="font-size: 1.1rem; color: #fff; font-weight: 900; letter-spacing: 2px;">
+                                ATTENDANCE HISTORY</h3>
+                            <div class="badge badge-active"
+                                style="font-size:0.6rem; padding: 6px 16px; border-radius: 40px; letter-spacing: 1px;">
+                                VERIFIED</div>
+                        </div>
+                        <div class="table-container" style="padding: 0; flex: 1; min-height: 340px;">
+                            <table id="historyTable" style="width: 100%; border-collapse: collapse;">
+                                <thead style="background: rgba(255,255,255,0.02);">
+                                    <tr>
+                                        <th
+                                            style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">
+                                            Date & Time</th>
+                                        <th
+                                            style="padding: 24px 32px; text-align: left; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">
+                                            Method</th>
+                                        <th
+                                            style="padding: 24px 32px; text-align: right; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: 800;">
+                                            Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                                        <td colspan="3"
+                                            style="padding: 100px; text-align: center; color: var(--text-dim); letter-spacing: 3px; opacity: 0.6; font-size: 0.8rem; font-weight: 900;">
+                                            LOADING ATTENDANCE HISTORY...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/student-dashboard.js"></script>
+</body>
+
+</html>

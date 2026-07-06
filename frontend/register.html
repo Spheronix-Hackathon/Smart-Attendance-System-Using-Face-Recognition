@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biometric Enrollment - Smart Attendance System</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="auth-body">
+    <div class="auth-shell fade-in" style="width: min(1140px, 98vw);">
+        <aside class="auth-side">
+            <div class="side-orb"></div>
+            <div id="sidebarContent">
+                <h2 id="sideTitle">Account Enrollment</h2>
+                <p id="sideDesc">Complete your biometric enrollment for secure and efficient attendance management.</p>
+                <div id="sideFeatures">
+                    <div class="feature-pill"><i class="fa-solid fa-check"></i> Biometric Identification</div>
+                    <div class="feature-pill"><i class="fa-solid fa-check"></i> Secure Registration</div>
+                    <div class="feature-pill"><i class="fa-solid fa-check"></i> Instant Verification</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="auth-main">
+            <div class="brand-title">Smart Attendance</div>
+
+            <div id="registrationStepper" class="stepper">
+                <div class="step active" id="step1Circle">1</div>
+                <div class="step-line" id="stepLine1"></div>
+                <div class="step" id="step2Circle">2</div>
+                <div class="step-line" id="stepLine2"></div>
+                <div class="step" id="step3Circle">3</div>
+            </div>
+
+            <form id="registrationForm" class="auth-form">
+                <!-- Step 1: Basic Info -->
+                <div id="registrationStep1" class="step-panel visible">
+                    <header class="auth-header">
+                        <h1>Create Account</h1>
+                        <p>Please provide your information to begin the enrollment process.</p>
+                    </header>
+                    <div class="step1-grid">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-user"></i> FULL NAME</label>
+                            <div class="input-wrap">
+                                <input type="text" id="fullName" placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-id-card"></i> ROLL NUMBER</label>
+                            <div class="input-wrap">
+                                <input type="text" id="rollNumber" placeholder="Enter your identification number" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-envelope"></i> EMAIL ADDRESS</label>
+                            <div class="input-wrap">
+                                <input type="email" id="email" placeholder="e.g., student@university.edu" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-building"></i> DEPARTMENT</label>
+                            <div class="input-wrap">
+                                <select id="department" required>
+                                    <option value="" disabled selected>Select your department</option>
+                                    <option value="Computer Science & Engineering">Computer Science & Engineering (CSE)</option>
+                                    <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
+                                    <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
+                                    <option value="Information Technology">Information Technology (IT)</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
+                                    <option value="Civil Engineering">Civil Engineering (CE)</option>
+                                    <option value="AI & Data Science">AI & Data Science (AI & DS)</option>
+                                    <option value="Business Administration">Business Administration (MBA)</option>
+                                    <option value="Computer Applications">Computer Applications (MCA/BCA)</option>
+                                    <option value="Science & Humanities">Science & Humanities (S&H)</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group step1-password">
+                        <label><i class="fa-solid fa-lock"></i> PASSWORD</label>
+                        <div class="input-wrap">
+                            <input type="password" id="password" placeholder="Min 6 characters" required>
+                            <i class="fa-solid fa-eye pass-toggle" id="togglePassword"></i>
+                        </div>
+                    </div>
+                    <button type="button" id="nextToStep2" class="auth-btn" style="margin-top: 20px;">
+                        Next: Biometric Capture <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="login.html">Sign In</a></p>
+                        <p>Back to Home? <a href="index.html">Home</a></p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Face Capture -->
+                <div id="registrationStep2" class="step-panel hidden">
+                    <header class="auth-header">
+                        <h1>Biometric Capture</h1>
+                        <p>Please position your face within the frame for biometric verification.</p>
+                    </header>
+                    <div class="camera-card">
+                        <div class="camera-view">
+                            <div id="cameraPlaceholder" class="camera-placeholder">
+
+                                <p><i class="fa-solid fa-camera"></i> Click "Start Camera" to begin</p>
+                            </div>
+                            <video id="cameraPreview" autoplay playsinline muted></video>
+                            <img id="facePreview"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);">
+                            <canvas id="faceCanvas" style="display: none;"></canvas>
+                            <div class="scan-line"></div>
+                        </div>
+                        <div class="feature-pill"
+                            style="margin: 20px 0; justify-content: center; background: rgba(0,209,199,0.05); border-color: rgba(0,209,199,0.1);">
+                            <i class="fa-solid fa-info-circle" style="background: var(--accent); color:#000;"></i>
+                            Ensure your face is clearly visible within the designated area.
+                        </div>
+                        <div class="auth-btn-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <button type="button" id="startCameraBtn" class="auth-btn"
+                                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: none;">
+                                <i class="fa-solid fa-video"></i> Start Camera
+                            </button>
+                            <button type="button" id="captureBtn" class="auth-btn">
+                                <i class="fa-solid fa-camera-retro"></i> Complete Scan
+                            </button>
+                        </div>
+                        <input type="hidden" id="faceImage">
+                    </div>
+                    <div class="auth-btn-row"
+                        style="display: grid; grid-template-columns: 120px 1fr; gap: 12px; margin-top: 20px;">
+                        <button type="button" id="backToStep1" class="auth-btn"
+                            style="background: rgba(255,255,255,0.05); box-shadow: none;">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" id="submitRegistration" class="auth-btn">
+                            Create Account <i class="fa-solid fa-check"></i>
+                        </button>
+                    </div>
+                    <div id="registrationError" class="error-message"></div>
+                </div>
+
+                <!-- Step 3: OTP Verification -->
+                <div id="registrationStep3" class="step-panel hidden">
+                    <header class="auth-header" style="text-align: center;">
+                        <h1>Security Verification</h1>
+                        <p>A verification code has been sent to your registered email address:</p>
+                        <div id="displayEmail" class="otp-email-box">---@---.com</div>
+                    </header>
+
+                    <div class="otp-card">
+                        <div class="form-group">
+                            <div class="input-wrap">
+                                <input type="text" id="otpCode" placeholder="_ _ _ _ _ _" maxlength="6"
+                                    style="letter-spacing: 0.8em; text-align: center; font-weight: 900; font-size: 1.8rem; background: rgba(255,255,255,0.02);">
+                            </div>
+                        </div>
+
+                        <div class="feature-pill"
+                            style="margin: 24px auto; width: max-content; background: transparent; border: none;">
+                            <i class="fa-solid fa-clock"></i> Verification code expires in <span id="otpTimer"
+                                style="color: var(--accent); margin-left: 5px;">02:00</span>
+                        </div>
+
+                        <button type="button" id="verifyOtpBtn" class="auth-btn">
+                            Complete Verification <i class="fa-solid fa-check-double"></i>
+                        </button>
+
+                        <div class="auth-footer" style="margin-top: 32px;">
+                            <p>Didn't receive the code?</p>
+                            <button type="button" id="resendOtpBtn" class="auth-btn"
+                                style="background: transparent; border: 1px solid rgba(255,255,255,0.1); box-shadow: none; width: auto; display: inline-flex; padding: 10px 24px; margin-top: 12px;">
+                                <i class="fa-solid fa-rotate"></i> Resend Code
+                            </button>
+                        </div>
+                        <div class="auth-footer" style="margin-top: 24px;">
+                            <a href="login.html" style="font-size: 0.9rem; opacity: 0.7;"><i
+                                    class="fa-solid fa-arrow-left"></i> Back to Login</a>
+                        </div>
+                    </div>
+                    <div id="otpError" class="error-message"></div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/auth-visuals.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>
